@@ -1,31 +1,57 @@
 # -*- coding: utf-8 -*-
 require 'rubygems'
 require 'sinatra/base'
-require 'sinatra/flash'
+require 'data_mapper'
+require 'tilt/erb'
 
-class App < Sinatra::Base
+class MyApp < Sinatra::Base
 
-	#Sets paths
-	set :root, File.dirname(__FILE__)
-	set :views, File.dirname(__FILE__) + "/../views"
-	set :public_folder, File.dirname(__FILE__) + "/../../public"
+	configure :development do
+   		DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/bbdd.db" )
+   	end
 
-	#Set layout
+   	configure :production do
+   		DataMapper.setup(:default, ENV['DATABASE_URL'])
+   	end
+
+	DataMapper::Logger.new($stdout, :debug)
+	DataMapper::Model.raise_on_save_failure = true
+
+	require_relative '../models/model'
+
+	DataMapper.finalize
+	DataMapper.auto_upgrade!
+
+
 	configure do
-	  set :erb, :layout => :'layouts/layout'
+		set :root, File.dirname(__FILE__)
+		set :views, Proc.new { File.join(root, "../views") }
+		set :erb, :layout => :'layouts/layout'
+		set :public_folder, Proc.new { File.join(root, "../../public") }
 	end
 
-	#Root
 	get '/' do
+		#@list = User.all
 		erb :index
 	end
 
-	#Error
-	get '/failure' do
-		flash[:notice] = %Q{<h3>Error</h3> &#60; <a href="/">Back</a> }
+	post '/login' do
+		@user = params[:username]
+		@pass = params[:password]
+		erb :home
 	end
 
-	#To run by Sinatra
-	run! if __FILE__ == $0
+	get '/register' do
+		erb :register
+	end
+=begin
+	post '/delete' do
+		User.destroy
+		redirect '/'
+	end
+=end
 
+
+	# start the server if ruby file executed directly
+  	run! if app_file == $0
 end
