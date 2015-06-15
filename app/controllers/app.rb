@@ -55,7 +55,7 @@ class MyApp < Sinatra::Base
 		if (session[:username] != nil)
 			redirect '/home'
 		else
-			erb :index
+			erb :index, :layout => :'layouts/welcome'
 		end
 	end
 

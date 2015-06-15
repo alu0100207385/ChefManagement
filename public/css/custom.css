@@ -50,7 +50,7 @@ body{
 }
 
 #welcome{
-	background-image: url('../resources/background/03.jpg');
+	background-image: url(../resources/background/03.jpg);
 	background-repeat:no-repeat;
 	background-position:center;
 	width: 100%;
