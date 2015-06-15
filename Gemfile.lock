@@ -58,10 +58,34 @@ GEM
       data_objects (= 0.10.16)
     do_sqlite3 (0.10.16)
       data_objects (= 0.10.16)
+    faraday (0.9.1)
+      multipart-post (>= 1.2, < 3)
     fastercsv (1.5.5)
+    hashie (3.4.2)
     json (1.8.3)
     json_pure (1.8.2)
+    jwt (1.5.0)
+    mail (2.6.3)
+      mime-types (>= 1.16, < 3)
+    mime-types (2.6.1)
     multi_json (1.11.1)
+    multi_xml (0.5.5)
+    multipart-post (2.0.0)
+    oauth2 (1.0.0)
+      faraday (>= 0.8, < 0.10)
+      jwt (~> 1.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (~> 1.2)
+    omniauth (1.2.2)
+      hashie (>= 1.2, < 4)
+      rack (~> 1.0)
+    omniauth-google-oauth2 (0.2.6)
+      omniauth (> 1.0)
+      omniauth-oauth2 (~> 1.1)
+    omniauth-oauth2 (1.3.0)
+      oauth2 (~> 1.0)
+      omniauth (~> 1.2)
     pg (0.18.2)
     rack (1.6.1)
     rack-protection (1.5.3)
@@ -93,6 +117,9 @@ DEPENDENCIES
   do_jdbc
   do_postgres
   jruby-pgp
+  mail
+  omniauth-google-oauth2
+  omniauth-oauth2
   pg
   sinatra
   sinatra-base

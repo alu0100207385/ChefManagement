@@ -1,8 +1,26 @@
 <div class="col-xs-4"></div>
 <div class="col-xs-4">
-    <div id="login" class="panel panel-primary">
+<!--
+	<div id="message">
+		<% #if (@control == 1) %>
+	    	<div class="alert alert-danger" role="alert">Error. User or password incorrect.</div>
+	    <% #end %>
+    </div>-->
+    <div id="login" class="panel panel-success">
 		<div class="panel-heading"><h4>Welcome to ChefManagement</h4></div>
 		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-6">
+					<a href="/auth/facebook" role="button" class="btn btn-primary">Sign In Facebook</a>
+				</div>
+				<div class="col-md-6">
+					<a href="/auth/google_oauth2" role="button" class="btn btn-danger">Sign In Google+</a>
+				</div>
+			</div>
+      <div class="login-or">
+        <hr class="hr-or">
+        <span class="span-or">or</span>
+      </div>
 			<form name="login" action="/login" method="POST">
 				<div class="form-group">
 					<!--<label>Username</label>-->
@@ -24,7 +42,7 @@
 						</div>
 					</div>
 				</div>
-				<button type="submit" class="btn btn-primary btn-lg btn-block">Log in</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block">Log in</button>
 			</form>
 			<hr>
 			<p>

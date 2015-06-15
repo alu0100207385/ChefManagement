@@ -6,6 +6,9 @@ gem 'sinatra'
 gem 'sinatra-base'
 gem 'sinatra-flash'
 gem 'data_mapper'
+gem 'mail'
+gem 'omniauth-oauth2'
+gem 'omniauth-google-oauth2'
 
 group :development do
 	gem 'sqlite3', platform: :ruby
@@ -14,11 +17,17 @@ group :development do
 end
 
 group :production do
- 	gem 'activerecord-jdbcpostgresql-adapter', platform: :jruby
- 	gem 'do_jdbc', platform: :jruby
- 	gem 'jruby-pgp', platform: :jruby
-  	gem 'do_postgres', platform: :ruby
-  	gem 'pg', platform: :ruby
+	platform :jruby do
+		gem 'activerecord-jdbcpostgresql-adapter'
+ 		gem 'do_jdbc'
+ 		gem 'jruby-pgp'
+	end
+
+	platform :ruby do
+  		gem 'do_postgres'
+  		gem 'pg'
+  	end
+
   	gem 'dm-postgres-adapter'
 end
 
