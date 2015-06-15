@@ -9,6 +9,7 @@ gem 'data_mapper'
 gem 'mail'
 gem 'omniauth-oauth2'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
 
 group :development do
 	gem 'sqlite3', platform: :ruby

@@ -1,10 +1,22 @@
+body{
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+}
+
 #login{
 	margin-top: 15%;
 	text-align: center;
+	opacity: 0.9;
+	#font-weight: bold;
 }
 
 #footer{
 	text-align: center;
+	position: absolute;
+   	bottom: 0;
+   	width: 98%;
 }
 
 #message{
@@ -16,7 +28,7 @@
     font-size: 18px;
     color: #aaa;
     margin-top: 10px;
-            margin-bottom: 10px;
+    margin-bottom: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
   }
@@ -35,4 +47,12 @@
     height: 1px;
     margin-top: 0px !important;
     margin-bottom: 0px !important;
-  }
+}
+
+#welcome{
+	background-image: url('../resources/background/03.jpg');
+	background-repeat:no-repeat;
+	background-position:center;
+	width: 100%;
+	height: 100%;
+}

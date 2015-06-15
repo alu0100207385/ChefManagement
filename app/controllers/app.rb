@@ -6,6 +6,7 @@ require 'tilt/erb'
 
 require 'omniauth-oauth2'
 require 'omniauth-google-oauth2'
+require 'omniauth-facebook'
 
 
 class MyApp < Sinatra::Base
@@ -36,18 +37,26 @@ class MyApp < Sinatra::Base
 	end
 
 	use OmniAuth::Builder do
-	  config = YAML.load_file 'app/config/config.yml'
-	  provider :google_oauth2, config['gidentifier'], config['gsecret'],
-	  {
-	     :authorize_params => {
-	        :force_login => 'false'
-	      }
-	    }
+		config = YAML.load_file 'app/config/config.yml'
+		provider :google_oauth2, config['gidentifier'], config['gsecret'],
+		{
+		 	:authorize_params => {
+		    	:force_login => 'false'
+		  	}
+		}
+		provider :facebook, config['fidentifier'], config['fsecret'],
+		{
+			:scope => 'email, public_profile'
+		}
 	end
 
 ########################################################################
 	get '/' do
-		erb :index
+		if (session[:username] != nil)
+			redirect '/home'
+		else
+			erb :index
+		end
 	end
 
 
@@ -75,20 +84,22 @@ class MyApp < Sinatra::Base
 		case params[:name]
 
 		when 'google_oauth2'
-			user = User.new
+			#user = User.new
 			session[:username] = user.username = auth['info'].name
 			session[:email] = user.email = auth['info'].email
 			if User.count(:username => user.username) == 0 #Si no existe lo incluimos en la bbdd
 				user.save
 			end
 			redirect '/home'
-=begin
-			goo = GoogleData.new(:user => user)
-			goo.token = auth.credentials.token
-			goo.id_token = auth.extra.id_token
-			goo.gid = auth.uid
-			goo.save
-=end
+
+		when 'facebook'
+			session[:username] = user.username = auth['info'].name
+			session[:email] = user.email = auth['info'].email
+			if User.count(:username => user.username) == 0 #Si no existe lo incluimos en la bbdd
+				user.save
+			end
+			redirect '/home'
+
 		else
 			redirect '/auth/failure'
 		end
