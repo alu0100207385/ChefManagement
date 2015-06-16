@@ -182,7 +182,7 @@ DEPENDENCIES
   dm-postgres-adapter
   dm-sqlite-adapter
   do_jdbc
-  do_postgres
+  do_postgres (~> 0.10.16)
   jruby-pgp
   mail
   minitest

@@ -25,7 +25,7 @@ group :production do
 	end
 
 	platform :ruby do
-  		gem 'do_postgres'
+  		gem 'do_postgres', '~> 0.10.16'
   		gem 'pg'
   	end
 
