@@ -24,3 +24,8 @@ desc "Run tests in local machine"
 task :local_tests do
    sh "gnome-terminal -x sh -c 'rackup' && sh -c 'bundle exec ruby app/tests/test.rb'"
 end
+
+desc "Run tests"
+task :tests do
+   sh "bundle exec ruby app/tests/test.rb"
+end
