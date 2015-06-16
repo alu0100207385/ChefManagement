@@ -32,3 +32,10 @@ group :production do
   	gem 'dm-postgres-adapter'
 end
 
+group :test do
+   gem 'rack-test'
+   gem 'rake'
+   gem 'minitest'
+   gem 'test-unit'
+   gem 'selenium-webdriver', '~> 2.46.2'
+end
