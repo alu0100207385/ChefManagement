@@ -34,6 +34,7 @@ class MyApp < Sinatra::Base
 		set :views, Proc.new { File.join(root, "../views") }
 		set :erb, :layout => :'layouts/layout'
 		set :public_folder, Proc.new { File.join(root, "../../public") }
+		#set :environment, :development
 	end
 
 	use OmniAuth::Builder do
