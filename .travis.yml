@@ -14,9 +14,6 @@ before_install:
    - sh -e /etc/init.d/xvfb start
    - sudo apt-get update -qq
    - sudo /etc/init.d/postgresql stop
-   - sudo apt-get install -qq postgresql
-   - sudo apt-get install -qq postgresql-server-dev-9.1
-   - sudo apt-get install -qq libpq-dev
    - sleep 3
    - bundle install
    - bundle exec rake rackup &
