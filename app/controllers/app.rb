@@ -10,7 +10,9 @@ require 'omniauth-facebook'
 
 
 class MyApp < Sinatra::Base
-
+	
+	set :environment, :development
+	
 	configure :development do
    		DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/bbdd.db" )
    	end
@@ -34,7 +36,6 @@ class MyApp < Sinatra::Base
 		set :views, Proc.new { File.join(root, "../views") }
 		set :erb, :layout => :'layouts/default'
 		set :public_folder, Proc.new { File.join(root, "../../public") }
-		set :environment, :development
 	end
 
 	use OmniAuth::Builder do
