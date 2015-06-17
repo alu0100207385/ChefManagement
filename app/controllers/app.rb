@@ -14,7 +14,7 @@ class MyApp < Sinatra::Base
 	set :environment, :development
 	
 	configure :development do
-   		DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/bbdd.db" )
+   		DataMapper.setup(:default,ENV['DATABASE_URL'] ||"sqlite3://#{Dir.pwd}/bbdd.db" )
    	end
 
    	configure :production do
@@ -27,6 +27,7 @@ class MyApp < Sinatra::Base
 	require_relative '../models/model'
 
 	DataMapper.finalize
+	# DataMapper.auto_migrate!
 	DataMapper.auto_upgrade!
 
 	enable :sessions
@@ -137,7 +138,7 @@ class MyApp < Sinatra::Base
 	get '/home' do
 		@user = User.first(:username => session[:username])
 		#@user = session[:username]
-		puts "-->#{session[:username]}"
+		#puts "-->#{session[:username]}"
 		if (!@user.is_a? NilClass)
 			erb :home, :layout => :'layouts/default'
 		else

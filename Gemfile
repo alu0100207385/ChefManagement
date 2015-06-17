@@ -12,8 +12,9 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 
 group :development do
+	gem 'sinatra-contrib'
 	gem 'sqlite3', :platforms => :ruby
-	gem 'activerecord-jdbcsqlite3-adapter', :platforms => :jruby
+	#gem 'activerecord-jdbcsqlite3-adapter', :platforms => :jruby
 	gem 'dm-sqlite-adapter'
 end
 =begin
