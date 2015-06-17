@@ -16,7 +16,7 @@ group :development do
 	gem 'activerecord-jdbcsqlite3-adapter', :platforms => :jruby
 	gem 'dm-sqlite-adapter'
 end
-
+=begin
 group :production do
 	platform :jruby do
 		gem 'activerecord-jdbcpostgresql-adapter'
@@ -31,7 +31,7 @@ group :production do
 
   	gem 'dm-postgres-adapter'
 end
-
+=end
 group :test do
    gem 'rack-test'
    gem 'rake'
