@@ -27,5 +27,5 @@ end
 
 desc "Run tests"
 task :tests do
-   sh "bundle exec ruby app/tests/test.rb"
+   sh "ruby app/tests/test.rb"
 end
