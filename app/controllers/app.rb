@@ -32,7 +32,7 @@ class MyApp < Sinatra::Base
 	configure do
 		set :root, File.dirname(__FILE__)
 		set :views, Proc.new { File.join(root, "../views") }
-		set :erb, :layout => :'layouts/layout'
+		set :erb, :layout => :'layouts/default'
 		set :public_folder, Proc.new { File.join(root, "../../public") }
 		#set :environment, :development
 	end
@@ -65,13 +65,17 @@ class MyApp < Sinatra::Base
 		user = User.first(:username => params[:username])
 		@control = 0
 
-		if(user.is_a? NilClass)
+		if (!user.is_a? NilClass)
+			if (user.password == params[:password])
+ 				session[:username] = params[:username]
+				redirect '/home'
+			else
+				@control = 2 #pass no coincide
+				redirect '/'
+			end
+		else
 			@control = 1 #el usuario no existe en la bbdd
-			erb :index
-		elsif (user.password == params[:password])
- 			@control = 0
- 			session[:username] = params[:username]
-			erb :home
+			redirect '/'
    		end
 	end
 
@@ -79,16 +83,15 @@ class MyApp < Sinatra::Base
 	get '/auth/:name/callback' do
 		config = YAML.load_file 'app/config/config.yml'
 		auth = request.env['omniauth.auth']
-		#    puts "--> #{auth}"
-		user = User.first(:username => session[:username])
+		user = User.new
+		#user = User.first(:username => session[:username])
 
 		case params[:name]
 
 		when 'google_oauth2'
-			#user = User.new
 			session[:username] = user.username = auth['info'].name
 			session[:email] = user.email = auth['info'].email
-			if User.count(:username => user.username) == 0 #Si no existe lo incluimos en la bbdd
+			if User.count(:username => session[:username]) == 0 #Si no existe lo incluimos en la bbdd
 				user.save
 			end
 			redirect '/home'
@@ -133,7 +136,7 @@ class MyApp < Sinatra::Base
 	get '/home' do
 		@user = session[:username]
 		if (!@user.is_a? NilClass)
-			erb :home
+			erb :home, :layout => :'layouts/default'
 		else
 			redirect '/'
 		end
