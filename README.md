@@ -6,6 +6,8 @@
 
 # Tests
 
+https://travis-ci.org/alu0100207385/ChefManagement.svg?branch=testing
+
 # Install
 Before all, you must install gems: $ bundle install (or $ bundle update) when you want to run the app in **local machine**. Run browser and go to http://localhost/4567. [More options](#user-content-run). You can edit the port server in the Rakefile or controller file.
 
