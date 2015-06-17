@@ -14,7 +14,7 @@ class MyApp < Sinatra::Base
 	set :environment, :development
 	
 	configure :development do
-   		DataMapper.setup(:default,ENV['DATABASE_URL'] ||"sqlite3://#{Dir.pwd}/bbdd.db" )
+   		DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/bbdd.db" )
    	end
 
    	configure :production do
