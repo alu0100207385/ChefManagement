@@ -134,7 +134,9 @@ class MyApp < Sinatra::Base
 
 
 	get '/home' do
-		@user = session[:username]
+		@user = User.first(:username => session[:username])
+		#@user = session[:username]
+		puts "-->#{session[:username]}"
 		if (!@user.is_a? NilClass)
 			erb :home, :layout => :'layouts/default'
 		else
@@ -144,9 +146,9 @@ class MyApp < Sinatra::Base
 
 
 	get '/settings' do
-		if session[:username] != nil
-			@user = User.first(:username => session[:username])
-			erb :settings
+		@user = User.first(:username => session[:username])
+		if (!@user.is_a? NilClass)
+			erb :settings, :layout => :'layouts/default'
 		else
 			redirect '/'
 		end
