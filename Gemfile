@@ -10,6 +10,8 @@ gem 'mail'
 gem 'omniauth-oauth2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
+gem 'json'
+gem 'thin'
 
 group :development do
 	gem 'sinatra-contrib'

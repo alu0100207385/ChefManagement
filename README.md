@@ -16,12 +16,13 @@ If you prefer use the app immediately, go [here](#user-content-link-to-app).
 # Run
 To see all option tasks: $ rake -T
 ```
-rake 		  # Run the server via Sinatra (default task)
-rake r        # Run the server via rackup
-rake s        # Run the server via Sinatra
-rake sinatra  # Run the server via Sinatra
-rake spec     # Run rspec tests
-rake tests    # Run tests
+rake 		  		# Run the server via Sinatra (default task)
+rake local_tests    # Run tests in local machine
+rake r        		# Run the server via rackup
+rake repo			# Open repository
+rake s        		# Run the server via Sinatra
+rake sinatra  		# Run the server via Sinatra
+rake tests    		# Run tests
 ```
 
 # Resources

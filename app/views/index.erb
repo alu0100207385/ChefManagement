@@ -1,11 +1,7 @@
 <div class="col-xs-4"></div>
 <div class="col-xs-4">
-<!--
-	<div id="message">
-		<% #if (@control == 1) %>
-	    	<div class="alert alert-danger" role="alert">Error. User or password incorrect.</div>
-	    <% #end %>
-    </div>-->
+	<p id="message"></p>
+
     <div id="login" class="panel panel-success">
 		<div class="panel-heading"><h4>Welcome to ChefManagement</h4></div>
 		<div class="panel-body">
@@ -17,14 +13,14 @@
 					<a id="google-btn" href="/auth/google_oauth2" role="button" class="btn btn-danger">Sign In Google+</a>
 				</div>
 			</div>
-      <div class="login-or">
-        <hr class="hr-or">
-        <span class="span-or">or</span>
-      </div>
+		    <div class="login-or">
+				<hr class="hr-or">
+		        <span class="span-or">or</span>
+			</div>
 			<form name="login" action="/login" method="POST">
 				<div class="form-group">
 					<!--<label>Username</label>-->
-					<input type="text" class="form-control" name="username" placeholder="Username" required>
+					<input id="username" type="text" class="form-control" name="username" placeholder="Username" required>
 				</div>
 				<div class="form-group">
 					<!--<label>Password</label>-->
@@ -42,7 +38,7 @@
 						</div>
 					</div>
 				</div>
-				<button type="submit" class="btn btn-success btn-lg btn-block">Log in</button>
+				<button id="enter" type="submit" class="btn btn-success btn-lg btn-block">Log in</button>
 			</form>
 			<hr>
 			<p>

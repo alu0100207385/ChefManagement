@@ -7,6 +7,7 @@ require 'tilt/erb'
 require 'omniauth-oauth2'
 require 'omniauth-google-oauth2'
 require 'omniauth-facebook'
+require 'json'
 
 
 class MyApp < Sinatra::Base
@@ -65,18 +66,22 @@ class MyApp < Sinatra::Base
 
 	post '/login' do
 		user = User.first(:username => params[:username])
-		@control = 0
+		content_type :json
 
 		if (!user.is_a? NilClass)
 			if (user.password == params[:password])
  				session[:username] = params[:username]
+ 				{:control => 0}.to_json
+ 				puts "-->#{{:control => 0}.to_json}"
 				redirect '/home'
 			else
-				@control = 2 #pass no coincide
+				{:control => 2}.to_json #pass no coincide
+				puts "-->#{{:control => 2}.to_json}"
 				redirect '/'
 			end
 		else
-			@control = 1 #el usuario no existe en la bbdd
+			{:control => 1}.to_json #el usuario no existe en la bbdd
+			puts "-->#{{:control => 1}.to_json}"
 			redirect '/'
    		end
 	end

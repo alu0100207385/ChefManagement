@@ -20,7 +20,8 @@ body{
 }
 
 #message{
-	margin-top: 5%;
+	margin-top: 4%;
+	text-align: center;
 }
 
 .login-or {
