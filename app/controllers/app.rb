@@ -68,22 +68,19 @@ class MyApp < Sinatra::Base
 		user = User.first(:username => params[:username])
 		content_type :json
 
-		if (!user.is_a? NilClass)
-			if (user.password == params[:password])
- 				session[:username] = params[:username]
- 				{:control => 0}.to_json
- 				puts "-->#{{:control => 0}.to_json}"
-				redirect '/home'
+		if (params[:username]!= nil) and (params[:password]!= nil)
+			if (user.is_a? NilClass) 
+				{:control => '1'}.to_json #usuario no registrado en la bbdd
+			elsif (user.password == params[:password])
+		 		session[:username] = params[:username]
+		 		#puts "-s->#{session[:username]}"
+		 		{:control => '0'}.to_json #ok
+		 		#redirect '/home'
 			else
-				{:control => 2}.to_json #pass no coincide
-				puts "-->#{{:control => 2}.to_json}"
-				redirect '/'
-			end
-		else
-			{:control => 1}.to_json #el usuario no existe en la bbdd
-			puts "-->#{{:control => 1}.to_json}"
-			redirect '/'
-   		end
+				{:control => '2'}.to_json #pass no coinciden
+		   	end
+		end
+
 	end
 
 
@@ -143,7 +140,6 @@ class MyApp < Sinatra::Base
 	get '/home' do
 		@user = User.first(:username => session[:username])
 		#@user = session[:username]
-		#puts "-->#{session[:username]}"
 		if (!@user.is_a? NilClass)
 			erb :home, :layout => :'layouts/default'
 		else

@@ -5,4 +5,5 @@ class User
 	property :username, String
 	property :email, String
 	property :password, BCryptHash
+	#property :network, String
 end
