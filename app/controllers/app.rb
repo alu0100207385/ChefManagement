@@ -63,24 +63,31 @@ class MyApp < Sinatra::Base
 		end
 	end
 
+	post '/' do
+		redirect '/'
+	end
 
 	post '/login' do
 		user = User.first(:username => params[:username])
-		content_type :json
+		#content_type :json
+		content_type 'application/json'
 
-		if (params[:username]!= nil) and (params[:password]!= nil)
+		if (params[:username]!= "") and (params[:password]!= "")
 			if (user.is_a? NilClass) 
-				{:control => '1'}.to_json #usuario no registrado en la bbdd
+				{:control => 1}.to_json #usuario no registrado en la bbdd
+				#{:username => nil, :password => nil, :control => 1}.to_json
 			elsif (user.password == params[:password])
 		 		session[:username] = params[:username]
 		 		#puts "-s->#{session[:username]}"
-		 		{:control => '0'}.to_json #ok
+		 		{:control => 0}.to_json #ok
+		 		#puts ("-->#{session[:username]}")
+		 		#{:username => params[:username], :password => params[:password], :control => 0}.to_json
 		 		#redirect '/home'
 			else
-				{:control => '2'}.to_json #pass no coinciden
+				{:control => 2}.to_json #pass no coinciden
+				#{:username => params[:username], :password => params[:password], :control => 2}.to_json
 		   	end
 		end
-
 	end
 
 

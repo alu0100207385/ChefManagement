@@ -17,7 +17,7 @@
 				<hr class="hr-or">
 		        <span class="span-or">or</span>
 			</div>
-			<form action="/login" method="post">
+			<!--<form action="/login" method="post">-->
 				<div class="form-group">
 					<!--<label>Username</label>-->
 					<input id="username" type="text" class="form-control" name="username" placeholder="Username" required>
@@ -38,9 +38,9 @@
 						</div>
 					</div>
 				</div>
-				<!--<button id="enter" class="btn btn-success btn-lg btn-block">Log in</button>-->
-				<button id="enter" type="submit" class="btn btn-success btn-lg btn-block">Log in</button>
-			</form>
+				<button id="enter" class="btn btn-success btn-lg btn-block">Log in</button>
+				<!--<button id="enter" type="submit" class="btn btn-success btn-lg btn-block">Log in</button>
+			</form>-->
 			<hr>
 			<p>
 			<a href="/register">New account</a></p>
@@ -86,42 +86,91 @@
 </footer>
 
 <script type="text/javascript">
+
 $(document).ready(function(){
 	$("#enter").click(function(){
 
+	if ( ($('#username').val() == "") || ($('#pass').val() == "") ){
+		$("#message").hide();
+        $("#message").html('<p class ="alert alert-warning" role="alert">All fields are required.</p>');
+        $("#message").show(1000);
+        return false;
+	}
+
     $.ajax({
-    	type: "post",
+    	type: "POST",
 		url: "/login",
-		contentType: "application/json; charset=utf-8",
-      	dataType: "json",
+		//contentType: "application/json; charset=utf-8",
+      	//dataType: "json",
       	data: {username: $('#username').val(), password: $('#pass').val()},
 
       	success: function(data){
 			//console.log(data);
 			//console.log(data.control);
-			if(data.control == '0')
-          		window.location= '/home';
+			if(data.control == 0)
+          		window.location = '/home';
           		//window.location.href = '/home';
-        	if(data.control == '1'){
+        	if(data.control == 1){
 		        $("#message").hide();
 		        $("#message").html('<p class ="alert alert-danger" role="alert">Username does not exist.</p>');
 		        $("#message").show(1000);
         	}
-	        if(data.control == '2'){
+	        if(data.control == 2){
 	          $("#message").hide();
 	          $("#message").html('<p class="alert alert-danger" role="alert">Password incorrect.</p>');
 	          $("#message").show(1000);
 	        }
 		},
 
-		error: function(xhr){
-			//console.log(data);
-			//console.log(data.control);
+		error: function(xhr){;
 			console.log(xhr.status);
 	    	console.log(xhr.statusText);
 		}
 		});
 	});
+
+	document.onkeypress = function(event){
+		if ( event.which == 13 ) {
+
+	     	if ( ($('#username').val() == "") || ($('#pass').val() == "") ){
+				$("#message").hide();
+		        $("#message").html('<p class ="alert alert-warning" role="alert">All fields are required</p>');
+		        $("#message").show(1000);
+		        return false;
+			}
+
+	    $.ajax({
+	    	type: "POST",
+			url: "/login",
+			//contentType: "application/json; charset=utf-8",
+	      	//dataType: "json",
+	      	data: {username: $('#username').val(), password: $('#pass').val()},
+
+	      	success: function(data){
+				//console.log(data);
+				//console.log(data.control);
+				if(data.control == 0)
+	          		window.location = '/home';
+	          		//window.location.href = '/home';
+	        	if(data.control == 1){
+			        $("#message").hide();
+			        $("#message").html('<p class ="alert alert-danger" role="alert">Username does not exist</p>');
+			        $("#message").show(1000);
+	        	}
+		        if(data.control == 2){
+		          $("#message").hide();
+		          $("#message").html('<p class="alert alert-danger" role="alert">Password incorrect</p>');
+		          $("#message").show(1000);
+		        }
+			},
+
+			error: function(xhr){;
+				console.log(xhr.status);
+		    	console.log(xhr.statusText);
+			}
+			});
+		}
+	}
 });
 
 </script>
