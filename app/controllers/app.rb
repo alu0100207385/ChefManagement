@@ -69,23 +69,16 @@ class MyApp < Sinatra::Base
 
 	post '/login' do
 		user = User.first(:username => params[:username])
-		#content_type :json
 		content_type 'application/json'
 
 		if (params[:username]!= "") and (params[:password]!= "")
 			if (user.is_a? NilClass) 
 				{:control => 1}.to_json #usuario no registrado en la bbdd
-				#{:username => nil, :password => nil, :control => 1}.to_json
 			elsif (user.password == params[:password])
 		 		session[:username] = params[:username]
-		 		#puts "-s->#{session[:username]}"
 		 		{:control => 0}.to_json #ok
-		 		#puts ("-->#{session[:username]}")
-		 		#{:username => params[:username], :password => params[:password], :control => 0}.to_json
-		 		#redirect '/home'
 			else
 				{:control => 2}.to_json #pass no coinciden
-				#{:username => params[:username], :password => params[:password], :control => 2}.to_json
 		   	end
 		end
 	end
@@ -122,7 +115,12 @@ class MyApp < Sinatra::Base
 
 
 	get '/register' do
-		erb :register, :layout => :'layouts/welcome'
+		@user = User.first(:username => session[:username])
+		if (@user.is_a? NilClass)
+			erb :register, :layout => :'layouts/welcome'
+		else
+			redirect '/'
+		end
 	end
 
 
@@ -131,16 +129,35 @@ class MyApp < Sinatra::Base
 		user.username = params[:username]
 		user.password = params[:password]
 		user.email = params[:email]
+		content_type 'application/json'
 
-		@control = 0
-		if User.count(:username => user.username) == 0 #comprobamos si existe
+      	if (!User.first(:username => params[:username]).is_a? NilClass)
+			{:control => 1}.to_json
+		elsif (!User.first(:email => params[:email]).is_a? NilClass)
+			{:control => 2}.to_json
+		else
+			user.save
+			session[:username] = params[:username]
+			{:control => 0}.to_json
+		end
+=begin
+		if (User.count(:username => user.username) == 0) and (User.count(:email => user.email)) #comprobamos si existe
       		user.save
-      		@control = 0
+      		{:control => 0}.to_json
       		session[:username] = params[:username]
-      		redirect '/home'
-      	else
-      		@control = 1
-      	end
+      		puts "-->0"
+      		#redirect '/home'
+   		elsif (User.count(:username => user.username) != 0) #El usuario ya existe en la bbdd
+			{:control => 1}.to_json
+			puts "-->1"
+   		elsif (User.count(:email => user.email) != 0) #Ese correo ya existe en la bbdd
+   			{:control => 2}.to_json
+   			puts "-->2"
+   		else
+   			{:control => 3}.to_json #Error desconocido
+   			puts "-->3"
+   		end
+=end
 	end
 
 
