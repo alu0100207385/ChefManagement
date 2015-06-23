@@ -129,6 +129,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    rake (10.4.2)
     rubyzip (1.1.7)
     selenium-webdriver (2.46.2)
       childprocess (~> 0.5)
@@ -182,6 +183,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   omniauth-oauth2
   rack-test
+  rake
   selenium-webdriver (~> 2.46.2)
   sinatra
   sinatra-base
