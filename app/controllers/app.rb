@@ -89,7 +89,6 @@ class MyApp < Sinatra::Base
 		auth = request.env['omniauth.auth']
 		user = User.new
 		#user = User.first(:username => session[:username])
-
 		case params[:name]
 
 		when 'google_oauth2'
@@ -107,7 +106,6 @@ class MyApp < Sinatra::Base
 				user.save
 			end
 			redirect '/home'
-
 		else
 			redirect '/auth/failure'
 		end
@@ -140,24 +138,6 @@ class MyApp < Sinatra::Base
 			session[:username] = params[:username]
 			{:control => 0}.to_json
 		end
-=begin
-		if (User.count(:username => user.username) == 0) and (User.count(:email => user.email)) #comprobamos si existe
-      		user.save
-      		{:control => 0}.to_json
-      		session[:username] = params[:username]
-      		puts "-->0"
-      		#redirect '/home'
-   		elsif (User.count(:username => user.username) != 0) #El usuario ya existe en la bbdd
-			{:control => 1}.to_json
-			puts "-->1"
-   		elsif (User.count(:email => user.email) != 0) #Ese correo ya existe en la bbdd
-   			{:control => 2}.to_json
-   			puts "-->2"
-   		else
-   			{:control => 3}.to_json #Error desconocido
-   			puts "-->3"
-   		end
-=end
 	end
 
 
@@ -168,6 +148,18 @@ class MyApp < Sinatra::Base
 			erb :home, :layout => :'layouts/default'
 		else
 			redirect '/'
+		end
+	end
+
+
+	post '/recovery-account' do
+		puts "-->#{params[:recoveryaccount]}"
+		#puts "--> #{User.first(:username => params[:recoveryaccount]).class}"
+		content_type 'application/json'
+		if (!User.first(:username => params[:recoveryaccount]).is_a? NilClass)
+			{:control => 0}.to_json
+		else
+			{:control => 1}.to_json #El usuario no existe
 		end
 	end
 

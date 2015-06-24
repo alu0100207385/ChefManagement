@@ -19,8 +19,8 @@ body{
    	width: 98%;
 }
 
-#message{
-	margin-top: 4%;
+#message, #message2{
+	margin-top: 3%;
 	text-align: center;
 }
 
