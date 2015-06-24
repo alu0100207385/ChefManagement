@@ -140,24 +140,6 @@ class MyApp < Sinatra::Base
 			session[:username] = params[:username]
 			{:control => 0}.to_json
 		end
-=begin
-		if (User.count(:username => user.username) == 0) and (User.count(:email => user.email)) #comprobamos si existe
-      		user.save
-      		{:control => 0}.to_json
-      		session[:username] = params[:username]
-      		puts "-->0"
-      		#redirect '/home'
-   		elsif (User.count(:username => user.username) != 0) #El usuario ya existe en la bbdd
-			{:control => 1}.to_json
-			puts "-->1"
-   		elsif (User.count(:email => user.email) != 0) #Ese correo ya existe en la bbdd
-   			{:control => 2}.to_json
-   			puts "-->2"
-   		else
-   			{:control => 3}.to_json #Error desconocido
-   			puts "-->3"
-   		end
-=end
 	end
 
 
