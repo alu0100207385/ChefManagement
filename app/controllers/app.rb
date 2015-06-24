@@ -14,7 +14,7 @@ class MyApp < Sinatra::Base
 	
 	set :environment, :development
 	
-	configure :development do
+	configure :development, :test do
    		DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/bbdd.db" )
    	end
 
@@ -93,7 +93,9 @@ class MyApp < Sinatra::Base
 
 		when 'google_oauth2'
 			session[:username] = user.username = auth['info'].name
-			session[:email] = user.email = auth['info'].email
+			#session[:email] = 
+			user.email = auth['info'].email
+			user.network = 'google'
 			if User.count(:username => session[:username]) == 0 #Si no existe lo incluimos en la bbdd
 				user.save
 			end
@@ -101,7 +103,9 @@ class MyApp < Sinatra::Base
 
 		when 'facebook'
 			session[:username] = user.username = auth['info'].name
-			session[:email] = user.email = auth['info'].email
+			#session[:email] = 
+			user.email = auth['info'].email
+			user.network = 'facebook'
 			if User.count(:username => user.username) == 0 #Si no existe lo incluimos en la bbdd
 				user.save
 			end
@@ -164,7 +168,7 @@ class MyApp < Sinatra::Base
 	end
 
 
-	get '/settings' do
+	get '/home/settings' do
 		@user = User.first(:username => session[:username])
 		if (!@user.is_a? NilClass)
 			erb :settings, :layout => :'layouts/default'
@@ -173,12 +177,32 @@ class MyApp < Sinatra::Base
 		end
 	end
 
-
-	get '/delete-user' do
+	post '/home/edit-user' do
 		user = User.first(:username => session[:username])
-		user.destroy
-  		session.clear
-  		redirect '/'
+		if (!user.is_a? NilClass)
+			if (params[:new_email] != "" )
+				user.email = params[:new_email]
+			end
+			if (params[:new_password] != "" )
+				user.password = params[:new_password]
+			end
+			content_type 'application/json'
+			if (user.save)
+				{:control => 0}.to_json #Datos guardados con exito
+			else
+				{:control => 1}.to_json #Error de guardado
+			end
+		end
+	end
+
+
+	post '/home/delete-user' do
+		user = User.first(:username => session[:username])
+		if (!user.is_a? NilClass)
+			user.destroy
+	  		session.clear
+	  		redirect '/'
+	  	end
 	end
 
 
@@ -186,12 +210,7 @@ class MyApp < Sinatra::Base
 	   session.clear
 	   redirect '/'
 	end
-=begin
-	post '/delete' do
-		User.destroy
-		redirect '/'
-	end
-=end
+
 
 	# start the server if ruby file executed directly
   	run! if app_file == $0

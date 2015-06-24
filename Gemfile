@@ -14,10 +14,10 @@ gem 'json'
 gem 'thin', :platforms => :ruby
 
 group :development do
-	gem 'sinatra-contrib'
-	gem 'sqlite3', :platforms => :ruby
-	gem 'activerecord-jdbcsqlite3-adapter', :platforms => :jruby
-	gem 'dm-sqlite-adapter'
+  gem 'sinatra-contrib'
+  gem 'sqlite3', :platforms => :ruby
+  gem 'activerecord-jdbcsqlite3-adapter', :platforms => :jruby
+  gem 'dm-sqlite-adapter'
 end
 =begin
 group :production do
@@ -36,9 +36,9 @@ group :production do
 end
 =end
 group :test do
-   gem 'rack-test'
-   #gem 'rake'
-   gem 'minitest'
-   gem 'test-unit'
-   gem 'selenium-webdriver', '~> 2.46.2'
+  gem 'rack-test'
+  gem 'rake'
+  gem 'minitest'
+  gem 'test-unit'
+  gem 'selenium-webdriver', '~> 2.46.2'
 end

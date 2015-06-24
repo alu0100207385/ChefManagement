@@ -5,17 +5,23 @@ class User
 	property :username, String, :required => true
 	property :email, String, :required => true
 	property :password, BCryptHash
-	#property :network, String
+	property :network, String
 end
+=begin
+#class Recipes ##CONSULTAR
 
-class Meal
+#merma
+
+class Dish
 	include DataMapper::Resource
 
 	property :id, Serial
 	property :name, String, :required => true
 	property :cost, Float, :required => true #Costo de producción
+#por racion
+#relacion plato-nraciones
 
-	belongs_to :user  ##CONSULTAR: todos los usu disponen del mismo banco de datos o puede agregar platos y recetas?
+	belongs_to :recipes  ##CONSULTAR: todos los usu disponen del mismo banco de datos o puede agregar platos y recetas?
 end
 
 class Ingredients
@@ -26,10 +32,10 @@ class Ingredients
 	property :quantity, Integer
 	property :weight, Float
 	property :volume, Float
+	propoerty :merma, Float #merma del ingrediente por produccion
 
 	property :cost, Float, :required => true #costo por unidad (cantidad/peso/volume)
 
-	belongs_to :meal
+	belongs_to :dish
 end
-
-#class Recipes ##CONSULTAR
+=end

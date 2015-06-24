@@ -9,7 +9,7 @@ body{
 	margin-top: 15%;
 	text-align: center;
 	opacity: 0.9;
-	#font-weight: bold;
+	//font-weight: bold;
 }
 
 #footer{
@@ -22,6 +22,10 @@ body{
 #message, #message2{
 	margin-top: 3%;
 	text-align: center;
+}
+
+#confirm{
+    margin-top: 3%;
 }
 
 .login-or {

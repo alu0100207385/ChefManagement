@@ -2,18 +2,66 @@
 
 <div class="col-md-6">
 	<legend><h2>Profile</h2></legend>
-	<p>User: <%= @user.username %></p>
-	<p>Email: <%= @user.email %></p>
+	<div class="col-md-6">
+		<p>User: <%= @user.username %></p>
+		<p>Email: <%= @user.email %></p>
+	</div>
+	<div class="col-md-6">
+		<form action="/home/edit-user">
+  			<input type="password" name="new_password" id="new_password" placeholder="New password"><br>
+  			<input type="email" name="new_email" id="new_email" placeholder="New email"><br>
+  			<div style="margin-top:4%;">
+  				<input type="submit" class="btn btn-primary" value="Save" id="edit">
+  			</div>
+		</form> 
+	</div>
+	<!--<legend><h3>Language</h3></legend>
+	<a href="#">ES</a> - <a href="#">EN</a>-->
 	<hr>
-	<a href="/delete-user" type="button" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
-	<!--
-	<form name="deleteuser" action="/delete-user" method="POST">
-		<button type="submit" class="btn btn-danger">Delete user</button>
-	</form>
-	-->
-	<div  style="text-align:right">
+	<button class="btn btn-danger" id="delete-user">Delete user</button>
+	<div id="confirm">
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<form name="deleteuser" action="/home/delete-user" method="POST">
+				<div class="btn-group btn-group-justified" role="group">
+  					<div class="btn-group" role="group">
+  						<a type="button" class="btn btn-default" id="no-delete">No</a>
+  					</div>
+  					<div class="btn-group" role="group">
+  						<button type="submit" class="btn btn-danger" id="yes-delete">Yes</button>
+  					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-3"></div>
+	</div>
+	<div style="text-align:right; margin-top:7%;">
 		<a href="/home" type="button" class="btn btn-default btn-lg">Back</a>
 	</div>
 </div>
 
 <div class="col-md-3"></div>
+
+<script type="text/javascript">
+
+	$('#confirm').hide();
+	$('#edit').hide();
+
+	$(document).ready(function(){
+		$("#delete-user").click(function(){
+		    $("#confirm").show(1000);
+		});
+
+		$("#no-delete").click(function(){
+			$('#confirm').hide(1000);
+		});
+
+		$("#new_email, #new_password").keypress(function( event ) {
+			$('#edit').show(1000);
+		});
+
+		//if ( ($("#new_email").val().length == 0))
+		//	$('#edit').hide(1000);
+	});
+
+</script>

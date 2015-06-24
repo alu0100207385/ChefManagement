@@ -103,7 +103,6 @@ $(document).ready(function(){
     $.ajax({
     	type: "POST",
 		url: "/login",
-		contentType: "application/json; charset=utf-8",
       	data: {username: $('#username').val(), password: $('#pass').val()},
 
       	success: function(data){
@@ -142,7 +141,6 @@ $(document).ready(function(){
 	    $.ajax({
 	    	type: "POST",
 			url: "/login",
-			contentType: "application/json; charset=utf-8",
 	      	data: {username: $('#username').val(), password: $('#pass').val()},
 
 	      	success: function(data){
@@ -181,7 +179,6 @@ $(document).ready(function(){
 		$.ajax({
 	    	type: "POST",
 			url: "/recovery-account",
-			contentType: "application/json; charset=utf-8",
 	      	data: {username: $('#recovery_account').val()},
 
 			success: function(data){
