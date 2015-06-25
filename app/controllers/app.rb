@@ -157,7 +157,7 @@ class MyApp < Sinatra::Base
 
 
 	post '/recovery-account' do
-		puts "-->#{params[:recoveryaccount]}"
+		#puts "-->#{params[:recoveryaccount]}"
 		#puts "--> #{User.first(:username => params[:recoveryaccount]).class}"
 		content_type 'application/json'
 		if (!User.first(:username => params[:recoveryaccount]).is_a? NilClass)
@@ -177,26 +177,40 @@ class MyApp < Sinatra::Base
 		end
 	end
 
-	post '/home/edit-user' do
+	post '/home/settings/edit-user' do
+		content_type 'application/json'
+		puts "-->#{session[:username]}"
+		puts "-->#{params[:prueba]}"
+		puts "-->#{params[:new_password]}"
+		puts "-->#{params[:new_email]}"
 		user = User.first(:username => session[:username])
 		if (!user.is_a? NilClass)
+			puts "-->ok"
 			if (params[:new_email] != "" )
 				user.email = params[:new_email]
 			end
 			if (params[:new_password] != "" )
 				user.password = params[:new_password]
 			end
-			content_type 'application/json'
-			if (user.save)
+			if user.save
 				{:control => 0}.to_json #Datos guardados con exito
 			else
-				{:control => 1}.to_json #Error de guardado
+				{:control => 1}.to_json
 			end
+=begin
+			if ( (params[:new_email] == "" ) and (params[:password] == "" )) or ((params[:new_email] == "" ) and (params[:password].size < 4 )) #Hay q estabelcer el tam minimo de la pass
+				{:control => 1}.to_json 
+			elsif user.save
+				{:control => 0}.to_json #Datos guardados con exito
+			else
+				{:control => 1}.to_json
+			end
+=end
 		end
 	end
 
 
-	post '/home/delete-user' do
+	post '/home/settings/delete-user' do
 		user = User.first(:username => session[:username])
 		if (!user.is_a? NilClass)
 			user.destroy
