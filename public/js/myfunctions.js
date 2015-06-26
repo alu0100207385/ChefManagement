@@ -12,3 +12,7 @@ function showPassword() {
         $('#pass').attr('type', 'password');      
     }
 }
+
+function isEmpty(str) {
+   	return !str.replace(/^\s+/g, '').length; // boolean (`true` if field is empty)
+}

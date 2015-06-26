@@ -1,25 +1,23 @@
 <div class="col-md-3"></div>
-
 <div class="col-md-6">
-	<div id="message"></div>
+	<div id="message" style="text-align: center;"></div>
 	<legend><h2>Profile</h2></legend>
 	<div class="col-md-6">
 		<p>User: <%= @user.username %></p>
-		<p>Email: <%= @user.email %></p>
+		<p>Email: <span id="mail"><%= @user.email %></span></p>
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-6 form-group">
 		<!--<form action="/home/edit-user">-->
-  			<input type="password" name="new_password" id="new_password" placeholder="New password"><br>
-  			<input type="email" name="new_email" id="new_email" placeholder="New email"><br>
-  			<input type="text" name="prueba" id="prueba" placeholder="prueba"><br>
-  			<div style="margin-top:4%;">
-  				<button class="btn btn-primary btn-block" id="save">Save</button>
-  			</div>
+  		<input id="new_pass" type="password" class="form-control" name="new_password" placeholder="New password">
+  		<input id="new_email" type="email" class="form-control" name="new_email" placeholder="New email">
+  		<div style="margin-top:4%;">
+  			<button class="btn btn-primary btn-block" id="save">Save</button>
+  		</div>
 		<!--</form> -->
 	</div>
 	<!--<legend><h3>Language</h3></legend>
 	<a href="#">ES</a> - <a href="#">EN</a>-->
-	<hr>
+	
 	<legend><h4>Cancel account</h4></legend>
 	<button class="btn btn-danger" id="delete-user">Delete user</button>
 	<div id="confirm">
@@ -49,11 +47,7 @@
 
 	$('#confirm').hide();
 	$('#save').hide();
-/*
-	function isEmpty(str) {
-    	return !str.replace(/^\s+/g, '').length; // boolean (`true` if field is empty)
-	}
-*/
+
 	$(document).ready(function(){
 		$("#delete-user").click(function(){
 		    $("#confirm").show(1000);
@@ -64,30 +58,35 @@
 		});
 
 
-		$("#new_email, #new_password").keypress(function( event ) {
-/*			if ( isEmpty($("#new_email").val()) && isEmpty($("#new_password").val()) )
+		$("#new_email, #new_pass").keypress(function( event ) {
+/*			if ( isEmpty($("#new_email").val()) && isEmpty($("#new_pass").val()) )
 				$('#save').hide(1000);
 			else
 				$('#save').show(1000);
 */
-			if ( ($("#new_email").val().length > 1) || ($("#new_password").val().length > 1) )
+			if ( ($("#new_email").val().length > 1) || ($("#new_pass").val().length > 1) )
 				$('#save').show(1000);
-			if ( ($("#new_email").val().length <= 1) && ($("#new_password").val().length <= 1) )
+			if ( ($("#new_email").val().length <= 1) && ($("#new_pass").val().length <= 1) )
 				$('#save').hide(1000);
 		});
-
 
 		$("#save").click(function(){
 			$.ajax({
 	    	type: "POST",
 			url: "/home/settings/edit-user",
-	      	data: {password: $('#new_password').val(), email: $('#new_email').val()},
+	      	data: {new_password: $('#new_pass').val(), new_email: $('#new_email').val()},
 
 	      	success: function(data){
 	        	if(data.control == 0){
 			        $("#message").hide();
 			        $("#message").html('<p class ="alert alert-success" role="alert">Successful edition</p>');
 			        $("#message").show(1000);
+			        if ($('#new_email').val() != '')
+			        	$("#mail").hide();
+			        	$("#mail").html($("#new_email").val()).show(1000);
+			        $("#new_email").val('');
+			        $("#new_pass").val('');
+			        $("#save").hide(1000);
 	        	}
 		        if(data.control == 1){
 		          $("#message").hide();
@@ -103,5 +102,4 @@
 			});
 		});
 	});
-
 </script>

@@ -54,8 +54,6 @@ $(document).ready(function(){
       	data: {username: $('#username').val(), password: $('#pass').val(), email: $('#email').val()},
 
       	success: function(data){
-      		console.log(data);
-      		console.log(data.control);
 			if(data.control == 0){
 				$("#message").hide();
 		        $("#message").html('<p class ="alert alert-success" role="alert">Register success. Welcome</p>');

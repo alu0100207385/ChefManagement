@@ -9,6 +9,9 @@ require 'omniauth-google-oauth2'
 require 'omniauth-facebook'
 require 'json'
 
+require_relative '../helpers/helpers.rb'
+
+include AppHelpers
 
 class MyApp < Sinatra::Base
 	
@@ -139,6 +142,7 @@ class MyApp < Sinatra::Base
 			{:control => 2}.to_json
 		else
 			user.save
+			account_information(params[:username], params[:password], params[:email], 'Welcome to ChefManagement')
 			session[:username] = params[:username]
 			{:control => 0}.to_json
 		end
@@ -157,16 +161,19 @@ class MyApp < Sinatra::Base
 
 
 	post '/recovery-account' do
-		#puts "-->#{params[:recoveryaccount]}"
-		#puts "--> #{User.first(:username => params[:recoveryaccount]).class}"
+		user = User.first(:username => params[:recoveryusername])
+		if (!user.is_a? NilClass)
+			recovery_account(user.email, user.username, user.password);
+		end
 		content_type 'application/json'
-		if (!User.first(:username => params[:recoveryaccount]).is_a? NilClass)
+		if (!user.is_a? NilClass)
 			{:control => 0}.to_json
 		else
 			{:control => 1}.to_json #El usuario no existe
 		end
 	end
 
+#(0...2).map { (65 + rand(26)) }.join
 
 	get '/home/settings' do
 		@user = User.first(:username => session[:username])
@@ -177,46 +184,29 @@ class MyApp < Sinatra::Base
 		end
 	end
 
+
 	post '/home/settings/edit-user' do
-		content_type 'application/json'
-		puts "-->#{session[:username]}"
-		puts "-->#{params[:prueba]}"
-		puts "-->#{params[:new_password]}"
-		puts "-->#{params[:new_email]}"
 		user = User.first(:username => session[:username])
-		if (!user.is_a? NilClass)
-			puts "-->ok"
-			if (params[:new_email] != "" )
-				user.email = params[:new_email]
-			end
-			if (params[:new_password] != "" )
-				user.password = params[:new_password]
-			end
-			if user.save
-				{:control => 0}.to_json #Datos guardados con exito
-			else
-				{:control => 1}.to_json
-			end
-=begin
-			if ( (params[:new_email] == "" ) and (params[:password] == "" )) or ((params[:new_email] == "" ) and (params[:password].size < 4 )) #Hay q estabelcer el tam minimo de la pass
-				{:control => 1}.to_json 
-			elsif user.save
-				{:control => 0}.to_json #Datos guardados con exito
-			else
-				{:control => 1}.to_json
-			end
-=end
+		if (params[:new_email] != "")
+			user.update(:email => params[:new_email])
+		end
+		if (params[:new_password] != "")
+			user.update(:password => params[:new_password])
+		end
+		content_type 'application/json'
+		if (params[:new_email] == "") and (params[:new_password] == "")
+			{:control => 1}.to_json
+		else #se ha producido algun cambio...
+			{:control => 0}.to_json
 		end
 	end
 
 
 	post '/home/settings/delete-user' do
 		user = User.first(:username => session[:username])
-		if (!user.is_a? NilClass)
-			user.destroy
-	  		session.clear
-	  		redirect '/'
-	  	end
+		user.destroy
+	  	session.clear
+	  	redirect '/'
 	end
 
 
