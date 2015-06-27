@@ -6,10 +6,15 @@
 		<p>User: <%= @user.username %></p>
 		<p>Email: <span id="mail"><%= @user.email %></span></p>
 	</div>
-	<div class="col-md-6 form-group">
+	<div class="col-md-6 form-group" style="margin-bottom:5%;">
 		<!--<form action="/home/edit-user">-->
-  		<input id="new_pass" type="password" class="form-control" name="new_password" placeholder="New password">
-  		<input id="new_email" type="email" class="form-control" name="new_email" placeholder="New email">
+  		<input id="pass" type="password" class="form-control" name="new_password" placeholder="New password">
+  		<div class="checkbox" style="text-align:left">
+			<label><input type="checkbox" onclick="showPassword()"> Show password</label>
+		</div>
+  		<% if @user.network.is_a? NilClass %>
+  			<input id="new_email" type="email" class="form-control" name="new_email" placeholder="New email">
+  		<% end %>
   		<div style="margin-top:4%;">
   			<button class="btn btn-primary btn-block" id="save">Save</button>
   		</div>
@@ -44,7 +49,6 @@
 <div class="col-md-3"></div>
 
 <script type="text/javascript">
-
 	$('#confirm').hide();
 	$('#save').hide();
 
@@ -58,15 +62,15 @@
 		});
 
 
-		$("#new_email, #new_pass").keypress(function( event ) {
-/*			if ( isEmpty($("#new_email").val()) && isEmpty($("#new_pass").val()) )
+		$("#new_email, #pass").keypress(function( event ) {
+/*			if ( isEmpty($("#new_email").val()) && isEmpty($("#pass").val()) )
 				$('#save').hide(1000);
 			else
 				$('#save').show(1000);
 */
-			if ( ($("#new_email").val().length > 1) || ($("#new_pass").val().length > 1) )
+			if ( ($("#new_email").val().length > 1) || ($("#pass").val().length > 1) )
 				$('#save').show(1000);
-			if ( ($("#new_email").val().length <= 1) && ($("#new_pass").val().length <= 1) )
+			if ( ($("#new_email").val().length <= 1) && ($("#pass").val().length <= 1) )
 				$('#save').hide(1000);
 		});
 
@@ -74,7 +78,7 @@
 			$.ajax({
 	    	type: "POST",
 			url: "/home/settings/edit-user",
-	      	data: {new_password: $('#new_pass').val(), new_email: $('#new_email').val()},
+	      	data: {new_password: $('#pass').val(), new_email: $('#new_email').val()},
 
 	      	success: function(data){
 	        	if(data.control == 0){
@@ -85,12 +89,17 @@
 			        	$("#mail").hide();
 			        	$("#mail").html($("#new_email").val()).show(1000);
 			        $("#new_email").val('');
-			        $("#new_pass").val('');
+			        $("#pass").val('');
 			        $("#save").hide(1000);
 	        	}
 		        if(data.control == 1){
 		          $("#message").hide();
 		          $("#message").html('<p class="alert alert-danger" role="alert">Error. Check input fields</p>');
+		          $("#message").show(1000);
+		        }
+		        if(data.control == 2){
+		          $("#message").hide();
+		          $("#message").html('<p class="alert alert-danger" role="alert">Error. Email in use</p>');
 		          $("#message").show(1000);
 		        }
 			},
@@ -102,4 +111,15 @@
 			});
 		});
 	});
+
+	function showPassword() {
+	    var key_attr = $('#pass').attr('type');
+	    if(key_attr != 'text') {
+	        $('.checkbox').addClass('show');
+	        $('#pass').attr('type', 'text');
+	    } else {
+	        $('.checkbox').removeClass('show');
+	        $('#pass').attr('type', 'password');      
+	    }
+	}
 </script>

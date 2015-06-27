@@ -1,4 +1,4 @@
 *~
 *.swp
 bbdd.db
-config.yml
+app/config/config.yml

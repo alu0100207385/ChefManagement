@@ -142,7 +142,7 @@ class MyApp < Sinatra::Base
 			{:control => 2}.to_json
 		else
 			user.save
-			account_information(params[:username], params[:password], params[:email], 'Welcome to ChefManagement')
+			account_information(params[:username], params[:password], params[:email], 'ChefManagement: Welcome to ChefManagement')
 			session[:username] = params[:username]
 			{:control => 0}.to_json
 		end
@@ -151,7 +151,6 @@ class MyApp < Sinatra::Base
 
 	get '/home' do
 		@user = User.first(:username => session[:username])
-		#@user = session[:username]
 		if (!@user.is_a? NilClass)
 			erb :home, :layout => :'layouts/default'
 		else
@@ -163,7 +162,9 @@ class MyApp < Sinatra::Base
 	post '/recovery-account' do
 		user = User.first(:username => params[:recoveryusername])
 		if (!user.is_a? NilClass)
-			recovery_account(user.email, user.username, user.password);
+			new_pass = (0...2).map { (65 + rand(26)) }.join
+			user.update(:password => new_pass)
+			account_information(user.username, new_pass, user.email, 'ChefManagement: New password');
 		end
 		content_type 'application/json'
 		if (!user.is_a? NilClass)
@@ -173,7 +174,6 @@ class MyApp < Sinatra::Base
 		end
 	end
 
-#(0...2).map { (65 + rand(26)) }.join
 
 	get '/home/settings' do
 		@user = User.first(:username => session[:username])
@@ -187,17 +187,28 @@ class MyApp < Sinatra::Base
 
 	post '/home/settings/edit-user' do
 		user = User.first(:username => session[:username])
+		cambio = 1 #no se han producido cambios
 		if (params[:new_email] != "")
-			user.update(:email => params[:new_email])
+			if ( (User.first(:email => params[:new_email])).is_a? NilClass )
+				user.update(:email => params[:new_email])
+				cambio = 0
+			else #Ese correo ya esta registrado en la bbdd
+				cambio = 2
+			end
 		end
 		if (params[:new_password] != "")
 			user.update(:password => params[:new_password])
+			cambio = 0
 		end
+		
 		content_type 'application/json'
-		if (params[:new_email] == "") and (params[:new_password] == "")
-			{:control => 1}.to_json
-		else #se ha producido algun cambio...
+		case cambio
+		when 0
 			{:control => 0}.to_json
+		when 1 #no se han producido cambios
+			{:control => 1}.to_json
+		when 2 #correo en uso
+			{:control => 2}.to_json
 		end
 	end
 

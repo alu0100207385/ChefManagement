@@ -6,33 +6,23 @@ module AppHelpers
 	password = config['email_password']
 	options = { :address              => "smtp.gmail.com",
 	            :port                 => 587,
-	            :domain               => 'your.host.name',
-	            :user_name            => username,#'<username>',
-	            :password             => password,#'<password>',
+	            :domain               => 'http://localhost:4567/', #'your.host.name',
+	            :user_name            => username,#'usu0100@gmail.com',#'<username>',
+	            :password             => password,#'proyecto2015',#'<password>',
 	            :authentication       => 'plain',
 	            :enable_starttls_auto => true  }
 	Mail.defaults do
 	  delivery_method :smtp, options
 	end
 
-	#Tras el registro exitoso se envia confirmacion de los datos de la cuenta creada
+	#Tras el registro exitoso se envia confirmacion de los datos de la cuenta creada, tb se usa para generar nueva pass
 	def account_information (usu, pass, email, msg)
 		Mail.deliver do
 		       to email
-		     from 'correo_ejemplo@correo.com'
+		     from 'usu0100@gmail.com'
 	 content_type 'text/plain; charset=UTF-8'
 		  subject msg
 		     body "Your account, \n \tUsername: #{usu}\n \tPassword: "+"#{pass}\n \tEmail: #{email}"
-	 	end
-	end
-
-	def recovery_account (email, usu, pass)
-		Mail.deliver do
-		       to email
-		     from 'correo_ejemplo@correo.com'
-	 content_type 'text/plain; charset=UTF-8'
-		  subject 'ChefManagement: Recovery account'
-		     body "Dear #{usu},\n This is your password: "+"#{pass}"
 	 	end
 	end
 =begin
