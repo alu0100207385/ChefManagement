@@ -1,5 +1,115 @@
-<div class="row-fluid">
-	Bienvenido <%= @user.username %>
-	<a type="button" href="/home/settings" class="btn btn-default">Settings</a>
-	<!--<a type="button" href="/logout" class="btn btn-danger">Log out</a>-->
+<div class="col-md-2">
+	<div id="menu-lateral">
+		<h3>Recipes</h3>
+		<hr>
+		<button id="make-recipe">Make</button><br>
+		<button id="import-recipe">Import</button><br>
+		<button id="export-recipe">Export</button><br>
+		Ver mis recetas<br>
+		Ver todas las recetas<br>
+		Buscar recetas<br>
+		Calculadora
+	</div>
 </div>
+<div class="col-md-8">
+	<h3><%= @user.username %></h3>
+	<hr>
+	<!--###########CREAR########################################-->
+	<div id="make">
+		<form action="/home/new-recipe" method="post">
+			<div class="form-group">
+				<h4>New recipe</h4>
+				<table style="width:100%">
+					<thead></thead>
+					<tbody>
+						<tr>
+							<td><label>Name</label></td><td><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></td>
+							<td><label>Cost</label></td><td><input type="text" name="recipe_cost"></td>
+							<td><label>Cost per ration</label></td><td><input type="text" name="recipe_cost_ration"></td>
+						</tr>
+					</tbody>
+				</table>
+				<table style="width:100%">
+					<thead></thead>
+					<tbody>
+						<tr>
+						<td><label>Making</label></td>
+						<td><textarea rows="5" cols="80"></textarea></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<hr>
+			<div id="ingredient">
+				<h4>Ingredients</h4>
+				<table style="width:100%">
+					<thead></thead>	
+					<tbody>
+						<tr>
+							<td><label>Name</label></td><td><input type="text" name="name" placeholder="New ingredient name"></td></td>
+							<td><label>Price</label></td><td><input type="text" name="volume" placeholder="per unity/weight/volume"></td>
+							<td><label>Decrease</label></td><td><input type="text" name="volume"></td>
+						</tr>
+						<tr>
+							<td><label>Quantity</label></td><td><input type="number" name="quantity" min="1" max="50"></td>
+							<td><label>Weight</label></td><td><input type="text" name="weight"></td>
+							<td><label>Volume</label></td><td><input type="text" name="volume"></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="row-fluid" style="margin-top:2%; text-align:right;">
+					<div class="col-md-6"></div>
+					<div class="col-md-6">
+						<button class="btn btn-success">Save & New ingredient</button>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="my-buttons">
+				<button id="cancel" class="btn btn-default">Cancel</button>
+				<button id="save-recipe" type="submit" class="btn btn-primary">Save recipe</button>
+			</div>
+		</form>
+	</div>
+
+	<!--###########IMPORTAR####################################################-->
+	<div id="import">importar</div>
+
+	<!--###########EXPORTAR####################################################-->
+	<div id="export">exportar</div>
+</div>
+<div class="col-md-2"></div>
+
+<script type="text/javascript">
+	//$('#make').hide();
+	$('#import').hide();
+	$('#export').hide();
+
+	$(document).ready(function(){
+		$("#cancel").click(function(){
+			$('#make').hide();
+			$('#import').hide();
+			$('#export').hide();
+		});
+
+		$("#make-recipe").click(function(){
+			$('#import').hide();
+			$('#export').hide();
+			$('#make').show();
+		});
+
+		$("#import-recipe").click(function(){
+			$('#make').hide();
+			$('#export').hide();
+			$('#import').show();
+		});
+
+		$("#export-recipe").click(function(){
+			$('#make').hide();
+			$('#import').hide();
+			$('#export').show();
+		});
+
+	});
+
+</script>

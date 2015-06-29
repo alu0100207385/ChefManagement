@@ -13,9 +13,10 @@ class Recipe
 	include DataMapper::Resource
 	property :id, Serial
 	property :name, String, :required => true	#Nombre de la receta
-	property :cost, Float, :required => true 	#Costo del plato (venta). El coste de producción se puede sacar por cáculo.
+	property :cost, Float 						#Costo del plato (venta). El coste de producción se puede sacar por cáculo.
 	property :ration_cost, Float				#Costo por ración
 	property :username, String 					#Autor de la receta
+	property :instructions, Text				#Preparación
 
 	belongs_to :recipe
 end

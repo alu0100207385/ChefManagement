@@ -25,15 +25,4 @@ module AppHelpers
 		     body "Your account, \n \tUsername: #{usu}\n \tPassword: "+"#{pass}\n \tEmail: #{email}"
 	 	end
 	end
-=begin
-		mail = Mail.new do
-	  		from    'correo_ejemplo@correo.com'
-	  		to      email
-	  		content_type 'text/plain; charset=UTF-8'
-	  		subject 'ChefManagement: Recovery account'
-	  		body    "Dear #{usu}\n This is your password: #{pass}"
-  		end
-  		mail.deliver
-	end
-=end
 end
