@@ -1,12 +1,12 @@
 <div class="col-md-2">
 	<h3>Menu</h3>
 	<hr>
-    <ul class="nav nav-pills nav-stacked">
+    <ul class="nav nav-pills nav-stacked" id="menu">
         <!--<li class="active"><a href="#"><i class="fa fa-home fa-fw"></i>Home</a></li>-->
-        <li><a href="" id="make-recipe"><i class="fa fa-plus-square-o"></i> New recipe</a></li>
-		<li><a href="" id="import-recipe"><i class="fa fa-upload"></i> Import</a></li>
-		<li><a href="" id="export-recipe"><i class="fa fa-download"></i> Export</a></li>
-		<li><a href="" id="show-all"><i class="fa fa-list"></i> Show recipes</a></li>
+        <li><a id="make-recipe"><i class="fa fa-plus-square-o"></i> New recipe</a></li>
+		<li><a id="import-recipe"><i class="fa fa-upload"></i> Import</a></li>
+		<li><a id="export-recipe"><i class="fa fa-download"></i> Export</a></li>
+		<li><a id="show-all"><i class="fa fa-list"></i> Show recipes</a></li>
     </ul>
 </div>
 <!--
@@ -22,7 +22,7 @@
 	</div>
 -->
 <div class="col-md-9">
-	<div id="section"></div>
+	<div id="section-title"></div>
 	<!--###########CREAR########################################-->
 	<div id="make">
 		<form action="/home/new-recipe" method="post">
@@ -84,42 +84,59 @@
 
 	<!--###########EXPORTAR####################################################-->
 	<div id="export">exportar</div>
+
+	<!--###########SHOW########################################################-->
+	<div id="show">mostrar recipe. Opcion de mostrar solo favoritas y buscar</div>
 </div>
+
 <div class="col-md-1"></div>
 
 <script type="text/javascript">
-	//$('#make').hide();
+	$('#make').hide();
 	$('#import').hide();
 	$('#export').hide();
+	$('#section-title').html('<h3>Recipe list</h3><hr>');
+	$('#show').show();
 
 	$(document).ready(function(){
+		$("#make-recipe").click(function(){
+			$('#import').hide();
+			$('#export').hide();
+			$('#show').hide();
+			$('#section-title').html('<h3>New recipe</h3><hr>');
+			$('#make').show();
+		});
+
 		$("#cancel").click(function(){
 			$('#make').hide();
 			$('#import').hide();
 			$('#export').hide();
-		});
-
-		$("#make-recipe").click(function(){
-			$('#import').hide();
-			$('#export').hide();
-			$('#section').html('<h3>New recipe</h3><hr>');
-			$('#make').show();
+			$('#show').hide();
 		});
 
 		$("#import-recipe").click(function(){
 			$('#make').hide();
 			$('#export').hide();
-			$('#section').html('<h3>Import recipe</h3><hr>');
+			$('#show').hide();
+			$('#section-title').html('<h3>Import recipe</h3><hr>');
 			$('#import').show();
 		});
 
 		$("#export-recipe").click(function(){
 			$('#make').hide();
 			$('#import').hide();
-			$('#section').html('<h3>Export recipe</h3><hr>');
+			$('#show').hide();
+			$('#section-title').html('<h3>Export recipe</h3><hr>');
 			$('#export').show();
 		});
 
+		$("#show-all").click(function(){
+			$('#make').hide();
+			$('#import').hide();
+			$('#export').hide();
+			$('#section-title').html('<h3>Recipe list</h3><hr>');
+			$('#show').show();
+		});
 	});
 
 </script>
