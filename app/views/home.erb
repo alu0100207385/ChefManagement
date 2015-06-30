@@ -1,68 +1,75 @@
 <div class="col-md-2">
-	<div id="menu-lateral">
-		<h3>Recipes</h3>
-		<hr>
-		<button id="make-recipe">Make</button><br>
-		<button id="import-recipe">Import</button><br>
-		<button id="export-recipe">Export</button><br>
-		Ver mis recetas<br>
-		Ver todas las recetas<br>
-		Buscar recetas<br>
-		Calculadora
-	</div>
-</div>
-<div class="col-md-8">
-	<h3><%= @user.username %></h3>
+	<h3>Menu</h3>
 	<hr>
+    <ul class="nav nav-pills nav-stacked">
+        <!--<li class="active"><a href="#"><i class="fa fa-home fa-fw"></i>Home</a></li>-->
+        <li><a href="" id="make-recipe"><i class="fa fa-plus-square-o"></i> New recipe</a></li>
+		<li><a href="" id="import-recipe"><i class="fa fa-upload"></i> Import</a></li>
+		<li><a href="" id="export-recipe"><i class="fa fa-download"></i> Export</a></li>
+		<li><a href="" id="show-all"><i class="fa fa-list"></i> Show recipes</a></li>
+    </ul>
+</div>
+<!--
+	<div id="menu-lateral">
+		<h3>Menu</h3>
+		<hr>
+		<p><a id="make-recipe" href="">Make</a></p>
+		<p><a id="import-recipe">Import</a></p>
+		<p><a id="export-recipe">Export</a></p>
+		<p><a id="show-mine" href="">Show my recipes</a></p>
+		<p><a id="show-all" href="">Show all recipes</a></p>
+		<p><a id="search" href="">Search</a></p>
+	</div>
+-->
+<div class="col-md-9">
+	<div id="section"></div>
 	<!--###########CREAR########################################-->
 	<div id="make">
 		<form action="/home/new-recipe" method="post">
 			<div class="form-group">
-				<h4>New recipe</h4>
-				<table style="width:100%">
+				<table style="width:100%; text-align:right;">
 					<thead></thead>
 					<tbody>
 						<tr>
 							<td><label>Name</label></td><td><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></td>
-							<td><label>Cost</label></td><td><input type="text" name="recipe_cost"></td>
-							<td><label>Cost per ration</label></td><td><input type="text" name="recipe_cost_ration"></td>
+							<td><label>Cost</label></td><td><input type="text" name="recipe_cost" readonly></td>
+							<td><label>Ration cost</label></td>
+							<td><input name="recipe_cost_ration" type="number" step="0.01" min="0" /></td>
 						</tr>
 					</tbody>
 				</table>
-				<table style="width:100%">
+				<table style="width:100%; margin-top: 1%;">
 					<thead></thead>
 					<tbody>
-						<tr>
-						<td><label>Making</label></td>
-						<td><textarea rows="5" cols="80"></textarea></td>
-						</tr>
+						<tr><td><label>Making</label></td></tr>
+						<tr><td><textarea rows="5" cols="80"></textarea></td></tr>
 					</tbody>
 				</table>
 			</div>
 			<hr>
 			<div id="ingredient">
 				<h4>Ingredients</h4>
-				<table style="width:100%">
+				<table style="width:100%; text-align:right;">
 					<thead></thead>	
 					<tbody>
 						<tr>
 							<td><label>Name</label></td><td><input type="text" name="name" placeholder="New ingredient name"></td></td>
-							<td><label>Price</label></td><td><input type="text" name="volume" placeholder="per unity/weight/volume"></td>
-							<td><label>Decrease</label></td><td><input type="text" name="volume"></td>
+							<td><label>Price (€)</label></td><td><input name="volume" title="Price per unity/weight/volume" type="number" step="0.01" min="0" /></td>
+							<td><label>Decrease (%)</label></td><td><input name="volume" type="number" step="0.01" min="0" /></td>
 						</tr>
 						<tr>
-							<td><label>Quantity</label></td><td><input type="number" name="quantity" min="1" max="50"></td>
-							<td><label>Weight</label></td><td><input type="text" name="weight"></td>
-							<td><label>Volume</label></td><td><input type="text" name="volume"></td>
+							<td><label>Quantity (u)</label></td><td><input type="number" name="quantity" min="0" max="50"></td>
+							<td><label>Weight (gr)</label></td><td><input name="weight" type="number" step="0.01" min="0" /></td>
+							<td><label>Volume (l)</label></td><td><input name="volume" type="number" step="0.01" min="0"/></td>
+						</tr>
+						<tr style="height: 15px"></tr>
+						<tr>
+							<td></td><td></td><td></td><td></td><td></td><td>
+								<button class="btn btn-success">Save & New ingredient</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
-				<div class="row-fluid" style="margin-top:2%; text-align:right;">
-					<div class="col-md-6"></div>
-					<div class="col-md-6">
-						<button class="btn btn-success">Save & New ingredient</button>
-					</div>
-				</div>
 			</div>
 			<hr>
 			<div class="my-buttons">
@@ -78,7 +85,7 @@
 	<!--###########EXPORTAR####################################################-->
 	<div id="export">exportar</div>
 </div>
-<div class="col-md-2"></div>
+<div class="col-md-1"></div>
 
 <script type="text/javascript">
 	//$('#make').hide();
@@ -95,18 +102,21 @@
 		$("#make-recipe").click(function(){
 			$('#import').hide();
 			$('#export').hide();
+			$('#section').html('<h3>New recipe</h3><hr>');
 			$('#make').show();
 		});
 
 		$("#import-recipe").click(function(){
 			$('#make').hide();
 			$('#export').hide();
+			$('#section').html('<h3>Import recipe</h3><hr>');
 			$('#import').show();
 		});
 
 		$("#export-recipe").click(function(){
 			$('#make').hide();
 			$('#import').hide();
+			$('#section').html('<h3>Export recipe</h3><hr>');
 			$('#export').show();
 		});
 

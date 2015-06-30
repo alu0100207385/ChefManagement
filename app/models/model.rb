@@ -46,15 +46,4 @@ class Comment
 	belongs_to :recipe
 end
 
-class Dish
-	include DataMapper::Resource
-
-	property :id, Serial
-	property :name, String, :required => true
-	property :cost, Float, :required => true #Costo de producción
-#por racion
-#relacion plato-nraciones
-
-	belongs_to :recipe  ##CONSULTAR: todos los usu disponen del mismo banco de datos o puede agregar platos y recetas?
-end
 =end
