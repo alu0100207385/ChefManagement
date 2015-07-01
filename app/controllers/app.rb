@@ -142,8 +142,8 @@ class MyApp < Sinatra::Base
 			{:control => 2}.to_json
 		else
 			user.save
-			account_information(params[:username], params[:password], params[:email], 'ChefManagement: Welcome to ChefManagement')
 			session[:username] = params[:username]
+			account_information(params[:username], params[:password], params[:email], 'ChefManagement: Welcome to ChefManagement')
 			{:control => 0}.to_json
 		end
 	end
@@ -175,6 +175,32 @@ class MyApp < Sinatra::Base
 	end
 
 
+	post '/home/new-recipe' do
+		user = User.first(:username => session[:username])
+		if (!user.is_a? NilClass)
+			rec = Recipe.first(:name => params[:recipe_name])
+			if (rec.is_a? NilClass) #Si no se encuentra en la bbdd la creamos
+				recipe = Recipe.new
+				recipe.name = params[:recipe_name]
+				recipe.nration = params[:nration]
+				recipe.username = user.username
+				#if params[:instructions]!= nil
+					#recipe.instructions = params[:instructions]
+				#end
+				puts "--> rname = #{recipe.name}"
+				puts "--> rnration = #{recipe.nration}"
+				puts "--> username = #{recipe.username}"
+				recipe.save
+				{:control => 0}.to_json
+			else
+				{:control => 'existe'}.to_json #Esa receta ya se encuentra en la bbdd
+			end
+		else
+			redirect '/'
+		end
+	end
+
+###################################################################SETTINGS
 	get '/home/settings' do
 		@user = User.first(:username => session[:username])
 		if (!@user.is_a? NilClass)

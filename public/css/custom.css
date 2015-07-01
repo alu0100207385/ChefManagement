@@ -65,11 +65,11 @@ body{
 .my-buttons{
     text-align: right;
     margin-top: 2%;
-    margin-bottom: 2%;
+    //margin-bottom: 2%;
 }
 
 .espaciado{
-    margin-bottom: 5%;
+    margin-bottom: 4%;
 }
 
 /*-------------------------------------------------

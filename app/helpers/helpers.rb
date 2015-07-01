@@ -6,9 +6,9 @@ module AppHelpers
 	password = config['email_password']
 	options = { :address              => "smtp.gmail.com",
 	            :port                 => 587,
-	            :domain               => 'http://localhost:4567/', #'your.host.name',
-	            :user_name            => username,#'usu0100@gmail.com',#'<username>',
-	            :password             => password,#'proyecto2015',#'<password>',
+	            #:domain               => 'gmail.com',#'http://localhost:4567/', #'your.host.name',
+	            :user_name            => username,#'<username>',
+	            :password             => password,#'<password>',
 	            :authentication       => 'plain',
 	            :enable_starttls_auto => true  }
 	Mail.defaults do

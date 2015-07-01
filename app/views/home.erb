@@ -9,32 +9,28 @@
 		<li><a id="show-all"><i class="fa fa-list"></i> Show recipes</a></li>
     </ul>
 </div>
-<!--
-	<div id="menu-lateral">
-		<h3>Menu</h3>
-		<hr>
-		<p><a id="make-recipe" href="">Make</a></p>
-		<p><a id="import-recipe">Import</a></p>
-		<p><a id="export-recipe">Export</a></p>
-		<p><a id="show-mine" href="">Show my recipes</a></p>
-		<p><a id="show-all" href="">Show all recipes</a></p>
-		<p><a id="search" href="">Search</a></p>
-	</div>
--->
 <div class="col-md-9">
 	<div id="section-title"></div>
+	<div id="message"></div>
 	<!--###########CREAR########################################-->
 	<div id="make">
-		<form action="/home/new-recipe" method="post">
+		<!--<form action="/home/new-recipe" method="post">-->
 			<div class="form-group">
-				<table style="width:100%; text-align:right;">
+				<table style="width:100%; text-align:left;">
 					<thead></thead>
 					<tbody>
 						<tr>
 							<td><label>Name</label></td><td><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></td>
 							<td><label>Cost</label></td><td><input type="text" name="recipe_cost" readonly></td>
+						</tr>
+						<tr>
+							<td><label>Rations</label></td><td><input id="n-rations" name="n-rations" type="number" min="1" value="1" title="Number of rations (> 0)"></td>
 							<td><label>Ration cost</label></td>
-							<td><input name="recipe_cost_ration" type="number" step="0.01" min="0" /></td>
+							<td><input name="recipe_cost_ration" type="text" readonly></td>
+						</tr>
+						<tr>
+							<td><label>Avatar</label></td>
+							<td><label><input type="file" name="avatar"></label></td>
 						</tr>
 					</tbody>
 				</table>
@@ -42,7 +38,7 @@
 					<thead></thead>
 					<tbody>
 						<tr><td><label>Making</label></td></tr>
-						<tr><td><textarea rows="5" cols="80"></textarea></td></tr>
+						<tr><td><textarea name="instructions" rows="5" cols="70"></textarea></td></tr>
 					</tbody>
 				</table>
 			</div>
@@ -73,10 +69,10 @@
 			</div>
 			<hr>
 			<div class="my-buttons">
-				<button id="cancel" class="btn btn-default">Cancel</button>
-				<button id="save-recipe" type="submit" class="btn btn-primary">Save recipe</button>
+				<a id="cancel" type="button" href="/home" class="btn btn-default">Cancel</a>
+				<button id="save-recipe" class="btn btn-primary">Save recipe</button>
 			</div>
-		</form>
+		<!--</form>-->
 	</div>
 
 	<!--###########IMPORTAR####################################################-->
@@ -92,11 +88,13 @@
 <div class="col-md-1"></div>
 
 <script type="text/javascript">
-	$('#make').hide();
+	//$('#make').hide();
 	$('#import').hide();
 	$('#export').hide();
-	$('#section-title').html('<h3>Recipe list</h3><hr>');
-	$('#show').show();
+	//$('#section-title').html('<h3>Recipe list</h3><hr>');
+	$('#section-title').html('<h3>New recipe</h3><hr>');
+	//$('#show').show();
+	$('#show').hide();
 
 	$(document).ready(function(){
 		$("#make-recipe").click(function(){
@@ -136,6 +134,36 @@
 			$('#export').hide();
 			$('#section-title').html('<h3>Recipe list</h3><hr>');
 			$('#show').show();
+		});
+
+		$("#save-recipe").click(function(){
+			if ( ($('#recipe-name').val() == "") || ($('#n-rations').val() == "") ){
+				$("#message").hide();
+    			$("#message").html('<p class ="alert alert-danger" role="alert">Check fields</p>');
+    			$("#message").show(1000);
+    			return false;
+			}
+			else
+				$("#message").hide();
+
+			$.ajax({
+	    		type: "POST",
+				url: "/home/new-recipe",
+	      		data: {recipe_name: $('#recipe-name').val(), nration: $('#n-rations').val(), instructions: $("input[value='instructions']").val()},
+
+	      		success: function(data){
+	      			if(data.control == 0){
+		  				$("#message").hide();
+			        	$("#message").html('<p class ="alert alert-success" role="alert">Recipe created successfully</p>');
+			        	$("#message").show(1000);
+	      			}
+	      		},
+
+	      		error: function(xhr){
+					console.log(xhr.status);
+		    		console.log(xhr.statusText);
+		    	}
+		    });
 		});
 	});
 
