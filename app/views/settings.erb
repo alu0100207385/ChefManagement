@@ -2,28 +2,31 @@
 <div class="col-md-6">
 	<div id="message" style="text-align: center;"></div>
 	<legend><h2>Profile</h2></legend>
-	<div class="col-md-6">
-		<p><strong>User: </strong><%= @user.username %></p>
-		<p><strong>Email: </strong><span id="mail"><%= @user.email %></span></p>
-	</div>
-	<div class="col-md-6 form-group" style="margin-bottom:5%;">
-		<!--<form action="/home/edit-user">-->
-  		<input id="pass" type="password" class="form-control" name="new_password" placeholder="New password">
-  		<div class="checkbox" style="text-align:left">
-			<label><input type="checkbox" onclick="showPassword()"> Show password</label>
+	<div class="row-fluid">
+		<div class="col-md-6">
+			<p><strong>User: </strong><%= @user.username %></p>
+			<p><strong>Email: </strong><span id="mail"><%= @user.email %></span></p>
 		</div>
-  		<% if @user.network.is_a? NilClass %>
-  			<input id="new_email" type="email" class="form-control" name="new_email" placeholder="New email">
-  		<% end %>
-  		<div style="margin-top:4%;">
-  			<button class="btn btn-primary btn-block" id="save">Save</button>
-  		</div>
-		<!--</form> -->
+		<div class="col-md-6 form-group">
+			<!--<form action="/home/edit-user">-->
+			<% if @user.network.is_a? NilClass %>
+	  			<input id="pass" type="password" class="form-control" name="new_password" placeholder="New password">
+	  			<div class="checkbox" style="text-align:left">
+					<label><input type="checkbox" onclick="showPassword()"> Show password</label>
+				</div>
+	  			<input id="new_email" type="email" class="form-control" name="new_email" placeholder="New email">
+	  			<div style="margin-top:4%;">
+	  				<button class="btn btn-primary btn-block" id="save">Save</button>
+	  			</div>
+	  		<% end %>
+			<!--</form> -->
+		</div>
 	</div>
+	<br>
 	<!--<legend><h3>Language</h3></legend>
 	<a href="#">ES</a> - <a href="#">EN</a>-->
 	
-	<legend><h4>Cancel account</h4></legend>
+	<legend style="margin-top:10%;"><h4>Cancel account</h4></legend>
 	<button class="btn btn-danger" id="delete-user">Delete user</button>
 	<div id="confirm">
 		<div class="col-md-3"></div>

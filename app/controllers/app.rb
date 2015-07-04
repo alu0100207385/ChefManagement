@@ -96,20 +96,18 @@ class MyApp < Sinatra::Base
 
 		when 'google_oauth2'
 			session[:username] = user.username = auth['info'].name
-			#session[:email] = 
 			user.email = auth['info'].email
-			user.network = 'google'
-			if User.count(:username => session[:username]) == 0 #Si no existe lo incluimos en la bbdd
+			session[:network] = user.network = 'google'
+			if (User.count(:username => session[:username]) == 0) || (User.count(:username => session[:username], :network => 'google') == 0) #Si no existe lo incluimos en la bbdd
 				user.save
 			end
 			redirect '/home'
 
 		when 'facebook'
 			session[:username] = user.username = auth['info'].name
-			#session[:email] = 
 			user.email = auth['info'].email
-			user.network = 'facebook'
-			if User.count(:username => user.username) == 0 #Si no existe lo incluimos en la bbdd
+			session[:network] = user.network = 'facebook'
+			if (User.count(:username => user.username) == 0) || (User.count(:username => session[:username], :network => 'facebook') == 0)  #Si no existe lo incluimos en la bbdd
 				user.save
 			end
 			redirect '/home'
@@ -179,17 +177,19 @@ class MyApp < Sinatra::Base
 		user = User.first(:username => session[:username])
 		if (!user.is_a? NilClass)
 			rec = Recipe.first(:name => params[:recipe_name])
+			content_type 'application/json'
 			if (rec.is_a? NilClass) #Si no se encuentra en la bbdd la creamos
 				recipe = Recipe.new
 				recipe.name = params[:recipe_name]
 				recipe.nration = params[:nration]
 				recipe.username = user.username
-				#if params[:instructions]!= nil
-					#recipe.instructions = params[:instructions]
-				#end
+				if params[:instructions]!= nil
+					recipe.instructions = params[:instructions]
+				end
 				puts "--> rname = #{recipe.name}"
 				puts "--> rnration = #{recipe.nration}"
 				puts "--> username = #{recipe.username}"
+				puts "--> instructions = #{params[:instructions]}"
 				recipe.save
 				{:control => 0}.to_json
 			else
@@ -202,7 +202,7 @@ class MyApp < Sinatra::Base
 
 ###################################################################SETTINGS
 	get '/home/settings' do
-		@user = User.first(:username => session[:username])
+		@user = User.first(:username => session[:username], :network => session[:network])
 		if (!@user.is_a? NilClass)
 			erb :settings, :layout => :'layouts/default'
 		else

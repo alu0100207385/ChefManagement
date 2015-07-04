@@ -20,11 +20,11 @@
 					<thead></thead>
 					<tbody>
 						<tr>
-							<td><label>Name</label></td><td><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></td>
+							<td><label id="label-name">Name</label></td><td><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></td>
 							<td><label>Cost</label></td><td><input type="text" name="recipe_cost" readonly></td>
 						</tr>
 						<tr>
-							<td><label>Rations</label></td><td><input id="n-rations" name="n-rations" type="number" min="1" value="1" title="Number of rations (> 0)"></td>
+							<td><label id="rations">Rations</label></td><td><input id="n-rations" name="n-rations" type="number" min="1" value="1" title="Number of rations (> 0)"></td>
 							<td><label>Ration cost</label></td>
 							<td><input name="recipe_cost_ration" type="text" readonly></td>
 						</tr>
@@ -34,34 +34,68 @@
 						</tr>
 					</tbody>
 				</table>
-				<table style="width:100%; margin-top: 1%;">
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	  				<div class="panel panel-default">
+	    				<div class="panel-heading" role="tab" id="headingThree">
+	      					<h3 class="panel-title">
+	        					<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#instructions-panel" aria-expanded="false">
+	          						<i class="fa fa-envelope-o" style="color:inherit;"> Write your recipe instructions</i></a>
+	      					</h3>
+	    				</div>
+	    				<div id="instructions-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+	      					<div class="panel-body">
+  <textarea name="editor1" id="editor1" rows="10" cols="80">
+                This is my textarea to be replaced with CKEditor.
+            </textarea>
+            <script>
+                CKEDITOR.replace( 'editor1' );
+            </script>
+							<!--	<textarea id="instructions" name="instructions" rows="5" cols="80"></textarea>-->
+	      					</div>
+	    				</div>
+	  				</div>
+				</div>
+				<!--<table style="width:100%; margin-top: 1%;">
 					<thead></thead>
 					<tbody>
 						<tr><td><label>Making</label></td></tr>
-						<tr><td><textarea name="instructions" rows="5" cols="70"></textarea></td></tr>
+						<tr><td><textarea id="instructions" name="instructions" rows="3" cols="70"></textarea></td></tr>
 					</tbody>
-				</table>
+				</table>-->
 			</div>
 			<hr>
 			<div id="ingredient">
 				<h4>Ingredients</h4>
+				<div id="message2"></div>
 				<table style="width:100%; text-align:right;">
 					<thead></thead>	
 					<tbody>
 						<tr>
-							<td><label>Name</label></td><td><input type="text" name="name" placeholder="New ingredient name"></td></td>
-							<td><label>Price (€)</label></td><td><input name="volume" title="Price per unity/weight/volume" type="number" step="0.01" min="0" /></td>
-							<td><label>Decrease (%)</label></td><td><input name="volume" type="number" step="0.01" min="0" /></td>
+							<td><label>Name</label></td><td><input type="text" id="ingredient-name" name="name" placeholder="New ingredient name"></td></td>
+							<td><label>
+							<select>
+								<option value="euro">€</option>
+								<option value="dollar">$</option>
+							</select>
+							/
+							<select>
+								<option value="unity">un</option>
+								<option value="grams">gr</option>
+								<option value="liter">l</option>
+							</select></label>
+							</td>
+							<td><input name="price" title="Price per unity(u)/weight(gr)/volume(l)" type="number" step="0.01" min="0"></td>
+							<td><label>Decrease (%)</label></td><td><input name="decrease" type="number" step="0.01" min="0" /></td>
 						</tr>
 						<tr>
-							<td><label>Quantity (u)</label></td><td><input type="number" name="quantity" min="0" max="50"></td>
-							<td><label>Weight (gr)</label></td><td><input name="weight" type="number" step="0.01" min="0" /></td>
-							<td><label>Volume (l)</label></td><td><input name="volume" type="number" step="0.01" min="0"/></td>
+							<td><label>Quantity (u)</label></td><td><input type="number" id="quantity" name="quantity" min="0"></td>
+							<td><label>Weight (gr)</label></td><td><input id="weight" name="weight" type="number" step="0.01" min="0"></td>
+							<td><label>Volume (l)</label></td><td><input id="volume" name="volume" type="number" step="0.01" min="0"></td>
 						</tr>
 						<tr style="height: 15px"></tr>
 						<tr>
 							<td></td><td></td><td></td><td></td><td></td><td>
-								<button class="btn btn-success">Save & New ingredient</button>
+								<button id="save-ingredient" class="btn btn-success">Save &#38; New ingredient</button>
 							</td>
 						</tr>
 					</tbody>
@@ -96,8 +130,36 @@
 	//$('#show').show();
 	$('#show').hide();
 
+	$('#quantity').change(function () {
+		$('#weight').val('');
+		$('#volume').val('');
+	});
+
+	$('#weight').change(function () {
+		$('#quantity').val('');
+		$('#volume').val('');
+	});
+
+	$('#volume').change(function () {
+		$('#weight').val('');
+		$('#quantity').val('');
+	});
+
 	$(document).ready(function(){
+		$('#save-ingredient').click(function(){
+			if (($('#quantity').val() == "") && ($('#weight').val() == "") && ($('#volume').val() == "")){ 
+				$("#message2").hide();
+    			$("#message2").html('<p class ="alert alert-danger" role="alert">Input one: quantity(u), weight(gr) or volume(l)</p>');
+    			$("#message2").show(1000);
+    			return false;
+			}
+			else
+				$("#message2").hide();
+		});
+	//############################## RECETAS #########################################
 		$("#make-recipe").click(function(){
+			$('#message').hide();
+			$("#message2").hide();
 			$('#import').hide();
 			$('#export').hide();
 			$('#show').hide();
@@ -106,6 +168,7 @@
 		});
 
 		$("#cancel").click(function(){
+			$('#message').hide();
 			$('#make').hide();
 			$('#import').hide();
 			$('#export').hide();
@@ -113,6 +176,7 @@
 		});
 
 		$("#import-recipe").click(function(){
+			$('#message').hide();
 			$('#make').hide();
 			$('#export').hide();
 			$('#show').hide();
@@ -121,6 +185,7 @@
 		});
 
 		$("#export-recipe").click(function(){
+			$('#message').hide();
 			$('#make').hide();
 			$('#import').hide();
 			$('#show').hide();
@@ -129,6 +194,7 @@
 		});
 
 		$("#show-all").click(function(){
+			$('#message').hide();
 			$('#make').hide();
 			$('#import').hide();
 			$('#export').hide();
@@ -137,10 +203,24 @@
 		});
 
 		$("#save-recipe").click(function(){
-			if ( ($('#recipe-name').val() == "") || ($('#n-rations').val() == "") ){
+			var entrada = false;
+			if ($('#recipe-name').val() == ""){
+    			$('#label-name').css("color", "red");
+    			entrada = true;
+    		}
+    		else
+    			$('#label-name').css("color", "inherit");
+    		if ( ($('#n-rations').val() == "") || ($('#n-rations').val() < 1) ){
+    			$('#rations').css("color", "red");
+    			entrada = true;
+    		}
+    		else
+    			$('#rations').css("color", "inherit");
+			if (entrada == true) {
 				$("#message").hide();
     			$("#message").html('<p class ="alert alert-danger" role="alert">Check fields</p>');
     			$("#message").show(1000);
+    			entrada = false;
     			return false;
 			}
 			else
@@ -149,7 +229,7 @@
 			$.ajax({
 	    		type: "POST",
 				url: "/home/new-recipe",
-	      		data: {recipe_name: $('#recipe-name').val(), nration: $('#n-rations').val(), instructions: $("input[value='instructions']").val()},
+	      		data: {recipe_name: $('#recipe-name').val(), nration: $('#n-rations').val(), instructions: $('#instructions').val()},
 
 	      		success: function(data){
 	      			if(data.control == 0){
