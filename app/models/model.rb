@@ -23,11 +23,11 @@ class Recipe
 	#property :other, Recipe
 	#property :avatar
 
-	belongs_to :parent, self, :key => true
+#belongs_to :parent, self, :key => true
 	#belongs_to :parent, self, :required => false
 	#belongs_to :parent, self, :auto_validations => false
-	has n, :children, self, :child_key => [:parent_id] 
-	has n, :ingredients 
+#has n, :children, self, :child_key => [:parent_id] 
+#has n, :ingredients 
 	#has n, :comments
 end
 

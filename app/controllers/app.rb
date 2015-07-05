@@ -184,12 +184,8 @@ class MyApp < Sinatra::Base
 				recipe.nration = params[:nration]
 				recipe.username = user.username
 				if params[:instructions]!= nil
-					recipe.instructions = params[:instructions]
+					recipe.instructions = params[:instructions].gsub(/<\/?[^>]*>/, '').gsub(/\n\n+/, "\n").gsub(/^\n|\n$/, '')
 				end
-				puts "--> rname = #{recipe.name}"
-				puts "--> rnration = #{recipe.nration}"
-				puts "--> username = #{recipe.username}"
-				puts "--> instructions = #{params[:instructions]}"
 				recipe.save
 				{:control => 0}.to_json
 			else
