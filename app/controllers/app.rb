@@ -189,8 +189,40 @@ class MyApp < Sinatra::Base
 				recipe.save
 				{:control => 0}.to_json
 			else
-				{:control => 'existe'}.to_json #Esa receta ya se encuentra en la bbdd
+				{:control => 1}.to_json #Esa receta ya se encuentra en la bbdd
 			end
+		else
+			redirect '/'
+		end
+	end
+
+	post '/home/new-ingredient' do
+		user = User.first(:username => session[:username])
+		if (!user.is_a? NilClass)
+			#if (params[:ing_quantity].is_a? NilClass)
+				#params[:ing_quantity] = nil
+			#end
+			puts "-->#{params[:ing_name]}"
+			puts "-->#{params[:ing_cost]}"
+			puts "-->#{params[:ing_unity_cost]}"
+			puts "-->#{params[:ing_quantity]}"
+			puts "-->#{params[:ing_weight]}"
+			puts "-->#{params[:weight_un]}"
+			puts "-->#{params[:ing_volume]}"
+			puts "-->#{params[:volume_un]}"
+			puts "-->#{params[:ing_decrease]}"
+			if (params[:ing_quantity].is_a? NilClass)
+				params[:ing_quantity] = nil
+			end
+			if (params[:ing_weight].is_a NilClass)
+				params[:ing_weight] = nil
+				params[:weight_un] = nil
+			end
+			if (params[:ing_volume].is_a? NilClass)
+				params[:ing_volume] = nil
+				params[:volume_un] = nil
+			end
+			#Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => params[:ing_quantity], :weight => params[:ing_weight], :weight_un => params[:weight_un], :volume => params[:ing_volume], :volume_un => params[:volume_un], :decrease => params[:ing_decrease])
 		else
 			redirect '/'
 		end

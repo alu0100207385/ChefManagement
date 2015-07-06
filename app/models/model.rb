@@ -13,7 +13,7 @@ end
 class Recipe 
 	include DataMapper::Resource
 
-	property :id, Serial
+	property :id, Serial, :key => true
 	property :name, String, :required => true		#Nombre de la receta
 	property :cost, Float 							#Costo del plato (venta). El coste de producción se puede sacar por cáculo.
 	property :ration_cost, Float					#Costo por ración
@@ -27,11 +27,29 @@ class Recipe
 	#belongs_to :parent, self, :required => false
 	#belongs_to :parent, self, :auto_validations => false
 #has n, :children, self, :child_key => [:parent_id] 
-#has n, :ingredients 
+	has n, :ingredients 
 	#has n, :comments
+end
+class Ingredient
+	include DataMapper::Resource
+
+	property :id, Serial
+	property :name, String,:required => true		#Nombre del ingrediente
+	property :cost, Float, :required => true 		#costo por unidad (cantidad/peso/volumen)
+	property :unity_cost, String
+	property :quantity, Integer					#Solo puede 
+	property :weight, Float						#estar activo
+	property :weight_un, String
+	property :volume, Float						#uno de los 3 campos
+	property :volume_un, String
+	property :decrease, Float					#merma del ingrediente por produccion
+	#property :avatar
+
+	belongs_to :recipe
 end
 
 
+=begin
 class Ingredient
 	include DataMapper::Resource
 
@@ -58,7 +76,7 @@ class Lot
 	belongs_to :ingredient
 	#belongs_to :recipe
 end
-
+=end
 =begin
 class Comment
 	include DataMapper::Resource
