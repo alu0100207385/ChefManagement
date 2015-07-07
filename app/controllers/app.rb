@@ -183,9 +183,6 @@ class MyApp < Sinatra::Base
 				recipe.name = params[:recipe_name]
 				recipe.nration = params[:nration]
 				recipe.username = user.username
-				if params[:instructions]!= nil
-					recipe.instructions = params[:instructions].gsub(/<\/?[^>]*>/, '').gsub(/\n\n+/, "\n").gsub(/^\n|\n$/, '')
-				end
 				recipe.save
 				{:control => 0}.to_json
 			else
@@ -202,27 +199,39 @@ class MyApp < Sinatra::Base
 			#if (params[:ing_quantity].is_a? NilClass)
 				#params[:ing_quantity] = nil
 			#end
-			puts "-->#{params[:ing_name]}"
-			puts "-->#{params[:ing_cost]}"
-			puts "-->#{params[:ing_unity_cost]}"
-			puts "-->#{params[:ing_quantity]}"
-			puts "-->#{params[:ing_weight]}"
-			puts "-->#{params[:weight_un]}"
-			puts "-->#{params[:ing_volume]}"
-			puts "-->#{params[:volume_un]}"
-			puts "-->#{params[:ing_decrease]}"
-			if (params[:ing_quantity].is_a? NilClass)
-				params[:ing_quantity] = nil
+			recipe = Recipe.first(:name => params[:recipe_name])
+			if (Ingredient.first(:name => params[:ing_name]).is_a? NilClass)
+				puts "-->#{params[:recipe_name]}"
+				puts "-->#{params[:ing_name]}"
+				puts "-->#{params[:ing_cost]}"
+				puts "-->#{params[:ing_unity_cost]}"
+				puts "-->#{params[:ing_quantity]}"
+				puts "-->#{params[:ing_weight]}"
+				puts "-->#{params[:weight_un]}"
+				puts "-->#{params[:ing_volume]}"
+				puts "-->#{params[:volume_un]}"
+				puts "-->#{params[:ing_decrease]}"
+				if (params[:ing_quantity].empty?)
+					params[:ing_quantity] = ""
+				end
+				if (params[:ing_weight].empty?)
+					params[:ing_weight] = ""
+					params[:weight_un] = ""
+				end
+				if (params[:ing_volume].empty?)
+					params[:ing_volume] = ""
+					params[:volume_un] = ""
+				end
+				if !params[:instructions].empty?
+					params[:instructions] = params[:instructions].gsub(/<\/?[^>]*>/, '').gsub(/\n\n+/, "\n").gsub(/^\n|\n$/, '')
+					puts "-->#{params[:instructions]}"
+					recipe.update(:instructions => params[:instructions])
+				end
+				Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => params[:ing_quantity], :weight => params[:ing_weight], :weight_un => params[:weight_un], :volume => params[:ing_volume], :volume_un => params[:volume_un], :decrease => params[:ing_decrease])
+				{:control => 0}.to_json
+			else
+				{:control => 1}.to_json #Ese ingrediente ya se encuentra en la bbdd
 			end
-			if (params[:ing_weight].is_a NilClass)
-				params[:ing_weight] = nil
-				params[:weight_un] = nil
-			end
-			if (params[:ing_volume].is_a? NilClass)
-				params[:ing_volume] = nil
-				params[:volume_un] = nil
-			end
-			#Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => params[:ing_quantity], :weight => params[:ing_weight], :weight_un => params[:weight_un], :volume => params[:ing_volume], :volume_un => params[:volume_un], :decrease => params[:ing_decrease])
 		else
 			redirect '/'
 		end

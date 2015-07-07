@@ -3,10 +3,10 @@
 	<hr>
     <ul class="nav nav-pills nav-stacked" id="menu">
         <!--<li class="active"><a href="#"><i class="fa fa-home fa-fw"></i>Home</a></li>-->
+        <li><a id="show-all"><i class="fa fa-list"></i> Show recipes</a></li>
         <li><a id="make-recipe"><i class="fa fa-plus-square-o"></i> New recipe</a></li>
 		<li><a id="import-recipe"><i class="fa fa-upload"></i> Import</a></li>
 		<li><a id="export-recipe"><i class="fa fa-download"></i> Export</a></li>
-		<li><a id="show-all"><i class="fa fa-list"></i> Show recipes</a></li>
     </ul>
 </div>
 <div class="col-md-9">
@@ -14,103 +14,106 @@
 	<div id="message"></div>
 	<!--###########CREAR########################################-->
 	<div id="make">
-		<!--<form action="/home/new-recipe" method="post">-->
-			<div class="form-group">
-				<table style="width:100%; text-align:left;">
-					<thead></thead>
-					<tbody>
-						<tr>
-							<td><label id="label-name">Name</label></td><td><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></td>
-							<td><label>Cost</label></td><td><input type="text" name="recipe_cost" readonly></td>
-						</tr>
-						<tr>
-							<td><label id="rations">Rations</label></td><td><input id="n-rations" name="n-rations" type="number" min="1" value="1" title="Number of rations (> 0)"></td>
-							<td><label>Ration cost</label></td>
-							<td><input name="recipe_cost_ration" type="text" readonly></td>
-						</tr>
-						<tr>
-							<td><label>Avatar</label></td>
-							<td><label><input type="file" name="avatar"></label></td>
-						</tr>
-					</tbody>
-				</table>
-				<br>
-				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-	  				<div class="panel panel-default">
-	    				<div class="panel-heading" role="tab" id="headingThree">
-	      					<h3 class="panel-title">
-	        					<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#instructions-panel" aria-expanded="false">
-	          						<i class="fa fa-pencil" style="color:inherit;"> Write your recipe instructions</i></a>
-	      					</h3>
-	    				</div>
-	    				<div id="instructions-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-	      					<div class="panel-body">
-  								<textarea name="editor1" id="instructions" rows="10" cols="80"></textarea>
-            					<script>CKEDITOR.replace( 'editor1', {
-    									language: 'en',
-									});
-            					</script>
-	  						</div>
-						</div>
-					</div>
-				</div>
-				<!--<textarea id="instructions" name="instructions" rows="3" cols="70"></textarea>-->
-			</div>
-			<hr>
-			<div id="ingredient">
-				<h4>Ingredients</h4>
-				<div id="message2"></div>
-				<table style="width:100%; text-align:right;">
-					<thead></thead>	
-					<tbody>
-						<tr>
-							<td><label>Name</label></td><td><input type="text" id="ingredient-name" name="name" placeholder="New ingredient name"></td></td>
-							<td><label>
-							<select id="coin">
-								<option value="euro">€</option>
-								<option value="dollar">$</option>
-							</select>
-							/
-							<select id="unity">
-								<option value="unity">un</option>
-								<option value="grams">gr</option>
-								<option value="liter">l</option>
-							</select></label>
-							</td>
-							<td><input id="ing-cost" name="price" title="Price per unity/weight/volume" type="number" step="0.01" min="0"></td>
-							<td><label>Decrease (%)</label></td><td><input id="decrease" name="decrease" type="number" step="0.01" min="0" value="0" ></td>
-						</tr>
-						<tr>
-							<td><label>Quantity (u)</label></td><td><input type="number" id="quantity" name="quantity" min="0"></td>
-							<td><label>Weight
-							<select id="weight-un">
-								<option value="kg">kg</option>
-								<option value="gr">gr</option>
-							</select>
-							</label></td><td><input id="weight" name="weight" type="number" step="0.01" min="0"></td>
-							<td><label>Volume
-							<select id="volume-un">
-								<option value="litro">l</option>
-								<option value="cl">cl</option>
-								<option value="ml">ml</option>
-							</select>
-							</label></td><td><input id="volume" name="volume" type="number" step="0.01" min="0"></td>
-						</tr>
-						<tr style="height: 15px"></tr>
-						<tr>
-							<td></td><td></td><td></td><td></td><td></td><td>
-								<button id="save-ingredient" class="btn btn-success">Save &#38; New ingredient</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<hr>
-			</div>
-			<div class="my-buttons">
+		<div class="form-group">
+			<table style="width:100%; text-align:left;">
+				<thead></thead>
+				<tbody>
+					<tr>
+						<td><label id="label-name">Name</label></td><td><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></td>
+						<td><label>Cost</label></td><td><input type="text" name="recipe_cost" readonly></td>
+					</tr>
+					<tr>
+						<td><label id="rations">Rations</label></td><td><input id="n-rations" name="n-rations" type="number" min="1" value="1" title="Number of rations (> 0)"></td>
+						<td><label>Ration cost</label></td>
+						<td><input name="recipe_cost_ration" type="text" readonly></td>
+					</tr>
+					<tr>
+						<td><label>Avatar</label></td>
+						<td><label><input type="file" name="avatar"></label></td>
+					</tr>
+				</tbody>
+			</table>
+			<div id="recipe-buttons" class="my-buttons">
 				<a id="cancel" type="button" href="/home" class="btn btn-default">Cancel</a>
 				<button id="save-recipe" class="btn btn-primary">Save recipe</button>
 			</div>
-		<!--</form>-->
+			<br>
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  				<div class="panel panel-default">
+    				<div class="panel-heading" role="tab" id="headingThree">
+      					<h3 class="panel-title">
+        					<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#instructions-panel" aria-expanded="false">
+          						<i class="fa fa-pencil" style="color:inherit;"> Write your recipe instructions</i></a>
+      					</h3>
+    				</div>
+    				<div id="instructions-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      					<div class="panel-body">
+								<textarea name="editor1" id="instructions" rows="10" cols="80"></textarea>
+        					<script>CKEDITOR.replace( 'editor1', {
+									language: 'en',
+								});
+        					</script>
+  						</div>
+					</div>
+				</div>
+			</div>
+			<!--<textarea id="instructions" name="instructions" rows="3" cols="70"></textarea>-->
+		</div>
+		<hr>
+		<div id="ingredient">
+			<h4>Ingredients</h4>
+			<div id="message2"></div>
+			<table style="width:100%; text-align:right;">
+				<thead></thead>	
+				<tbody>
+					<tr>
+						<td><label>Name</label></td><td><input type="text" id="ingredient-name" name="name" placeholder="New ingredient name"></td></td>
+						<td><label>
+						<select id="coin">
+							<option value="euro">€</option>
+							<option value="dollar">$</option>
+						</select>
+						/
+						<select id="unity">
+							<option value="unity">un</option>
+							<option value="kgrams">kg</option>
+							<option value="grams">gr</option>
+							<option value="liter">l</option>
+						</select></label>
+						</td>
+						<td><input id="ing-cost" name="price" title="Price per unity/weight/volume" type="number" step="0.01" min="0"></td>
+						<td><label>Decrease (%)</label></td><td><input id="decrease" name="decrease" type="number" step="0.01" min="0" value="0" ></td>
+					</tr>
+					<tr>
+						<td><label>Quantity (u)</label></td><td><input type="number" id="quantity" name="quantity" min="0"></td>
+						<td><label>Weight
+						<select id="weight-un">
+							<option value="kg">kg</option>
+							<option value="gr">gr</option>
+						</select>
+						</label></td><td><input id="weight" name="weight" type="number" step="0.01" min="0"></td>
+						<td><label>Volume
+						<select id="volume-un">
+							<option value="litro">l</option>
+							<option value="cl">cl</option>
+							<option value="ml">ml</option>
+						</select>
+						</label></td><td><input id="volume" name="volume" type="number" step="0.01" min="0"></td>
+					</tr>
+					<tr style="height: 15px"></tr>
+					<tr>
+						<td></td><td></td><td></td><td></td>
+						<td>
+							<button id="save-finish" class="btn btn-default">Save &#38; Finish</button>
+						</td>
+						<td>
+							<button id="save-ingredient" class="btn btn-success">Save &#38; New ingredient</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<hr>
+		</div>
 	</div>
 
 	<!--###########IMPORTAR####################################################-->
@@ -134,6 +137,7 @@
 	$('#section-title').html('<h3>New recipe</h3><hr>');
 	//$('#show').show();
 	$('#show').hide();
+	$('#accordion').hide();
 
 	$('#quantity').change(function () {
 		$('#weight').val('');
@@ -151,15 +155,26 @@
 	});
 
 	$(document).ready(function(){
-
+/*
 		$("#recipe-name").keypress(function( event ) {
 			if ($("#recipe-name").val().length > 1)
 				$('#ingredient').show(1000);
 			if ($("#recipe-name").val().length <= 1)
 				$('#ingredient').hide(1000);
 		});
+*/
 		//############################## INGREDIENTES ##############################
-		$('#save-ingredient').click(function(){
+		function ClearIngredient(){
+			$('#ingredient-name').val('');
+			$('#ing-cost').val('');
+			$("#ing-cost").val('');
+			$("#quantity").val('');
+			$("#weight").val('');
+			$("#volume").val('');
+			$("#decrease").val('');
+		}
+
+		$('#save-ingredient, #save-finish').click(function(){
     		if ($('#ingredient-name').val() == ""){
     			$("#message2").hide();
     			$("#message2").html('<p class ="alert alert-danger" role="alert">Type the  ingredient name</p>');
@@ -181,18 +196,25 @@
 			else
 				$("#message2").hide();
 
+			var ins = CKEDITOR.instances['instructions'].getData();
 			$.ajax({
 	    		type: "POST",
 				url: "/home/new-ingredient",
-	      		data: {ing_name: $('#ingredient-name').val(), ing_cost: $('#ing-cost').val(), ing_unity_cost: $("#coin option:selected").text()+'/'+$("#unity option:selected").text(), ing_quantity: $("#ing-cost").val(), ing_quantity: $("#quantity").val(), ing_weight: $("#weight").val(), weight_un: $("#weight-un option:selected").text(), ing_volume: $("#volume").val(), volume_un: $("#volume-un option:selected").text(), ing_decrease: $("#decrease").val()},
+	      		data: {ing_name: $('#ingredient-name').val(), ing_cost: $('#ing-cost').val(), ing_unity_cost: $("#coin option:selected").text()+'/'+$("#unity option:selected").text(), ing_quantity: $("#ing-cost").val(), ing_quantity: $("#quantity").val(), ing_weight: $("#weight").val(), weight_un: $("#weight-un option:selected").text(), ing_volume: $("#volume").val(), volume_un: $("#volume-un option:selected").text(), ing_decrease: $("#decrease").val(), instructions: ins, recipe_name: $('#recipe-name').val()},
 
 	      		success: function(data){
 	      			console.log(data);
-	      			/*if(data.control == 0){
+	      			if(data.control == 0){
 		  				$("#message").hide();
-			        	$("#message").html('<p class ="alert alert-success" role="alert"> </p>');
+			        	$("#message").html('<p class ="alert alert-success" role="alert">Ingredient added to the recipe</p>');
 			        	$("#message").show(1000);
-	      			}*/
+			        	ClearIngredient();
+	      			}
+	      			if(data.control == 1){
+		  				$("#message").hide();
+			        	$("#message").html('<p class ="alert alert-danger" role="alert">This ingredient already exists in the recipe</p>');
+			        	$("#message").show(1000);
+	      			}
 	      		},
 
 	      		error: function(xhr){
@@ -202,6 +224,12 @@
 		    });
 		});
 	//############################## RECETAS #########################################
+		function ClearRecipe(){
+			$('#recipe-name').val(''); $('#recipe-name').prop('readonly', false);
+			$('#n-rations').val('1'); $('#n-rations').prop('readonly', false);
+			CKEDITOR.instances['instructions'].setData('');			
+		}
+
 		$("#make-recipe").click(function(){
 			$('#message').hide();
 			$("#message2").hide();
@@ -210,6 +238,8 @@
 			$('#show').hide();
 			$('#section-title').html('<h3>New recipe</h3><hr>');
 			$('#make').show();
+			$('#recipe-buttons').show();
+			ClearRecipe();
 		});
 
 		$("#cancel").click(function(){
@@ -217,7 +247,8 @@
 			$('#make').hide();
 			$('#import').hide();
 			$('#export').hide();
-			$('#show').hide();
+			$('#show').show();
+			return false;
 		});
 
 		$("#import-recipe").click(function(){
@@ -271,17 +302,21 @@
 			else
 				$("#message").hide();
 
-			var ins = CKEDITOR.instances['instructions'].getData();
 			$.ajax({
 	    		type: "POST",
 				url: "/home/new-recipe",
-	      		data: {recipe_name: $('#recipe-name').val(), nration: $('#n-rations').val(), instructions: ins/*$('#instructions').val()*/ },
+	      		data: {recipe_name: $('#recipe-name').val(), nration: $('#n-rations').val()/*, instructions: ins $('#instructions').val()*/ },
 
 	      		success: function(data){
 	      			if(data.control == 0){
 		  				$("#message").hide();
 			        	$("#message").html('<p class ="alert alert-success" role="alert">Recipe created successfully</p>');
 			        	$("#message").show(1000);
+			        	$("#recipe-buttons").hide();
+						$('#ingredient').show(1000);
+						$('#recipe-name').prop('readonly', true);
+						$('#n-rations').prop('readonly', true);
+						$('#accordion').show(1000);
 	      			}
 	      			if(data.control == 1){
 	      				$("#message").hide();
