@@ -196,38 +196,21 @@ class MyApp < Sinatra::Base
 	post '/home/new-ingredient' do
 		user = User.first(:username => session[:username])
 		if (!user.is_a? NilClass)
-			#if (params[:ing_quantity].is_a? NilClass)
-				#params[:ing_quantity] = nil
-			#end
-			recipe = Recipe.first(:name => params[:recipe_name])
-			if (Ingredient.first(:name => params[:ing_name]).is_a? NilClass)
-				puts "-->#{params[:recipe_name]}"
-				puts "-->#{params[:ing_name]}"
-				puts "-->#{params[:ing_cost]}"
-				puts "-->#{params[:ing_unity_cost]}"
-				puts "-->#{params[:ing_quantity]}"
-				puts "-->#{params[:ing_weight]}"
-				puts "-->#{params[:weight_un]}"
-				puts "-->#{params[:ing_volume]}"
-				puts "-->#{params[:volume_un]}"
-				puts "-->#{params[:ing_decrease]}"
-				if (params[:ing_quantity].empty?)
-					params[:ing_quantity] = ""
-				end
-				if (params[:ing_weight].empty?)
-					params[:ing_weight] = ""
-					params[:weight_un] = ""
-				end
-				if (params[:ing_volume].empty?)
-					params[:ing_volume] = ""
-					params[:volume_un] = ""
-				end
-				if !params[:instructions].empty?
+			@recipe = Recipe.first(:name => params[:recipe_name])
+			content_type 'application/json'
+			if (Ingredient.first(:name => params[:ing_name], :recipe => @recipe).is_a? NilClass) #Si no existe en esa receta
+				if (!params[:instructions].empty?)
 					params[:instructions] = params[:instructions].gsub(/<\/?[^>]*>/, '').gsub(/\n\n+/, "\n").gsub(/^\n|\n$/, '')
-					puts "-->#{params[:instructions]}"
 					recipe.update(:instructions => params[:instructions])
 				end
-				Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => params[:ing_quantity], :weight => params[:ing_weight], :weight_un => params[:weight_un], :volume => params[:ing_volume], :volume_un => params[:volume_un], :decrease => params[:ing_decrease])
+				case params[:quantity_op]
+				when 'Quantity'
+					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => params[:n_quantity], :weight => 0, :weight_un => "", :volume => 0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => @recipe)
+				when 'Weight'
+					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => params[:n_quantity], :weight_un => params[:weight_un], :volume => 0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => @recipe)
+				when 'Volume'
+					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => 0, :weight_un => "", :volume => params[:n_quantity], :volume_un => params[:volume_un], :decrease => params[:ing_decrease], :recipe => @recipe)
+				end
 				{:control => 0}.to_json
 			else
 				{:control => 1}.to_json #Ese ingrediente ya se encuentra en la bbdd

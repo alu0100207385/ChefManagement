@@ -20,12 +20,12 @@
 				<tbody>
 					<tr>
 						<td><label id="label-name">Name</label></td><td><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></td>
-						<td><label>Cost</label></td><td><input type="text" name="recipe_cost" readonly></td>
+						<td><label>Cost</label></td><td><input type="text" name="recipe_cost" readonly><%= @recipe.cost %></td>
 					</tr>
 					<tr>
 						<td><label id="rations">Rations</label></td><td><input id="n-rations" name="n-rations" type="number" min="1" value="1" title="Number of rations (> 0)"></td>
 						<td><label>Ration cost</label></td>
-						<td><input name="recipe_cost_ration" type="text" readonly></td>
+						<td><input name="recipe_cost_ration" type="text" readonly><%= @recipe.ration_cost %></td>
 					</tr>
 					<tr>
 						<td><label>Avatar</label></td>
@@ -48,10 +48,10 @@
     				</div>
     				<div id="instructions-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
       					<div class="panel-body">
-								<textarea name="editor1" id="instructions" rows="10" cols="80"></textarea>
+							<textarea name="editor1" id="instructions" rows="10" cols="80"></textarea>
         					<script>CKEDITOR.replace( 'editor1', {
-									language: 'en',
-								});
+								language: 'en',
+							});
         					</script>
   						</div>
 					</div>
@@ -67,7 +67,31 @@
 				<thead></thead>	
 				<tbody>
 					<tr>
-						<td><label>Name</label></td><td><input type="text" id="ingredient-name" name="name" placeholder="New ingredient name"></td></td>
+						<td><label>Name</label></td>
+						<td><input type="text" id="ingredient-name" name="name" placeholder="New ingredient name"></td>
+						<td><label>Select 
+							<select id="quantity-op">
+								<option value="quantity">Quantity</option>
+								<option value="weight">Weight</option>
+								<option value="volume">Volume</option>
+							</select>
+						</label>
+						</td>
+						<td><input id="n-quantity" name="n-quantity" type="number" step="0.01" min="0"></td>
+						<td style="text-align: left">
+							<span id="quantity-un"> (u)</span>
+							<select id="weight-un">
+								<option value="kg">kg</option>
+								<option value="gr">gr</option>
+							</select>
+							<select id="volume-un">
+								<option value="litro">l</option>
+								<option value="cl">cl</option>
+								<option value="ml">ml</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
 						<td><label>
 						<select id="coin">
 							<option value="euro">€</option>
@@ -83,22 +107,6 @@
 						</td>
 						<td><input id="ing-cost" name="price" title="Price per unity/weight/volume" type="number" step="0.01" min="0"></td>
 						<td><label>Decrease (%)</label></td><td><input id="decrease" name="decrease" type="number" step="0.01" min="0" value="0" ></td>
-					</tr>
-					<tr>
-						<td><label>Quantity (u)</label></td><td><input type="number" id="quantity" name="quantity" min="0"></td>
-						<td><label>Weight
-						<select id="weight-un">
-							<option value="kg">kg</option>
-							<option value="gr">gr</option>
-						</select>
-						</label></td><td><input id="weight" name="weight" type="number" step="0.01" min="0"></td>
-						<td><label>Volume
-						<select id="volume-un">
-							<option value="litro">l</option>
-							<option value="cl">cl</option>
-							<option value="ml">ml</option>
-						</select>
-						</label></td><td><input id="volume" name="volume" type="number" step="0.01" min="0"></td>
 					</tr>
 					<tr style="height: 15px"></tr>
 					<tr>
@@ -130,6 +138,7 @@
 
 <script type="text/javascript">
 	//$('#make').hide();
+	$('#accordion').hide();
 	$('#import').hide();
 	$('#export').hide();
 	$('#ingredient').hide();
@@ -137,7 +146,6 @@
 	$('#section-title').html('<h3>New recipe</h3><hr>');
 	//$('#show').show();
 	$('#show').hide();
-	$('#accordion').hide();
 
 	$('#quantity').change(function () {
 		$('#weight').val('');
@@ -155,26 +163,45 @@
 	});
 
 	$(document).ready(function(){
-/*
-		$("#recipe-name").keypress(function( event ) {
+/*		$("#recipe-name").keypress(function( event ) {
 			if ($("#recipe-name").val().length > 1)
 				$('#ingredient').show(1000);
 			if ($("#recipe-name").val().length <= 1)
 				$('#ingredient').hide(1000);
+		});*/
+		$('#quantity-un').hide();
+		$('#weight-un').hide();
+		$('#volume-un').hide();
+		$('#quantity-op').change(function(){
+		switch ($("#quantity-op option:selected").text()){
+			case 'Quantity':
+				$('#quantity-un').show();
+				$('#weight-un').hide();
+				$('#volume-un').hide();
+			break;
+			case 'Weight':
+				$('#quantity-un').hide();
+				$('#weight-un').show();
+				$('#volume-un').hide();
+			break;
+			case 'Volume':
+				$('#quantity-un').hide();
+				$('#weight-un').hide();
+				$('#volume-un').show();
+			break;
+		}
 		});
-*/
 		//############################## INGREDIENTES ##############################
 		function ClearIngredient(){
 			$('#ingredient-name').val('');
 			$('#ing-cost').val('');
-			$("#ing-cost").val('');
-			$("#quantity").val('');
-			$("#weight").val('');
-			$("#volume").val('');
+			$("#n-quantity").val('');
 			$("#decrease").val('');
 		}
 
 		$('#save-ingredient, #save-finish').click(function(){
+			//console.log($(this).attr('id'));//lo controlo para saber si termino o sigo guardando ingredientes
+			//console.log($('#recipe-name').val());
     		if ($('#ingredient-name').val() == ""){
     			$("#message2").hide();
     			$("#message2").html('<p class ="alert alert-danger" role="alert">Type the  ingredient name</p>');
@@ -187,21 +214,32 @@
     			$("#message2").show(1000);
     			return false;
 			}
-			if ( (($('#quantity').val() == "") && ($('#weight').val() == "") && ($('#volume').val() == "")) || (($('#quantity').val() != "") && ($('#weight').val() != "") && ($('#volume').val() != "")) ){ 
-				$("#message2").hide();
-    			$("#message2").html('<p class ="alert alert-danger" role="alert">Input one: quantity(u), weight(gr) or volume(l)</p>');
+			if ($('#n-quantity').val() == ""){
+    			$("#message2").hide();
+    			$("#message2").html('<p class ="alert alert-danger" role="alert">Type quantity</p>');
     			$("#message2").show(1000);
     			return false;
-    		}
+			}
+			if ($('#ing-cost').val() == ""){
+    			$("#message2").hide();
+    			$("#message2").html('<p class ="alert alert-danger" role="alert">Type ingredient cost</p>');
+    			$("#message2").show(1000);
+    			return false;
+			}
 			else
 				$("#message2").hide();
 
 			var ins = CKEDITOR.instances['instructions'].getData();
+			var finished = false;
+			if ( $(this).attr('id') == "save-finish" )
+				finished = true;
 			$.ajax({
 	    		type: "POST",
 				url: "/home/new-ingredient",
-	      		data: {ing_name: $('#ingredient-name').val(), ing_cost: $('#ing-cost').val(), ing_unity_cost: $("#coin option:selected").text()+'/'+$("#unity option:selected").text(), ing_quantity: $("#ing-cost").val(), ing_quantity: $("#quantity").val(), ing_weight: $("#weight").val(), weight_un: $("#weight-un option:selected").text(), ing_volume: $("#volume").val(), volume_un: $("#volume-un option:selected").text(), ing_decrease: $("#decrease").val(), instructions: ins, recipe_name: $('#recipe-name').val()},
+	      		data: {ing_name: $('#ingredient-name').val(), ing_cost: $('#ing-cost').val(), ing_unity_cost: $("#coin option:selected").text()+'/'+$("#unity option:selected").text(), quantity_op: $('#quantity-op option:selected').text(), n_quantity: $('#n-quantity').val(), weight_un: $("#weight-un option:selected").text(), volume_un: $("#volume-un option:selected").text(),ing_decrease: $("#decrease").val(), instructions: ins, recipe_name: $('#recipe-name').val()},
 
+	      			/*ing_quantity: $("#ing-cost").val(), ing_quantity: $("#quantity").val(), ing_weight: $("#weight").val(), weight_un: $("#weight-un option:selected").text(), ing_volume: $("#volume").val(), volume_un: $("#volume-un option:selected").text(), */
+	      			//!!!comprobar todos los campos de data
 	      		success: function(data){
 	      			console.log(data);
 	      			if(data.control == 0){
@@ -214,6 +252,18 @@
 		  				$("#message").hide();
 			        	$("#message").html('<p class ="alert alert-danger" role="alert">This ingredient already exists in the recipe</p>');
 			        	$("#message").show(1000);
+	      			}
+	      			if ( finished == true){
+	      				$("#message").hide();
+			        	$("#message").html('<p class ="alert alert-success" role="alert">'+$('#ingredient-name').val()+' has been added</p>');
+			        	$("#message").show(1000);
+	      				window.setTimeout(function(){window.location = '/home';}, 2000 );
+	      			}
+	      			else{
+	      				$("#message").hide();
+			        	$("#message").html('<p class ="alert alert-success" role="alert">'+$('#ingredient-name').val()+' has been added</p>');
+			        	$("#message").show(1000);
+	      				ClearIngredient();
 	      			}
 	      		},
 
@@ -239,6 +289,7 @@
 			$('#section-title').html('<h3>New recipe</h3><hr>');
 			$('#make').show();
 			$('#recipe-buttons').show();
+			$('#accordion').hide();
 			ClearRecipe();
 		});
 
@@ -258,6 +309,7 @@
 			$('#show').hide();
 			$('#section-title').html('<h3>Import recipe</h3><hr>');
 			$('#import').show();
+			return false;
 		});
 
 		$("#export-recipe").click(function(){
@@ -267,6 +319,7 @@
 			$('#show').hide();
 			$('#section-title').html('<h3>Export recipe</h3><hr>');
 			$('#export').show();
+			return false;
 		});
 
 		$("#show-all").click(function(){
@@ -276,6 +329,7 @@
 			$('#export').hide();
 			$('#section-title').html('<h3>Recipe list</h3><hr>');
 			$('#show').show();
+			return false;
 		});
 
 		$("#save-recipe").click(function(){
