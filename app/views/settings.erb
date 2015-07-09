@@ -8,7 +8,6 @@
 			<p><strong>Email: </strong><span id="mail"><%= @user.email %></span></p>
 		</div>
 		<div class="col-md-6 form-group">
-			<!--<form action="/home/edit-user">-->
 			<% if @user.network.is_a? NilClass %>
 	  			<input id="pass" type="password" class="form-control" name="new_password" placeholder="New password">
 	  			<div class="checkbox" style="text-align:left">
@@ -19,7 +18,6 @@
 	  				<button class="btn btn-primary btn-block" id="save">Save</button>
 	  			</div>
 	  		<% end %>
-			<!--</form> -->
 		</div>
 	</div>
 	<br>

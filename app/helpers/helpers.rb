@@ -25,4 +25,12 @@ module AppHelpers
 		     body "Your account, \n \tUsername: #{usu}\n \tPassword: "+"#{pass}\n \tEmail: #{email}"
 	 	end
 	end
+
+	def merma (n, lost) #lost = porcentaje de perdida
+		return n - (n * lost)/100
+	end
+
+	def inversion (merm, costo_ing, costo_un) #Lo que tengo que sumar al costo de produccion si hubiera merma
+		return merma * costo_ing / costo_un
+	end
 end

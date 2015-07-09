@@ -201,15 +201,15 @@ class MyApp < Sinatra::Base
 			if (Ingredient.first(:name => params[:ing_name], :recipe => @recipe).is_a? NilClass) #Si no existe en esa receta
 				if (!params[:instructions].empty?)
 					params[:instructions] = params[:instructions].gsub(/<\/?[^>]*>/, '').gsub(/\n\n+/, "\n").gsub(/^\n|\n$/, '')
-					recipe.update(:instructions => params[:instructions])
+					@recipe.update(:instructions => params[:instructions])
 				end
 				case params[:quantity_op]
 				when 'Quantity'
-					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => params[:n_quantity], :weight => 0, :weight_un => "", :volume => 0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => @recipe)
+					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => params[:n_quantity], :weight => 0.0, :weight_un => "", :volume => 0.0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => @recipe)
 				when 'Weight'
-					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => params[:n_quantity], :weight_un => params[:weight_un], :volume => 0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => @recipe)
+					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => params[:n_quantity], :weight_un => params[:weight_un], :volume => 0.0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => @recipe)
 				when 'Volume'
-					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => 0, :weight_un => "", :volume => params[:n_quantity], :volume_un => params[:volume_un], :decrease => params[:ing_decrease], :recipe => @recipe)
+					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => 0.0, :weight_un => "", :volume => params[:n_quantity], :volume_un => params[:volume_un], :decrease => params[:ing_decrease], :recipe => @recipe)
 				end
 				{:control => 0}.to_json
 			else
@@ -219,6 +219,13 @@ class MyApp < Sinatra::Base
 			redirect '/'
 		end
 	end
+=begin
+	get 'home/recipelist' do
+	end
+
+	get 'home/recipelist/:name' do
+	end
+=end
 
 ###################################################################SETTINGS
 	get '/home/settings' do

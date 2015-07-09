@@ -3,11 +3,14 @@
 	<hr>
     <ul class="nav nav-pills nav-stacked" id="menu">
         <!--<li class="active"><a href="#"><i class="fa fa-home fa-fw"></i>Home</a></li>-->
-        <li><a id="show-all"><i class="fa fa-list"></i> Show recipes</a></li>
+        <li><a id="show-all"><i class="fa fa-list"></i> Recipe list</a></li>
         <li><a id="make-recipe"><i class="fa fa-plus-square-o"></i> New recipe</a></li>
 		<li><a id="import-recipe"><i class="fa fa-upload"></i> Import</a></li>
 		<li><a id="export-recipe"><i class="fa fa-download"></i> Export</a></li>
     </ul>
+    <hr>
+    <div id="current-recipe">
+    </div>
 </div>
 <div class="col-md-9">
 	<div id="section-title"></div>
@@ -20,12 +23,20 @@
 				<tbody>
 					<tr>
 						<td><label id="label-name">Name</label></td><td><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></td>
-						<td><label>Cost</label></td><td><input type="text" name="recipe_cost" readonly><%= @recipe.cost %></td>
+						<% if !@recipe.is_a? NilClass %>
+							<td><label>Cost</label></td><td><input type="text" name="recipe_cost" readonly><%= @recipe.cost %></td>
+						<% else %>
+							<td><label>Cost</label></td><td><input type="text" name="recipe_cost" readonly></td>
+						<% end %>
 					</tr>
 					<tr>
 						<td><label id="rations">Rations</label></td><td><input id="n-rations" name="n-rations" type="number" min="1" value="1" title="Number of rations (> 0)"></td>
 						<td><label>Ration cost</label></td>
-						<td><input name="recipe_cost_ration" type="text" readonly><%= @recipe.ration_cost %></td>
+						<% if !@recipe.is_a? NilClass %>
+							<td><input name="recipe_cost_ration" type="text" readonly><%= @recipe.ration_cost %></td>
+						<% else %>
+							<td><input name="recipe_cost_ration" type="text" readonly></td>
+						<% end %>
 					</tr>
 					<tr>
 						<td><label>Avatar</label></td>
@@ -146,7 +157,8 @@
 	$('#section-title').html('<h3>New recipe</h3><hr>');
 	//$('#show').show();
 	$('#show').hide();
-
+	$('#current-recipe').hide();
+/*
 	$('#quantity').change(function () {
 		$('#weight').val('');
 		$('#volume').val('');
@@ -161,7 +173,7 @@
 		$('#weight').val('');
 		$('#quantity').val('');
 	});
-
+*/
 	$(document).ready(function(){
 /*		$("#recipe-name").keypress(function( event ) {
 			if ($("#recipe-name").val().length > 1)
@@ -170,7 +182,7 @@
 				$('#ingredient').hide(1000);
 		});*/
 		$('#quantity-un').hide();
-		$('#weight-un').hide();
+		$('#weight-un').show();
 		$('#volume-un').hide();
 		$('#quantity-op').change(function(){
 		switch ($("#quantity-op option:selected").text()){
@@ -196,12 +208,16 @@
 			$('#ingredient-name').val('');
 			$('#ing-cost').val('');
 			$("#n-quantity").val('');
-			$("#decrease").val('');
+			$("#decrease").val(0.0);
+			$('#quantity-op').val("weight");
+			$('#coin').val("euro");
+			$('#unity').val("unity");
+			$('#quantity-un').hide();
+			$('#weight-un').show();
+			$('#volume-un').hide();
 		}
 
 		$('#save-ingredient, #save-finish').click(function(){
-			//console.log($(this).attr('id'));//lo controlo para saber si termino o sigo guardando ingredientes
-			//console.log($('#recipe-name').val());
     		if ($('#ingredient-name').val() == ""){
     			$("#message2").hide();
     			$("#message2").html('<p class ="alert alert-danger" role="alert">Type the  ingredient name</p>');
@@ -226,8 +242,6 @@
     			$("#message2").show(1000);
     			return false;
 			}
-			else
-				$("#message2").hide();
 
 			var ins = CKEDITOR.instances['instructions'].getData();
 			var finished = false;
@@ -238,32 +252,28 @@
 				url: "/home/new-ingredient",
 	      		data: {ing_name: $('#ingredient-name').val(), ing_cost: $('#ing-cost').val(), ing_unity_cost: $("#coin option:selected").text()+'/'+$("#unity option:selected").text(), quantity_op: $('#quantity-op option:selected').text(), n_quantity: $('#n-quantity').val(), weight_un: $("#weight-un option:selected").text(), volume_un: $("#volume-un option:selected").text(),ing_decrease: $("#decrease").val(), instructions: ins, recipe_name: $('#recipe-name').val()},
 
-	      			/*ing_quantity: $("#ing-cost").val(), ing_quantity: $("#quantity").val(), ing_weight: $("#weight").val(), weight_un: $("#weight-un option:selected").text(), ing_volume: $("#volume").val(), volume_un: $("#volume-un option:selected").text(), */
-	      			//!!!comprobar todos los campos de data
 	      		success: function(data){
-	      			console.log(data);
 	      			if(data.control == 0){
-		  				$("#message").hide();
-			        	$("#message").html('<p class ="alert alert-success" role="alert">Ingredient added to the recipe</p>');
-			        	$("#message").show(1000);
+		  				$("#message2").hide();
+			        	$("#message2").html('<p class ="alert alert-success" role="alert">'+$('#ingredient-name').val()+' has been added</p>');
+			        	$("#message2").show(1000);
+			        	$('#current-recipe').html($('#current-recipe').html() + " + " + $('#ingredient-name').val() + "<br>");
+			        	$('#current-recipe').show(1000);
 			        	ClearIngredient();
+			        	return false;
 	      			}
 	      			if(data.control == 1){
-		  				$("#message").hide();
-			        	$("#message").html('<p class ="alert alert-danger" role="alert">This ingredient already exists in the recipe</p>');
-			        	$("#message").show(1000);
+		  				$("#message2").hide();
+			        	$("#message2").html('<p class ="alert alert-danger" role="alert">This ingredient already exists in the recipe</p>');
+			        	$("#message2").show(1000);
+			        	return false;
 	      			}
 	      			if ( finished == true){
-	      				$("#message").hide();
-			        	$("#message").html('<p class ="alert alert-success" role="alert">'+$('#ingredient-name').val()+' has been added</p>');
-			        	$("#message").show(1000);
+	      				$("#message2").hide();
+			        	$("#message2").html('<p class ="alert alert-success" role="alert">The new ingredient has been added</p>');
+			        	$("#message2").show(1000);
 	      				window.setTimeout(function(){window.location = '/home';}, 2000 );
-	      			}
-	      			else{
-	      				$("#message").hide();
-			        	$("#message").html('<p class ="alert alert-success" role="alert">'+$('#ingredient-name').val()+' has been added</p>');
-			        	$("#message").show(1000);
-	      				ClearIngredient();
+	      				return false;
 	      			}
 	      		},
 
@@ -275,8 +285,10 @@
 		});
 	//############################## RECETAS #########################################
 		function ClearRecipe(){
+			$('#recipe-name').val('');
 			$('#recipe-name').val(''); $('#recipe-name').prop('readonly', false);
-			$('#n-rations').val('1'); $('#n-rations').prop('readonly', false);
+			$('#n-rations').val(''); $('#n-rations').prop('readonly', false);
+			$('#n-rations').val('1');
 			CKEDITOR.instances['instructions'].setData('');			
 		}
 
@@ -290,6 +302,8 @@
 			$('#make').show();
 			$('#recipe-buttons').show();
 			$('#accordion').hide();
+			$('#ingredient').hide();
+			$('#current-recipe').hide();
 			ClearRecipe();
 		});
 
@@ -298,6 +312,7 @@
 			$('#make').hide();
 			$('#import').hide();
 			$('#export').hide();
+			$('#current-recipe').hide();
 			$('#show').show();
 			return false;
 		});
@@ -307,6 +322,7 @@
 			$('#make').hide();
 			$('#export').hide();
 			$('#show').hide();
+			$('#current-recipe').hide();
 			$('#section-title').html('<h3>Import recipe</h3><hr>');
 			$('#import').show();
 			return false;
@@ -317,6 +333,7 @@
 			$('#make').hide();
 			$('#import').hide();
 			$('#show').hide();
+			$('#current-recipe').hide();
 			$('#section-title').html('<h3>Export recipe</h3><hr>');
 			$('#export').show();
 			return false;
@@ -327,6 +344,7 @@
 			$('#make').hide();
 			$('#import').hide();
 			$('#export').hide();
+			$('#current-recipe').hide();
 			$('#section-title').html('<h3>Recipe list</h3><hr>');
 			$('#show').show();
 			return false;
@@ -359,7 +377,7 @@
 			$.ajax({
 	    		type: "POST",
 				url: "/home/new-recipe",
-	      		data: {recipe_name: $('#recipe-name').val(), nration: $('#n-rations').val()/*, instructions: ins $('#instructions').val()*/ },
+	      		data: {recipe_name: $('#recipe-name').val(), nration: $('#n-rations').val()},
 
 	      		success: function(data){
 	      			if(data.control == 0){
@@ -371,11 +389,15 @@
 						$('#recipe-name').prop('readonly', true);
 						$('#n-rations').prop('readonly', true);
 						$('#accordion').show(1000);
+						$('#current-recipe').html("<h3>"+$('#recipe-name').val()+"</h3>");
+						$('#current-recipe').show(1000);
+						return false;
 	      			}
 	      			if(data.control == 1){
 	      				$("#message").hide();
 			        	$("#message").html('<p class ="alert alert-danger" role="alert">This recipe name already exists</p>');
 			        	$("#message").show(1000);
+			        	return false;
 	      			}
 	      		},
 
