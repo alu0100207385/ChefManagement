@@ -149,6 +149,7 @@ class MyApp < Sinatra::Base
 
 	get '/home' do
 		@user = User.first(:username => session[:username])
+		@rec = Recipe.all
 		if (!@user.is_a? NilClass)
 			erb :home, :layout => :'layouts/default'
 		else
@@ -219,10 +220,8 @@ class MyApp < Sinatra::Base
 			redirect '/'
 		end
 	end
-=begin
-	get 'home/recipelist' do
-	end
 
+=begin
 	get 'home/recipelist/:name' do
 	end
 =end

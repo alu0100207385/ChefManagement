@@ -20,6 +20,12 @@ class Recipe
 	property :instructions, Text					#Preparación
 	property :username, String 						#Autor de la receta
 	#property :avatar
+	property :pos, Flag[:incoming, :first, :second, :third, :single, :afters, :other]	#entrante, primer plato, segundo plato, plato único, postre
+	property :type, Enum[:snack, :homemade_food, :tapas, :fast_food, :tasting, :other]	#snack, comida casera, tapas, comida rapida, degustación
+	property :nivel, Enum[:very_easy, :easy, :medium, :hard, :very_hard]
+	property :production_time, String				#Tiempo de producción de la receta
+	property :vegan, Boolean, :default => false		#Indica si es un plato apto para vegetarianos
+	property :warning, Text							#Aviso alérgicos
 
 #belongs_to :parent, self, :key => true
 	#belongs_to :parent, self, :required => false
@@ -28,6 +34,7 @@ class Recipe
 	has n, :ingredients 
 	#has n, :comments
 end
+
 class Ingredient
 	include DataMapper::Resource
 

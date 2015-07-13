@@ -1,18 +1,4 @@
-<div class="col-md-2">
-	<h3>Menu</h3>
-	<hr>
-    <ul class="nav nav-pills nav-stacked" id="menu">
-        <!--<li class="active"><a href="#"><i class="fa fa-home fa-fw"></i>Home</a></li>-->
-        <li><a id="show-all"><i class="fa fa-list"></i> Recipe list</a></li>
-        <li><a id="make-recipe"><i class="fa fa-plus-square-o"></i> New recipe</a></li>
-		<li><a id="import-recipe"><i class="fa fa-upload"></i> Import</a></li>
-		<li><a id="export-recipe"><i class="fa fa-download"></i> Export</a></li>
-    </ul>
-    <hr>
-    <div id="current-recipe">
-    </div>
-</div>
-<div class="col-md-9">
+<div class="col-md-10">
 	<div id="section-title"></div>
 	<div id="message"></div>
 	<!--###########CREAR########################################-->
@@ -39,11 +25,70 @@
 						<% end %>
 					</tr>
 					<tr>
-						<td><label>Avatar</label></td>
-						<td><label><input type="file" name="avatar"></label></td>
+						<td><label>Order</label></td>
+						<td>
+							<select id="pos">
+								<% pos = ['incoming', 'first', 'second', 'third', 'single', 'afters', 'other'] %>
+								<% pos.each do |i| %>
+									<% if (i == 'single') %>
+										<option value="<%= i %>" selected="selected"><%= i %></option>
+									<% else %>
+										<option value="<%= i %>"><%= i %></option>
+									<% end %>
+								<% end %>
+							</select>
+						</td>
+						<td><label>Type</label></td>
+						<td>
+							<select id="type">
+								<% t = ['snack', 'homemade_food', 'tapas', 'fast_food', 'tasting', 'other'] %>
+								<% t.each do |i| %>
+									<% if (i == 'other') %>
+										<option value="<%= i %>" selected="selected"><%= i %></option>
+									<% else %>
+										<option value="<%= i %>"><%= i %></option>
+									<% end %>
+								<% end %>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td><label>Nivel</label></td>
+						<td>
+							<select id="nivel">
+								<% n = ['easy', 'very easy', 'medium', 'hard', 'very hard'] %>
+								<% n.each do |i| %>
+									<% if (i == 'medium') %>
+										<option value="<%= i %>" selected="selected"><%= i %></option>
+									<% else %>
+										<option value="<%= i %>"><%= i %></option>
+									<% end %>
+								<% end %>
+							</select>
+						</td>
+						<td><label>Production time</label></td>
+						<td>
+							<input id="h" type="number" min="0" max="12">h
+							<input id="m" type="number" min="0" max="59">m
+						</td>
+					</tr>
+					<tr>
+						<td><label>Vegan</label></td>
+						<td><select id="vegan">
+							<option value="no">no</option>
+							<option value="yes">yes</option>
+						</select>
+						</td>
+						<td><label>Notice allergens</label></td>
+						<td><input id="allergens" name="allergens" type="text"></td>
 					</tr>
 				</tbody>
 			</table>
+			<br>
+			<p>
+				<label>Avatar</label>
+				<label><input type="file" name="avatar"></label>
+			</p>
 			<div id="recipe-buttons" class="my-buttons">
 				<a id="cancel" type="button" href="/home" class="btn btn-default">Cancel</a>
 				<button id="save-recipe" class="btn btn-primary">Save recipe</button>
@@ -121,7 +166,7 @@
 					</tr>
 					<tr style="height: 15px"></tr>
 					<tr>
-						<td></td><td></td><td></td><td></td>
+						<td></td><td></td><td></td>
 						<td>
 							<button id="save-finish" class="btn btn-default">Save &#38; Finish</button>
 						</td>
@@ -142,10 +187,45 @@
 	<div id="export">exportar</div>
 
 	<!--###########SHOW########################################################-->
-	<div id="show">mostrar recipe. Opcion de mostrar solo favoritas y buscar</div>
+	<div id="show">
+		<table id="recipe-list-tb" class="display">
+		    <thead>
+		        <tr>
+		            <th>Name</th>
+		            <th>Diner</th>
+		            <th>Cost</th>
+		            <th>Ration cost</th>
+		            <th>Nivel</th>
+		            <th>Production time</th>
+		            <th>Vegan</th>
+		            <th>Author</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		    	<% @rec.each do |rec| %>
+			        <tr>
+			            <td><%= rec.name %></td>
+			            <td><%= rec.nration %></td>
+			            <td><%= rec.cost %></td>
+			            <td><%= rec.ration_cost %></td>
+			            <td><%= rec.nivel %></td>
+			            <td><%= rec.production_time %></td>
+			            <% if rec.vegan == true %>
+			            	<td>YES</td>
+			            <% else %>
+			            	<td>NO</td>
+			            <% end %>
+			            <td><%= rec.username %></td>
+			        </tr>
+			    <% end %>
+		    </tbody>
+		</table>
+	</div>
 </div>
 
-<div class="col-md-1"></div>
+<div class="col-md-2">
+	<div id="current-recipe"></div>
+</div>
 
 <script type="text/javascript">
 	//$('#make').hide();
@@ -158,29 +238,11 @@
 	//$('#show').show();
 	$('#show').hide();
 	$('#current-recipe').hide();
-/*
-	$('#quantity').change(function () {
-		$('#weight').val('');
-		$('#volume').val('');
-	});
 
-	$('#weight').change(function () {
-		$('#quantity').val('');
-		$('#volume').val('');
-	});
-
-	$('#volume').change(function () {
-		$('#weight').val('');
-		$('#quantity').val('');
-	});
-*/
 	$(document).ready(function(){
-/*		$("#recipe-name").keypress(function( event ) {
-			if ($("#recipe-name").val().length > 1)
-				$('#ingredient').show(1000);
-			if ($("#recipe-name").val().length <= 1)
-				$('#ingredient').hide(1000);
-		});*/
+
+    	$('#recipe-list-tb').DataTable();
+
 		$('#quantity-un').hide();
 		$('#weight-un').show();
 		$('#volume-un').hide();
