@@ -25,7 +25,8 @@ class Recipe
 	property :nivel, Enum[:very_easy, :easy, :medium, :hard, :very_hard]
 	property :production_time, String				#Tiempo de producción de la receta
 	property :vegan, Boolean, :default => false		#Indica si es un plato apto para vegetarianos
-	property :warning, Text							#Aviso alérgicos
+	property :warning, String							#Aviso alérgicos
+	property :origin, String						#País originario de la receta
 
 #belongs_to :parent, self, :key => true
 	#belongs_to :parent, self, :required => false

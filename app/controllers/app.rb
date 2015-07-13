@@ -184,6 +184,32 @@ class MyApp < Sinatra::Base
 				recipe.name = params[:recipe_name]
 				recipe.nration = params[:nration]
 				recipe.username = user.username
+				puts "#{params[:order]}"
+				recipe.pos = params[:order]
+				puts "#{params[:type]}"
+				recipe.type = params[:type]
+				puts "#{params[:nivel]}"
+				recipe.nivel = params[:nivel]
+				puts "#{params[:time]}"
+				recipe.production_time = params[:time]
+				puts "#{params[:vegan]}"
+				if (params[:vegan] == "yes")
+					recipe.vegan = true
+				else
+					recipe.vegan = false
+				end
+				puts "#{params[:allergens]}"
+				if (params[:allergens] == "")
+					recipe.warning = ""
+				else
+					recipe.warning = params[:allergens]
+				end
+				puts "#{params[:origin]}"
+				if (params[:origin] == "")
+					recipe.origin = ""
+				else
+					recipe.origin = params[:origin]
+				end
 				recipe.save
 				{:control => 0}.to_json
 			else
@@ -212,7 +238,10 @@ class MyApp < Sinatra::Base
 				when 'Volume'
 					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => 0.0, :weight_un => "", :volume => params[:n_quantity], :volume_un => params[:volume_un], :decrease => params[:ing_decrease], :recipe => @recipe)
 				end
-				{:control => 0}.to_json
+				nuevo_costo = @recipe.cost+params[:ing_cost].to_f
+				nuevo_costo_rat = nuevo_costo/@recipe.nration
+				@recipe.update(:cost => nuevo_costo,:ration_cost => nuevo_costo_rat)
+				{:control => 0, :cost => @recipe.cost, :ration_cost => nuevo_costo_rat}.to_json
 			else
 				{:control => 1}.to_json #Ese ingrediente ya se encuentra en la bbdd
 			end
