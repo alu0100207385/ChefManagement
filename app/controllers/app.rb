@@ -98,7 +98,8 @@ class MyApp < Sinatra::Base
 			session[:username] = user.username = auth['info'].name
 			user.email = auth['info'].email
 			session[:network] = user.network = 'google'
-			if (User.count(:username => session[:username]) == 0) || (User.count(:username => session[:username], :network => 'google') == 0) #Si no existe lo incluimos en la bbdd
+			#if (User.count(:username => session[:username]) == 0) || (User.count(:username => session[:username], :network => 'google') == 0) #Si no existe lo incluimos en la bbdd
+			if (User.first(:username => auth['info'].name).is_a? NilClass)
 				user.save
 			end
 			redirect '/home'
@@ -107,7 +108,8 @@ class MyApp < Sinatra::Base
 			session[:username] = user.username = auth['info'].name
 			user.email = auth['info'].email
 			session[:network] = user.network = 'facebook'
-			if (User.count(:username => user.username) == 0) || (User.count(:username => session[:username], :network => 'facebook') == 0)  #Si no existe lo incluimos en la bbdd
+			#if (User.count(:username => user.username) == 0) || (User.count(:username => session[:username], :network => 'facebook') == 0)  #Si no existe lo incluimos en la bbdd
+			if (User.first(:username => auth['info'].name).is_a? NilClass)
 				user.save
 			end
 			redirect '/home'
@@ -184,27 +186,27 @@ class MyApp < Sinatra::Base
 				recipe.name = params[:recipe_name]
 				recipe.nration = params[:nration]
 				recipe.username = user.username
-				puts "#{params[:order]}"
+				#puts "#{params[:order]}"
 				recipe.pos = params[:order]
-				puts "#{params[:type]}"
+				#puts "#{params[:type]}"
 				recipe.type = params[:type]
-				puts "#{params[:nivel]}"
+				#puts "#{params[:nivel]}"
 				recipe.nivel = params[:nivel]
-				puts "#{params[:time]}"
+				#puts "#{params[:time]}"
 				recipe.production_time = params[:time]
-				puts "#{params[:vegan]}"
+				#puts "#{params[:vegan]}"
 				if (params[:vegan] == "yes")
 					recipe.vegan = true
 				else
 					recipe.vegan = false
 				end
-				puts "#{params[:allergens]}"
+				#puts "#{params[:allergens]}"
 				if (params[:allergens] == "")
 					recipe.warning = ""
 				else
 					recipe.warning = params[:allergens]
 				end
-				puts "#{params[:origin]}"
+				#puts "#{params[:origin]}"
 				if (params[:origin] == "")
 					recipe.origin = ""
 				else
@@ -250,10 +252,6 @@ class MyApp < Sinatra::Base
 		end
 	end
 
-=begin
-	get 'home/recipelist/:name' do
-	end
-=end
 
 ###################################################################SETTINGS
 	get '/home/settings' do

@@ -1,9 +1,8 @@
 class User
 	include DataMapper::Resource
 
-	property :id, Serial
-	property :username, String, :required => true
-	property :email, String, :required => true
+	property :username, String, :key => true
+	property :email, String, :key => true
 	property :password, BCryptHash
 	property :network, String						#Red social que uso para el registro si procede
 	#property :avatar

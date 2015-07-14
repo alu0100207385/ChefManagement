@@ -9,15 +9,16 @@
 				<tbody>
 					<tr id="fil1">
 						<td><label id="label-name">Name</label></td><td><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></td>
+						<td><label>Cost (€)</label></td>
 						<% if !@recipe.is_a? NilClass %>
-							<td><label>Cost</label></td><td><input type="text" name="recipe_cost" id="recipe_cost" readonly><%= @recipe.cost %></td>
+							<td><input type="text" name="recipe_cost" id="recipe_cost" readonly><%= @recipe.cost %></td>
 						<% else %>
-							<td><label>Cost</label></td><td><input type="text" name="recipe_cost" id="recipe_cost" readonly></td>
+							<td><input type="text" name="recipe_cost" id="recipe_cost" readonly></td>
 						<% end %>
 					</tr>
 					<tr id="fil2">
 						<td><label id="rations">Rations</label></td><td><input id="n-rations" name="n-rations" type="number" min="1" value="1" title="Number of rations (> 0)"></td>
-						<td><label>Ration cost</label></td>
+						<td><label>Ration cost (€)</label></td>
 						<% if !@recipe.is_a? NilClass %>
 							<td><input name="recipe_cost_ration" id="recipe_cost_ration" type="text" readonly><%= @recipe.ration_cost %></td>
 						<% else %>
@@ -148,15 +149,15 @@
 								<option value="gr">gr</option>
 							</select>
 							<select id="volume-un">
-								<option value="litro">l</option>
+								<option value="l">l</option>
 								<option value="cl">cl</option>
 								<option value="ml">ml</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<td><label>
-						<select id="coin">
+						<td><label>€ / </label><label id="unity">kg</label></td>
+						<!--<select id="coin">
 							<option value="euro">€</option>
 							<option value="dollar">$</option>
 						</select>
@@ -166,8 +167,8 @@
 							<option value="kgrams">kg</option>
 							<option value="grams">gr</option>
 							<option value="liter">l</option>
-						</select></label>
-						</td>
+						</select></label>-->
+
 						<td><input id="ing-cost" name="price" title="Price per unity/weight/volume" type="number" step="0.01" min="0"></td>
 						<td><label>Decrease (%)</label></td><td><input id="decrease" name="decrease" type="number" step="0.01" min="0" value="0" ></td>
 					</tr>
@@ -254,23 +255,53 @@
 		$('#weight-un').show();
 		$('#volume-un').hide();
 		$('#quantity-op').change(function(){
-		switch ($("#quantity-op option:selected").text()){
-			case 'Quantity':
-				$('#quantity-un').show();
-				$('#weight-un').hide();
-				$('#volume-un').hide();
-			break;
-			case 'Weight':
-				$('#quantity-un').hide();
-				$('#weight-un').show();
-				$('#volume-un').hide();
-			break;
-			case 'Volume':
-				$('#quantity-un').hide();
-				$('#weight-un').hide();
-				$('#volume-un').show();
-			break;
-		}
+			switch ($("#quantity-op option:selected").text()){
+				case 'Quantity':
+					$('#quantity-un').show();
+					$('#unity').html('u').show();
+					$('#weight-un').hide();
+					$('#volume-un').hide();
+				break;
+				case 'Weight':
+					$('#quantity-un').hide();
+					$('#weight-un').show();
+					$('#weight-un').val('kg');
+					$('#unity').html('kg').show();
+					$('#volume-un').hide();
+				break;
+				case 'Volume':
+					$('#quantity-un').hide();
+					$('#weight-un').hide();
+					$('#volume-un').show();
+					$('#volume-un').val('l');
+					$('#unity').html('l').show();
+				break;
+			}
+		});
+
+		$('#weight-un').change(function(){
+			switch ($("#weight-un option:selected").text()){
+				case 'kg':
+					$('#unity').html('kg').show();
+				break;
+				case 'gr':
+					$('#unity').html('gr').show();
+				break;
+			}
+		});
+
+		$('#volume-un').change(function(){
+			switch ($("#volume-un option:selected").text()){
+				case 'l':
+					$('#unity').html('l').show();
+				break;
+				case 'cl':
+					$('#unity').html('cl').show();
+				break;
+				case 'ml':
+					$('#unity').html('ml').show();
+				break;
+			}
 		});
 		//############################## INGREDIENTES ##############################
 		function ClearIngredient(){
@@ -279,8 +310,9 @@
 			$("#n-quantity").val('');
 			$("#decrease").val(0.0);
 			$('#quantity-op').val("weight");
-			$('#coin').val("euro");
-			$('#unity').val("unity");
+			//$('#coin').val("euro");
+			//$('#unity').val("unity");
+			$('#unity').val("kg");
 			$('#quantity-un').hide();
 			$('#weight-un').show();
 			$('#volume-un').hide();
@@ -319,7 +351,7 @@
 			$.ajax({
 	    		type: "POST",
 				url: "/home/new-ingredient",
-	      		data: {ing_name: $('#ingredient-name').val(), ing_cost: $('#ing-cost').val(), ing_unity_cost: $("#coin option:selected").text()+'/'+$("#unity option:selected").text(), quantity_op: $('#quantity-op option:selected').text(), n_quantity: $('#n-quantity').val(), weight_un: $("#weight-un option:selected").text(), volume_un: $("#volume-un option:selected").text(),ing_decrease: $("#decrease").val(), instructions: ins, recipe_name: $('#recipe-name').val()},
+	      		data: {ing_name: $('#ingredient-name').val(), ing_cost: $('#ing-cost').val(), ing_unity_cost: "€/"+$('#unity').text(),/*$("#coin option:selected").text()+'/'+$("#unity option:selected").text()*/ quantity_op: $('#quantity-op option:selected').text(), n_quantity: $('#n-quantity').val(), weight_un: $("#weight-un option:selected").text(), volume_un: $("#volume-un option:selected").text(),ing_decrease: $("#decrease").val(), instructions: ins, recipe_name: $('#recipe-name').val()},
 
 	      		success: function(data){
 	      			if(data.control == 0){
@@ -475,7 +507,7 @@
 						$('#fil3, #fil4, #fil5, #fil6, #fil7, #fil8, #fil9').hide(1000);
 						$('#avatar').hide(1000);
 						$('#accordion').show(1000);
-						$('#current-recipe').html("<h3>"+$('#recipe-name').val()+"</h3>");
+						$('#current-recipe').html("<h4>"+$('#recipe-name').val()+"</h4>");
 						$('#current-recipe').show(1000);
 						return false;
 	      			}
