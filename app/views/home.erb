@@ -13,7 +13,7 @@
 
 			<div class="col-md-2"><label id="rations">Rations</label></div>
 			<div class="col-md-4">
-				<input id="n-rations" style="width: 5em" type="number" min="1" value="1" title="Number of rations (> 0)">
+				<input id="n-rations" class="input-small" type="number" min="1" value="1" title="Number of rations (> 0)">
 			</div>
 		</div>
 
@@ -115,131 +115,80 @@
 				<button id="save-recipe" class="btn btn-primary">Save recipe</button>
 			</div>
 		</div>
-		<!--<div class="form-group">
-			<table style="width:95%; text-align:left;">
-				<thead></thead>
-				<tbody>
-					<tr id="fil1">
-						<td><label id="label-name">Name</label></td><td><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></td>
-						<td><label>Cost (€)</label></td>
-						<% if !@recipe.is_a? NilClass %>
-							<td><input type="text" name="recipe_cost" id="recipe_cost" readonly><%= @recipe.cost %></td>
-						<% else %>
-							<td><input type="text" name="recipe_cost" id="recipe_cost" readonly></td>
-						<% end %>
-					</tr>
-					<tr id="fil2">
-						<td><label id="rations">Rations</label></td><td><input id="n-rations" name="n-rations" type="number" min="1" value="1" title="Number of rations (> 0)"></td>
-						<td><label>Ration cost (€)</label></td>
-						<% if !@recipe.is_a? NilClass %>
-							<td><input name="recipe_cost_ration" id="recipe_cost_ration" type="text" readonly><%= @recipe.ration_cost %></td>
-						<% else %>
-							<td><input name="recipe_cost_ration" id="recipe_cost_ration" type="text" readonly></td>
-						<% end %>
-					</tr>
-					<tr id="fil3" style="height: 10px"></tr>
-					<tr id="fil4">
-						<td><label>Order</label></td>
-						<td>
-							<select id="pos">
-								<% pos = ['incoming', 'first', 'second', 'third', 'single', 'afters', 'other'] %>
-								<% pos.each do |i| %>
-									<% if (i == 'single') %>
-										<option value="<%= i %>" selected="selected"><%= i %></option>
-									<% else %>
-										<option value="<%= i %>"><%= i %></option>
-									<% end %>
-								<% end %>
-							</select>
-						</td>
-						<td><label>Type</label></td>
-						<td>
-							<select id="type">
-								<% t = ['snack', 'homemade_food', 'tapas', 'fast_food', 'tasting', 'other'] %>
-								<% t.each do |i| %>
-									<% if (i == 'other') %>
-										<option value="<%= i %>" selected="selected"><%= i %></option>
-									<% else %>
-										<option value="<%= i %>"><%= i %></option>
-									<% end %>
-								<% end %>
-							</select>
-						</td>
-					</tr>
-					<tr id="fil5">
-						<td><label>Nivel</label></td>
-						<td>
-							<select id="nivel">
-								<% n = ['very easy','easy', 'medium', 'hard', 'very hard'] %>
-								<% n.each do |i| %>
-									<% if (i == 'medium') %>
-										<option value="<%= i %>" selected="selected"><%= i %></option>
-									<% else %>
-										<option value="<%= i %>"><%= i %></option>
-									<% end %>
-								<% end %>
-							</select>
-						</td>
-						<td><label>Production time</label></td>
-						<td>
-							<input id="h" type="number" min="0" max="12" style="text-align:right; width: 4em;">h
-							<input id="m" type="number" min="0" max="59" style="text-align:right; width: 4em;">m
-						</td>
-					</tr>
-					<tr id="fil6" style="height: 10px"></tr>
-					<tr id="fil7">
-						<td><label>Vegan</label></td>
-						<td><select id="vegan">
-							<option value="no">no</option>
-							<option value="yes">yes</option>
-						</select>
-						</td>
-						<td><label>Notice allergens</label></td>
-						<td><input id="allergens" name="allergens" type="text"></td>
-					</tr>
-					<tr id="fil8" style="height: 10px"></tr>
-					<tr id="fil9">
-						<td><label>Origin</label></td>
-						<td><input id="country" type="text" title="Recipe origin country"></td>
-					</tr>
-				</tbody>
-			</table>
-			<br>
-			<p id="avatar">
-				<label>Avatar</label>
-				<label><input type="file" name="avatar"></label>
-			</p>
-			<div id="recipe-buttons" class="my-buttons">
-				<a id="cancel" type="button" href="/home" class="btn btn-default">Cancel</a>
-				<button id="save-recipe" class="btn btn-primary">Save recipe</button>
-			</div>
-			<br>
-			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-  				<div class="panel panel-default">
-    				<div class="panel-heading" role="tab" id="headingThree">
-      					<h3 class="panel-title">
-        					<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#instructions-panel" aria-expanded="false">
-          						<i class="fa fa-pencil" style="color:inherit;"> Write your recipe instructions</i></a>
-      					</h3>
-    				</div>
-    				<div id="instructions-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-      					<div class="panel-body">
-							<textarea name="editor1" id="instructions" rows="10" cols="80"></textarea>
-        					<script>CKEDITOR.replace( 'editor1', {
-								language: 'en',
-							});
-        					</script>
-  						</div>
+
+		<div class="row-fluid" style="margin-top:5%">
+			<div class="col-md-12">
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  					<div class="panel panel-default">
+    					<div class="panel-heading" role="tab" id="headingThree">
+      						<h3 class="panel-title">
+        						<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#instructions-panel" aria-expanded="false">
+          							<i class="fa fa-pencil" style="color:inherit;"> Write your recipe instructions</i></a>
+      						</h3>
+    					</div>
+    					<div id="instructions-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      						<div class="panel-body">
+								<textarea name="editor1" id="instructions" rows="10" cols="80"></textarea>
+        						<script>CKEDITOR.replace( 'editor1', {
+									language: 'en',
+								});
+        						</script>
+  							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-
-		</div>-->
+		</div>
 		<hr>
 		<div id="ingredient">
 			<h4>Ingredients</h4>
 			<div id="message2"></div>
-			<table style="width:100%; text-align:right;">
+			
+			<div class="row-fluid fill">
+				<div class="col-md-2"><label>Name</label></div>
+				<div class="col-md-4"><input type="text" id="ingredient-name" name="name" placeholder="New ingredient name"></div>
+
+				<div class="col-md-2">
+					<label>
+						<select id="quantity-op">
+							<option value="quantity">Quantity</option>
+							<option value="weight">Weight</option>
+							<option value="volume">Volume</option>
+						</select>
+					</label>
+				</div>
+				<div class="col-md-4">
+					<input id="n-quantity" name="n-quantity" type="number" step="0.01" min="0" class="input-small">
+				</div>
+			</div>
+
+			<div class="row-fluid fill">
+				<div class="col-md-2"><label>€ / </label><label id="unity">kg</label></div>
+				<div class="col-md-4"><input id="ing-cost" name="price" title="Price per unity/weight/volume" type="number" step="0.01" min="0" class="input-small"></div>
+
+				<div class="col-md-2"><label>Decrease (%)</label></div>
+				<div class="col-md-4">
+					<input id="decrease" name="decrease" type="number" step="0.01" min="0" max="100" value="0" class="input-small">
+				</div>
+			</div>
+			
+			<div class="row-fluid" style="padding:7%; text-align:right;">
+				<!--<div class="col-md-3"></div>-->
+				<!--<div class="col-md-3">-->
+					<a type="button" href="/home" id="cancel-ingredient" class="btn btn-default">Cancel</a>
+				<!--</div>-->
+				<!--<div class="col-md-3">-->
+					<button id="save-finish" class="btn btn-success">Save &#38; Finish</button>
+				<!--</div>-->
+				<!--<div class="col-md-3">-->
+					<button id="save-ingredient" class="btn btn-success">Save &#38; New ingredient</button>
+				<!--</div>-->
+			</div>
+			<hr>
+		</div>
+	</div>
+
+			<!--<table style="width:100%; text-align:right;">
 				<thead></thead>	
 				<tbody>
 					<tr>
@@ -269,18 +218,6 @@
 					</tr>
 					<tr>
 						<td><label>€ / </label><label id="unity">kg</label></td>
-						<!--<select id="coin">
-							<option value="euro">€</option>
-							<option value="dollar">$</option>
-						</select>
-						/
-						<select id="unity">
-							<option value="unity">un</option>
-							<option value="kgrams">kg</option>
-							<option value="grams">gr</option>
-							<option value="liter">l</option>
-						</select></label>-->
-
 						<td><input id="ing-cost" name="price" title="Price per unity/weight/volume" type="number" step="0.01" min="0"></td>
 						<td><label>Decrease (%)</label></td><td><input id="decrease" name="decrease" type="number" step="0.01" min="0" value="0" ></td>
 					</tr>
@@ -298,10 +235,7 @@
 						</td>
 					</tr>
 				</tbody>
-			</table>
-			<hr>
-		</div>
-	</div>
+			</table>-->
 
 	<!--###########IMPORTAR####################################################-->
 	<div id="import">importar</div>
