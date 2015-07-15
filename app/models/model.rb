@@ -14,7 +14,7 @@ class Recipe
 
 	property :name, String, :key => true			#Nombre de la receta
 	property :cost, Float, :default => 0.0			#Costo del plato (venta). El coste de producción se puede sacar por cáculo.
-	property :ration_cost, Float, :default => 0.0		#Costo por ración
+	property :ration_cost, Float, :default => 0.0	#Costo por ración
 	property :nration, Integer, :required => true	#Numero de raciones
 	property :instructions, Text					#Preparación
 	property :username, String 						#Autor de la receta
@@ -60,6 +60,7 @@ class Comment
 	
 	property :recipe_name, String, :key => true 	#elegir campo para asociar, id o nombre de la receta
 	property :username, String, :required => true	#Persona que hace el comentario
+	property :posted, DateTime
 	property :content, Text
 	property :score, Integer
 

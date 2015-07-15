@@ -72,6 +72,14 @@ body{
     margin-bottom: 4%;
 }
 
+#recipe-list-tb{
+  cursor:pointer;
+}
+
+.fill{
+    text-align: left;
+    padding: 2%;
+}
 
 /*-------------------------------------------------
 Welcome background
