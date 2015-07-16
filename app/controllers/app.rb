@@ -240,8 +240,8 @@ class MyApp < Sinatra::Base
 				when 'Volume'
 					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => 0.0, :weight_un => "", :volume => params[:n_quantity], :volume_un => params[:volume_un], :decrease => params[:ing_decrease], :recipe => @recipe)
 				end
-				nuevo_costo = "%0.2f" % (@recipe.cost + (params[:ing_cost].to_f * params[:n_quantity].to_f))
-				nuevo_costo_rat = "%0.2f" % (nuevo_costo/@recipe.nration)
+				nuevo_costo = (@recipe.cost + (params[:ing_cost].to_f * params[:n_quantity].to_f)).round(2)
+				nuevo_costo_rat = (nuevo_costo/@recipe.nration).round(2)
 				@recipe.update(:cost => nuevo_costo,:ration_cost => nuevo_costo_rat)
 				{:control => 0, :cost => @recipe.cost, :ration_cost => nuevo_costo_rat}.to_json
 			else

@@ -64,7 +64,7 @@ body{
 
 .my-buttons{
     text-align: right;
-    margin-top: 2%;
+    //margin-top: 2%;
 }
 
 .espaciado{
@@ -77,11 +77,14 @@ body{
 
 .fill{
     text-align: left;
-    padding: 2%;
 }
 
 .input-small{
     width: 5em;
+}
+
+.input-medium{
+    width: 10em;
 }
 
 /*-------------------------------------------------
