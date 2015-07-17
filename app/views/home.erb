@@ -2,8 +2,7 @@
 	<div id="section-title"></div>
 	<div id="message"></div>
 
-	<!--###########CALCULATOR########################################-->
-	<div id="calculator-view">calculadora</div>
+
 
 	<!--###########CREAR########################################-->
 	<div id="make" class="fill">
@@ -158,8 +157,8 @@
 			<div id="message2"></div>
 			
 			<div class="row-fluid">
-				<div class="col-md-1"><label>Name</label></div>
-				<div class="col-md-5">
+				<div class="col-md-2"><label>Name</label></div>
+				<div class="col-md-4">
 					<input type="text" id="ingredient-name" name="name" placeholder="New ingredient name">
 				</div>
 				<div class="col-md-4">
@@ -186,9 +185,11 @@
 				</div>
 			</div>
 
+			<div class="row"></div>
+
 			<div class="row-fluid">
-				<div class="col-md-1"><label>€ / </label><label id="unity">kg</label></div>
-				<div class="col-md-5">
+				<div class="col-md-2"><label>€ / </label><label id="unity">kg</label></div>
+				<div class="col-md-4">
 					<input id="ing-cost" name="price" title="Price per unity/weight/volume" type="number" step="0.01" min="0" class="input-small">
 				</div>
 				<div class="col-md-2"><label>Decrease (%)</label></div>
@@ -206,12 +207,6 @@
 			</div>
 		</div>
 	</div>
-
-	<!--###########IMPORTAR####################################################-->
-	<div id="import">importar</div>
-
-	<!--###########EXPORTAR####################################################-->
-	<div id="export">exportar</div>
 
 	<!--###########SHOW########################################################-->
 	<div id="show">
@@ -252,6 +247,19 @@
 		    </tbody>
 		</table>
 	</div>
+
+	<!--###########SHOW ONE RECIPE#############################################-->
+	<div id="recipe-selected"></div>
+
+	<!--###########CALCULATOR########################################-->
+	<div id="calculator-view">calculadora</div>
+
+	<!--###########IMPORTAR####################################################-->
+	<div id="import">importar</div>
+
+	<!--###########EXPORTAR####################################################-->
+	<div id="export">exportar</div>
+
 </div>
 
 <div class="col-md-2">
@@ -270,297 +278,43 @@
 	//$('#show').show();
 	$('#show').hide();
 	$('#current-recipe').hide();
+	$('#recipe-selected').hide();
 
 	$(document).ready(function(){
 		$('select').addClass('form-control');
-		//############################## INGREDIENTES ##############################
+	//############################## RECIPE LIST ##############################
     	$('#recipe-list-tb').DataTable();
-		$("#recipe-list-tb > tbody > tr.odd").click(function(){
-			alert($(this).attr('id'));
-			console.log($(this).attr('id'));
-		});
-
-
-		//############################## INGREDIENTES ##############################
-		$('#quantity-un').hide();
-		$('#weight-un').show();
-		$('#volume-un').hide();
-		$('#quantity-op').change(function(){
-			switch ($("#quantity-op option:selected").text()){
-				case 'Quantity':
-					$('#quantity-un').show();
-					$('#unity').html('u').show();
-					$('#weight-un').hide();
-					$('#volume-un').hide();
-				break;
-				case 'Weight':
-					$('#quantity-un').hide();
-					$('#weight-un').show();
-					$('#weight-un').val('kg');
-					$('#unity').html('kg').show();
-					$('#volume-un').hide();
-				break;
-				case 'Volume':
-					$('#quantity-un').hide();
-					$('#weight-un').hide();
-					$('#volume-un').show();
-					$('#volume-un').val('l');
-					$('#unity').html('l').show();
-				break;
-			}
-		});
-
-		$('#weight-un').change(function(){
-			switch ($("#weight-un option:selected").text()){
-				case 'kg':
-					$('#unity').html('kg').show();
-				break;
-				case 'gr':
-					$('#unity').html('gr').show();
-				break;
-			}
-		});
-
-		$('#volume-un').change(function(){
-			switch ($("#volume-un option:selected").text()){
-				case 'l':
-					$('#unity').html('l').show();
-				break;
-				case 'cl':
-					$('#unity').html('cl').show();
-				break;
-				case 'ml':
-					$('#unity').html('ml').show();
-				break;
-			}
-		});
-
-		function ClearIngredient(){
-			$('#ingredient-name').val('');
-			$('#ing-cost').val('');
-			$("#n-quantity").val('');
-			$("#decrease").val(0.0);
-			$('#quantity-op').val("weight");
-			//$('#coin').val("euro");
-			//$('#unity').val("unity");
-			$('#unity').text("kg");
-			$('#quantity-un').hide();
-			$('#weight-un').show();
-			$('#volume-un').hide();
-		}
-
-		$('#save-ingredient, #save-finish').click(function(){
-    		if ($('#ingredient-name').val() == ""){
-    			$("#message2").hide();
-    			$("#message2").html('<p class ="alert alert-danger" role="alert">Type the  ingredient name</p>').show(1000);
-    			return false;
-			}
-			if ($('#ing-cost').val() == ""){
-    			$("#message2").hide();
-    			$("#message2").html('<p class ="alert alert-danger" role="alert">Type the ingredient cost</p>').show(1000);
-    			return false;
-			}
-			if ($('#n-quantity').val() == ""){
-    			$("#message2").hide();
-    			$("#message2").html('<p class ="alert alert-danger" role="alert">Type quantity</p>').show(1000);
-    			return false;
-			}
-			if ($('#ing-cost').val() == ""){
-    			$("#message2").hide();
-    			$("#message2").html('<p class ="alert alert-danger" role="alert">Type ingredient cost</p>').show(1000);
-    			return false;
-			}
-
-			var ins = CKEDITOR.instances['instructions'].getData();
-			var finished = false;
-			if ( $(this).attr('id') == "save-finish" )
-				finished = true;
+	
+	//############################## RECIPE SELECTED ###########################
+		$("#recipe-list-tb > tbody > tr").click(function(){
+			//alert($(this).attr('id'));
+			var name = $(this).attr('id');
+			var clear_name = ClearSpace(name);
+			console.log(name);
+			console.log(clear_name);
 			$.ajax({
-	    		type: "POST",
-				url: "/home/new-ingredient",
-	      		data: {ing_name: $('#ingredient-name').val(), ing_cost: $('#ing-cost').val(), ing_unity_cost: "€/"+$('#unity').text(),/*$("#coin option:selected").text()+'/'+$("#unity option:selected").text()*/ quantity_op: $('#quantity-op option:selected').text(), n_quantity: $('#n-quantity').val(), weight_un: $("#weight-un option:selected").text(), volume_un: $("#volume-un option:selected").text(),ing_decrease: $("#decrease").val(), instructions: ins, recipe_name: $('#recipe-name').val()},
+    			type: "GET",
+				url: "/home/recipe",
+      			data: {recipe: name, url: clear_name},
 
-	      		success: function(data){
-	      			if(data.control == 0){
-		  				$("#message2").hide();
-			        	$("#message2").html('<p class ="alert alert-success" role="alert">'+$('#ingredient-name').val()+' has been added</p>').show(1000);
-			        	$('#current-recipe').html($('#current-recipe').html() + " + " + $('#ingredient-name').val() + "<br>").show(1000);
-			        	ClearIngredient();
-			        	$('#recipe_cost').val(data.cost);
-			        	$('#recipe_cost_ration').val(data.ration_cost);
-			        	return false;
-	      			}
-	      			if(data.control == 1){
-		  				$("#message2").hide();
-			        	$("#message2").html('<p class ="alert alert-danger" role="alert">This ingredient already exists in the recipe</p>').show(1000);
-			        	return false;
-	      			}
-	      			if ( finished == true){
-	      				$("#message2").hide();
-			        	$("#message2").html('<p class ="alert alert-success" role="alert">The new ingredient has been added</p>').show(1000);
-	      				window.setTimeout(function(){window.location = '/home';}, 2000 );
-	      				return false;
-	      			}
-	      		},
+				success: function(data){
+					//alert(clear_name);
+					if(data.control == 0)
+						window.location = '/home/recipe/'+clear_name;
+					else
+						window.location = '/';
+				},
 
-	      		error: function(xhr){
+				error: function(xhr){
 					console.log(xhr.status);
-		    		console.log(xhr.statusText);
-		    	}
-		    });
-		});
-	//############################## RECETAS #########################################
-		function ClearRecipe(){
-			$('#recipe-name').val(''); $('#recipe-name').prop('readonly', false);
-			$('#n-rations').val(1); $('#n-rations').prop('readonly', false);
-			$('#recipe_cost').val(''); $('#recipe_cost_ration').val('');
-			$('#pos').val("single");
-			$('#type').val("other");
-			$('#nivel').val("medium");
-			$('#h').val(''); $('#m').val('');
-			$('#vegan').val("no");
-			$('#allergens').val('');
-			$('#country').val('');
-			CKEDITOR.instances['instructions'].setData('');			
-		}
-
-		$("#make-recipe").click(function(){
-			$('#message').hide();
-			$("#message2").hide();
-			$('#calculator-view').hide();
-			$('#import').hide();
-			$('#export').hide();
-			$('#show').hide();
-			$('#section-title').html('<h3>New recipe</h3><hr>');
-			$('#make').show();
-			$('#recipe-buttons').show();
-			$('.fila').show();
-			$('#avatar').show();
-			$('#accordion').hide();
-			$('#ingredient').hide();
-			$('#current-recipe').hide();
-			ClearRecipe();
-		});
-
-		$("#cancel").click(function(){
-			$('#message').hide();
-			$('#calculator-view').hide();
-			$('#make').hide();
-			$('#import').hide();
-			$('#export').hide();
-			$('#current-recipe').hide();
-			$('#section-title').html('<h3>Recipe list</h3><hr>');
-			$('#show').show();
-			return false;
-		});
-
-		$("#import-recipe").click(function(){
-			$('#message').hide();
-			$('#calculator-view').hide();
-			$('#make').hide();
-			$('#export').hide();
-			$('#show').hide();
-			$('#current-recipe').hide();
-			$('#section-title').html('<h3>Import recipe</h3><hr>');
-			$('#import').show();
-			return false;
-		});
-
-		$("#export-recipe").click(function(){
-			$('#message').hide();
-			$('#calculator-view').hide();
-			$('#make').hide();
-			$('#import').hide();
-			$('#show').hide();
-			$('#current-recipe').hide();
-			$('#section-title').html('<h3>Export recipe</h3><hr>');
-			$('#export').show();
-			return false;
-		});
-
-		$("#show-all").click(function(){
-			$('#message').hide();
-			$('#calculator-view').hide();
-			$('#make').hide();
-			$('#import').hide();
-			$('#export').hide();
-			$('#current-recipe').hide();
-			$('#section-title').html('<h3>Recipe list</h3><hr>');
-			$('#show').show();
-			return false;
-		});
-
-		$("#calculator").click(function(){
-			$('#message').hide();
-			$('#calculator-view').show();
-			$('#make').hide();
-			$('#import').hide();
-			$('#export').hide();
-			$('#current-recipe').hide();
-			$('#section-title').html('<h3>Recipe calculator</h3><hr>');
-			$('#show').hide();
-			return false;
-		});
-
-		$("#save-recipe").click(function(){
-			var entrada = false;
-			if ($('#recipe-name').val() == ""){
-    			$('#label-name').css("color", "red");
-    			entrada = true;
-    		}
-    		else
-    			$('#label-name').css("color", "inherit");
-    		if ( ($('#n-rations').val() == "") || ($('#n-rations').val() < 1) ){
-    			$('#rations').css("color", "red");
-    			entrada = true;
-    		}
-    		else
-    			$('#rations').css("color", "inherit");
-			if (entrada == true) {
-				$("#message").hide();
-    			$("#message").html('<p class ="alert alert-danger" role="alert">Check fields</p>').show(1000);
-    			entrada = false;
-    			return false;
-			}
-			else
-				$("#message").hide();
-			if ($('#h').val() == "")
-				$('#h').val(0);
-			if ($('#m').val() == "")
-				$('#m').val(0);
-			$.ajax({
-	    		type: "POST",
-				url: "/home/new-recipe",
-	      		data: {recipe_name: $('#recipe-name').val(), nration: $('#n-rations').val(), order: $('#pos').val(), type: $('#type').val(), nivel: $('#nivel').val(), time: $('#h').val()+"'"+$('#m').val()+"''", vegan: $('#vegan').val(), allergens: $('#allergens').val(), origin: $('#country').val()},
-
-	      		success: function(data){
-	      			if(data.control == 0){
-		  				$("#message").hide();
-			        	$("#message").html('<p class ="alert alert-success" role="alert">Recipe created successfully</p>').show(1000);
-			        	$("#recipe-buttons").hide();
-			        	ClearIngredient();
-						$('#ingredient').show(1500);
-						$('#recipe-name').prop('readonly', true);
-						$('#n-rations').prop('readonly', true);
-						$('.fila').hide(1000);
-						$('#avatar').hide(1000);
-						$('#accordion').show(1500);
-						$('#current-recipe').html("<h4>"+$('#recipe-name').val()+"</h4>").show(1500);
-						return false;
-	      			}
-	      			if(data.control == 1){
-	      				$("#message").hide();
-			        	$("#message").html('<p class ="alert alert-danger" role="alert">This recipe name already exists</p>').show(1000);
-			        	return false;
-	      			}
-	      		},
-
-	      		error: function(xhr){
-					console.log(xhr.status);
-		    		console.log(xhr.statusText);
-		    	}
-		    });
+	    			console.log(xhr.statusText);
+	    			window.location = '/home';
+	    		}
+			});
 		});
 	});
-
+	//############################## INGREDIENTES ##############################
+	//############################## RECETAS #########################################	
 </script>
+<script src="/js/new-ingredient.js"></script>
+<script src="/js/new-recipe.js"></script>

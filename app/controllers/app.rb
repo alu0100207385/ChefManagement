@@ -40,7 +40,8 @@ class MyApp < Sinatra::Base
 		set :root, File.dirname(__FILE__)
 		set :views, Proc.new { File.join(root, "../views") }
 		set :erb, :layout => :'layouts/default'
-		set :public_folder, Proc.new { File.join(root, "../../public") }
+		#set :public_folder, Proc.new { File.join(root, "../../public") }
+		set :public_folder, 'public'
 	end
 
 	use OmniAuth::Builder do
@@ -153,7 +154,7 @@ class MyApp < Sinatra::Base
 		@user = User.first(:username => session[:username])
 		@rec = Recipe.all
 		if (!@user.is_a? NilClass)
-			erb :home, :layout => :'layouts/default'
+			erb :home
 		else
 			redirect '/'
 		end
@@ -186,27 +187,20 @@ class MyApp < Sinatra::Base
 				recipe.name = params[:recipe_name]
 				recipe.nration = params[:nration]
 				recipe.username = user.username
-				#puts "#{params[:order]}"
 				recipe.pos = params[:order]
-				#puts "#{params[:type]}"
 				recipe.type = params[:type]
-				#puts "#{params[:nivel]}"
 				recipe.nivel = params[:nivel]
-				#puts "#{params[:time]}"
 				recipe.production_time = params[:time]
-				#puts "#{params[:vegan]}"
 				if (params[:vegan] == "yes")
 					recipe.vegan = true
 				else
 					recipe.vegan = false
 				end
-				#puts "#{params[:allergens]}"
 				if (params[:allergens] == "")
 					recipe.warning = ""
 				else
 					recipe.warning = params[:allergens]
 				end
-				#puts "#{params[:origin]}"
 				if (params[:origin] == "")
 					recipe.origin = ""
 				else
@@ -253,11 +247,34 @@ class MyApp < Sinatra::Base
 	end
 
 
+	get '/home/recipe' do
+		user = User.first(:username => session[:username])
+		content_type 'application/json'
+		if (!user.is_a? NilClass)
+			if (!Recipe.first(:name => params[:recipe]).is_a? NilClass)
+				{:control => 0}.to_json
+			else
+				{:control => 1}.to_json
+			end
+		else
+			{:control => 1}.to_json
+		end
+	end
+
+
+	get '/home/recipe/:name' do
+		params[:name].gsub!('-',' ')
+		@recipe = Recipe.first(:name => params[:name])
+
+		erb :recipe, :layout => :'layouts/default3'
+	end
+
+
 ###################################################################SETTINGS
 	get '/home/settings' do
-		@user = User.first(:username => session[:username], :network => session[:network])
+		@user = User.first(:username => session[:username])
 		if (!@user.is_a? NilClass)
-			erb :settings, :layout => :'layouts/default'
+			erb :settings, :layout => :'layouts/default2'
 		else
 			redirect '/'
 		end
