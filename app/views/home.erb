@@ -222,7 +222,6 @@
 		            <th>Vegan</th>
 		            <th>Author</th>
 		            <th></th>
-		            <th></th>
 		        </tr>
 		    </thead>
 		    <tbody>
@@ -240,8 +239,9 @@
 			            	<td>NO</td>
 			            <% end %>
 			            <td><%= rec.username %></td>
-			            <td>Edit</td>
-			            <td>Delete</td>
+			            <td>
+			            	<input type="checkbox" id="selected">
+			            </td>
 			        </tr>
 			    <% end %>
 		    </tbody>

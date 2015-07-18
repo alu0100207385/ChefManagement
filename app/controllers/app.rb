@@ -154,6 +154,7 @@ class MyApp < Sinatra::Base
 		@user = User.first(:username => session[:username])
 		@rec = Recipe.all
 		if (!@user.is_a? NilClass)
+			@current_user = session[:username]
 			erb :home
 		else
 			redirect '/'
@@ -265,8 +266,22 @@ class MyApp < Sinatra::Base
 	get '/home/recipe/:name' do
 		params[:name].gsub!('-',' ')
 		@recipe = Recipe.first(:name => params[:name])
+		@ing = Ingredient.all(:recipe => @recipe)
+		@current_user = session[:username]
 
 		erb :recipe, :layout => :'layouts/default3'
+	end
+
+	post '/home/delete-recipe/:name' do
+		#params[:name].gsub!('-',' ')
+		rec = Recipe.first(:name => params[:recipe_name])
+		content_type 'application/json'
+		if (session[:username] == rec.username)
+			rec.destroy
+			{:control => 0}.to_json
+		else
+			{:control => 1}.to_json
+		end
 	end
 
 

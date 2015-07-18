@@ -27,6 +27,10 @@ class Recipe
 	property :warning, String							#Aviso alérgicos
 	property :origin, String						#País originario de la receta
 
+	#property :score, Integer
+	#property :create_at, DateTime
+	#property :edit_date, DateTime
+
 #belongs_to :parent, self, :key => true
 	#belongs_to :parent, self, :required => false
 	#belongs_to :parent, self, :auto_validations => false
@@ -58,11 +62,10 @@ end
 class Comment
 	include DataMapper::Resource
 	
-	property :recipe_name, String, :key => true 	#elegir campo para asociar, id o nombre de la receta
+	property :id, Serial
 	property :username, String, :required => true	#Persona que hace el comentario
 	property :posted, DateTime
 	property :content, Text
-	property :score, Integer
 
 	belongs_to :recipe
 end
