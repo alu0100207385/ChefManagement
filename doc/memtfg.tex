@@ -1,0 +1,326 @@
+\documentclass[spanish,a4paper,11pt,twoside]{report}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[dvips]{graphicx}
+\graphicspath{{images/}}
+
+\usepackage[dvips]{epsfig}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{multirow}
+
+\usepackage{hyperref}
+%
+\usepackage{listings}
+\usepackage{color}
+
+\lstloadlanguages{Ruby,HTML}
+\lstset{
+  language=Ruby,                      % C,Fortran,XML
+  basicstyle=\small,             % Listados en small
+  keywordstyle=\color{red},             % Palabras clave en rojo
+  identifierstyle=\ttfamily,
+  escapeinside={(*@}{@*)},
+  commentstyle=\color{blue},            % comentarios en azul
+  stringstyle=\color{green},            % cadenas en verde
+  showstringspaces=false,
+  frame=tb,
+  captionpos=b,
+  framextopmargin=2pt,
+  framexbottommargin=2pt,
+  framesep=0pt,
+  belowskip=0pt,
+  aboveskip=0pt,
+  %belowcaptionskip=0pt,
+  %abovecaptionskip=0pt,
+  stepnumber=2,                                         % Opciones de lineas y etiquetas
+  numberstyle=\small,
+  numbersep=5pt,
+  tabsize=1
+}
+
+%%
+% Entornos para resumen y palabras clave en ingles y castellano
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{summary}
+{\par\noindent\begin{center}\textbf{Abstract}\end{center}\begin{itshape}\par\noindent}
+{\end{itshape}}
+
+\newenvironment{keywords}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item[\hskip\labelsep \bfseries Keywords:]}
+{\end{list}}
+
+\newenvironment{palabrasClave}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item[\hskip\labelsep \bfseries Palabras clave:]}
+{\end{list}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% First Page 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{empty}
+\thispagestyle{empty}
+
+
+\newcommand{\HRule}{\rule{\linewidth}{1mm}}
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{0mm}
+\vspace*{\stretch{1}}
+
+\begin{center}
+\includegraphics[width=0.2\textwidth]{logotipo-secundario-ULL}\\[0.25cm]
+\end{center}
+
+\HRule
+\begin{flushright}
+        {\Huge Acronimo} \\[2.5mm] 
+        {\Huge Titulo en español} \\[2.5mm]
+        {\Large \textit{Title in english}} \\[5mm]
+        {\Large Aaron} \\[5mm]
+        Dpto. de Ingeniería Informática y de Sistemas \\[5mm]
+        Escuela Superior de Ingeniería y Tecnología \\[5mm]
+        
+        Trabajo de Fin de Grado \\
+\end{flushright}
+\HRule
+\vspace*{\stretch{2}}
+\begin{center}
+  \Large La Laguna, \today 
+\end{center}
+
+\setlength{\parindent}{5mm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Signature page (add the official stamp)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
+\cleardoublepage
+\thispagestyle{empty}
+
+D. {\bf Vicente José Blanco Pérez}, con N.I.F. 42.171.808-C 
+profesor
+Titular de Universidad 
+adscrito al Departamento 
+de Ingeniería Informática y de Sistemas
+de la Universidad de La Laguna
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+{\bf C E R T I F I C A}
+
+\bigskip
+\bigskip
+\bigskip
+Que la presente memoria titulada:
+
+\bigskip
+``{\it \textbf{Acronimo:} Titulo}''
+
+\bigskip
+\bigskip
+\bigskip
+
+\noindent ha sido realizada bajo su dirección por D. {\bf AAA},
+con N.I.F. XX.XXX.XXX-0.
+
+\bigskip
+\bigskip
+
+Y para que así conste, en cumplimiento de la legislación vigente y a los efectos
+oportunos firman la presente en La Laguna a \today 
+
+\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}
+
+{ \flushright
+
+\begin{LARGE}
+Agradecimientos
+\end{LARGE}
+
+\hspace{3mm}
+
+\begin{large}
+
+
+\hspace{3mm}
+
+\end{large}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\begin{abstract}
+{\em 
+
+El resumen va aquí
+
+
+
+
+
+}
+
+\begin{palabrasClave}
+  Bla
+\end{palabrasClave}
+
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\begin{summary}
+{\em 
+
+Summary here \ldots.
+
+
+}
+
+\begin{keywords}
+  Bla
+\end{keywords}
+
+\end{summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage{\pagestyle{empty}\cleardoublepage}
+\thispagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\pagestyle{myheadings} %my head defined by markboth or markright
+% No funciona bien \markboth sin "twoside" en \documentclass, pero al
+% ponerlo se dan un montón de errores de underfull \vbox, con lo que no se
+% ha puesto.
+\markboth{Autor}{Acronimo}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Numeracion en romanos
+\renewcommand{\thepage}{\roman{page}}
+\setcounter{page}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage{\pagestyle{empty}\cleardoublepage}
+
+\listoffigures
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage{\pagestyle{empty}\cleardoublepage}
+
+\lstlistoflistings
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage{\pagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Numeracion a partir del capitulo I
+\renewcommand{\thepage}{\arabic{page}}
+\setcounter{page}{1}
+
+
+\chapter{Introducción}
+\label{chapter:intro}
+
+\input{cap1.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage{\pagestyle{empty}\cleardoublepage}
+\thispagestyle{empty}
+
+\chapter{Entorno de Desarrollo}
+\label{chapter:dos}
+
+\input{cap2.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage{\pagestyle{empty}\cleardoublepage}
+\thispagestyle{empty}
+
+
+\chapter{Descripción de la aplicaci\'on}
+\label{chapter:tres}
+
+\input{cap3.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage{\pagestyle{empty}\cleardoublepage}
+\thispagestyle{empty}
+
+
+\chapter{Desarrollo de la aplicaci\'on}
+\label{chapter:cuatro}
+
+\input{cap4.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage{\pagestyle{empty}\cleardoublepage}
+\thispagestyle{empty}
+
+\chapter{Conclusiones y trabajos futuros}
+\label{chapter:Conclusiones}
+
+\input{cap5.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage{\pagestyle{empty}\cleardoublepage}
+\thispagestyle{empty}
+ 
+\chapter{Summary and Conclusions } 
+\label{chapter:ingles}
+
+\input{cap6.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage{\pagestyle{empty}\cleardoublepage}
+\thispagestyle{empty}
+
+\chapter{Presupuesto}
+\label{chapter:Presupuesto}
+
+\input{cap7.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage{\pagestyle{empty}\cleardoublepage}
+%\thispagestyle{empty}
+%\begin{appendix}
+
+%\chapter{Título del Apéndice 1}
+%\label{appendix:1}
+%\input{apendice1.tex}
+
+%\chapter{Título del Apéndice 2}
+%\label{appendix:2}
+%\input{apendice2.tex}
+
+%\end{appendix}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addcontentsline{toc}{chapter}{Bibliografía}
+\bibliographystyle{plain}
+
+\bibliography{memtfg}
+% \nocite comentado, para que solo salga la biblio citada
+%\nocite{*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
