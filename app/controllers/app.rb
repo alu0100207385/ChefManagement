@@ -277,7 +277,27 @@ class MyApp < Sinatra::Base
 		rec = Recipe.first(:name => params[:recipe_name])
 		content_type 'application/json'
 		if (session[:username] == rec.username)
+			Ingredient.all(:recipe => rec).destroy
 			rec.destroy
+			{:control => 0}.to_json
+		else
+			{:control => 1}.to_json
+		end
+	end
+
+	get '/home/edit-recipe/:name' do
+		rec = params[:name]
+		rec.gsub!('-',' ')
+		@rec = Recipe.first(:name => rec)
+
+		erb :'edit-recipe', :layout => :'layouts/default3'
+	end
+
+	post '/home/edit-recipe/:name' do
+		rec = Recipe.first(:name => params[:recipe_name])
+		content_type 'application/json'
+		if (session[:username] == rec.username)
+			##Actualizar campos !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			{:control => 0}.to_json
 		else
 			{:control => 1}.to_json
