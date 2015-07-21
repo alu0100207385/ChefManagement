@@ -288,6 +288,7 @@ class MyApp < Sinatra::Base
 		if (!User.first(:username => session[:username]).is_a? NilClass)
 			rec = Recipe.first(:name => params[:recipe_name])
 			rec.update(:nration => params[:nration])
+			rec.update(:ration_cost => (rec.cost / params[:nration].to_i));
 			rec.update(:pos => params[:order])
 			rec.update(:type => params[:type])
 			rec.update(:nivel => params[:nivel])
@@ -309,6 +310,12 @@ class MyApp < Sinatra::Base
 			end
 			if (params[:recipe_name] != params[:new_recipe_name]) #Se ha modificado el nombre de la receta
 				rec.update(:name => params[:new_recipe_name])
+				ing = Ingredient.all(:recipe => Recipe.first(:name => params[:recipe_name]))
+				ing.each do |i|
+					Ingredient.first_or_create(:name => i.name, :cost => i.cost, :unity_cost => i.unity_cost, :quantity => i.quantity, :weight => i.weight, :weight_un => i.weight_un, :volume => i.volume, :volume_un => i.volume_un, :decrease => i.decrease, :recipe => rec)
+				end
+				ing.destroy
+				#update? ing.update(:recipe => rec) #Recuerda, cambia la clave primaria
 				{:control => 0, :new_name => true}.to_json
 			else
 				{:control => 0, :new_name => false}.to_json
