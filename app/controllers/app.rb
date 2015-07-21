@@ -272,6 +272,53 @@ class MyApp < Sinatra::Base
 		erb :recipe, :layout => :'layouts/default3'
 	end
 
+
+	get '/home/edit-recipe/:name' do
+		rec = params[:name]
+		rec.gsub!('-',' ')
+		@rec = Recipe.first(:name => rec)
+		@ing = Ingredient.all(:recipe => @rec)
+
+		erb :'edit-recipe', :layout => :'layouts/default3'
+	end
+
+
+	post '/home/edit-recipe/:name' do
+		content_type 'application/json'
+		if (!User.first(:username => session[:username]).is_a? NilClass)
+			rec = Recipe.first(:name => params[:recipe_name])
+			rec.update(:nration => params[:nration])
+			rec.update(:pos => params[:order])
+			rec.update(:type => params[:type])
+			rec.update(:nivel => params[:nivel])
+			rec.update(:production_time => params[:time])
+			if (params[:vegan] == "yes")
+				rec.update(:vegan => true)
+			else
+				rec.update(:vegan => false)
+			end
+			if (params[:allergens] == "")
+				rec.update(:warning => "")
+			else
+				rec.update(:warning => params[:allergens])
+			end
+			if (params[:origin] == "")
+				rec.update(:origin => "")
+			else
+				rec.update(:origin => params[:origin])
+			end
+			if (params[:recipe_name] != params[:new_recipe_name]) #Se ha modificado el nombre de la receta
+				rec.update(:name => params[:new_recipe_name])
+				{:control => 0, :new_name => true}.to_json
+			else
+				{:control => 0, :new_name => false}.to_json
+			end
+		else
+			{:control => 1}.to_json #Error
+		end
+	end
+
+
 	post '/home/delete-recipe/:name' do
 		#params[:name].gsub!('-',' ')
 		rec = Recipe.first(:name => params[:recipe_name])
@@ -284,26 +331,20 @@ class MyApp < Sinatra::Base
 			{:control => 1}.to_json
 		end
 	end
-
-	get '/home/edit-recipe/:name' do
-		rec = params[:name]
-		rec.gsub!('-',' ')
-		@rec = Recipe.first(:name => rec)
-
-		erb :'edit-recipe', :layout => :'layouts/default3'
-	end
-
-	post '/home/edit-recipe/:name' do
+=begin
+	post '/home/delete-ingredient/:name' do
+		#params[:name].gsub!('-',' ')
 		rec = Recipe.first(:name => params[:recipe_name])
 		content_type 'application/json'
 		if (session[:username] == rec.username)
-			##Actualizar campos !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			Ingredient.all(:recipe => rec).destroy
+			rec.destroy
 			{:control => 0}.to_json
 		else
 			{:control => 1}.to_json
 		end
 	end
-
+=end
 
 ###################################################################SETTINGS
 	get '/home/settings' do
