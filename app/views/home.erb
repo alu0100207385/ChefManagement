@@ -248,7 +248,7 @@
 		    </thead>
 		    <tbody>
 		    	<% @rec.each do |rec| %>
-			        <tr id="<%= rec.name %>">
+			        <tr id="<%= rec.name %>=<%= rec.username %>">
 			            <td><%= rec.name %></td>
 			            <td><%= rec.nration %></td>
 			            <td><%= rec.cost %></td>
@@ -387,17 +387,16 @@
 	//############################## RECIPE SELECTED ###########################
 		$("#recipe-list-tb > tbody > tr").click(function(){
 			var name = $(this).attr('id');
-			var clear_name = ClearSpace(name);
-			console.log(name);
-			console.log(clear_name);
+			c = GetIds(name);
+			var clear_name = ClearSpace(c[0]);
 			$.ajax({
     			type: "GET",
 				url: "/home/recipe",
-      			data: {recipe: name, url: clear_name},
+      			data: {recipe: c[0], user: c[1]},
 
 				success: function(data){
 					if(data.control == 0)
-						window.location = '/home/recipe/'+clear_name;
+						window.location = '/home/recipe/'+clear_name+'&'+data.username;
 					else
 						window.location = '/';
 				},
@@ -405,7 +404,7 @@
 				error: function(xhr){
 					console.log(xhr.status);
 	    			console.log(xhr.statusText);
-	    			window.location = '/home';
+	    			//window.location = '/home';
 	    		}
 			});
 		});

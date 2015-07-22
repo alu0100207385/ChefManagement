@@ -17,7 +17,7 @@ class Recipe
 	property :ration_cost, Float, :default => 0.0	#Costo por ración
 	property :nration, Integer, :required => true	#Numero de raciones
 	property :instructions, Text					#Preparación
-	property :username, String 						#Autor de la receta
+	property :username, String, :key => true		#Autor de la receta
 	#property :avatar
 	property :pos, Flag[:incoming, :first, :second, :third, :single, :afters, :other]	#entrante, primer plato, segundo plato, plato único, postre
 	property :type, Enum[:snack, :homemade_food, :tapas, :fast_food, :tasting, :other]	#snack, comida casera, tapas, comida rapida, degustación

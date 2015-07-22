@@ -29,4 +29,10 @@ module AppHelpers
 	def merma (n, lost) #lost = porcentaje de perdida
 		return n - (n * lost)/100
 	end
+
+	#Esta funcion recibe una cadena y devuelve un array [name,username]
+	#Usada para obtener id fila de la tabla lista de recetas.
+	def GetIds (cad)
+		return [cad[0..cad.index('&')-1], cad[cad.index('&')+1..cad.size]]
+	end
 end

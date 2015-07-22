@@ -48,3 +48,12 @@ function ClearIngredient(){
 function ClearSpace(cad){
 	return cad.replace(/\s/g, "-");
 }
+
+function Redirect(base, cad){
+	window.location = base+ClearSpace(cad);
+}
+
+function GetIds(cad){
+	n = cad.indexOf("=");
+	return [cad.slice(0,n), cad.slice(n+1,cad.length)]
+}

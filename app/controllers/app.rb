@@ -181,7 +181,7 @@ class MyApp < Sinatra::Base
 	post '/home/new-recipe' do
 		user = User.first(:username => session[:username])
 		if (!user.is_a? NilClass)
-			rec = Recipe.first(:name => params[:recipe_name])
+			rec = Recipe.first(:name => params[:recipe_name].gsub!('=',''), :username => session[:username])
 			content_type 'application/json'
 			if (rec.is_a? NilClass) #Si no se encuentra en la bbdd la creamos
 				recipe = Recipe.new
@@ -220,7 +220,7 @@ class MyApp < Sinatra::Base
 	post '/home/new-ingredient' do
 		user = User.first(:username => session[:username])
 		if (!user.is_a? NilClass)
-			@recipe = Recipe.first(:name => params[:recipe_name])
+			@recipe = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 			content_type 'application/json'
 			if (Ingredient.first(:name => params[:ing_name], :recipe => @recipe).is_a? NilClass) #Si no existe en esa receta
 				if (!params[:instructions].empty?)
@@ -252,8 +252,10 @@ class MyApp < Sinatra::Base
 		user = User.first(:username => session[:username])
 		content_type 'application/json'
 		if (!user.is_a? NilClass)
-			if (!Recipe.first(:name => params[:recipe]).is_a? NilClass)
-				{:control => 0}.to_json
+			#rec = GetIds(params[:recipe])
+			if (!Recipe.first(:name => params[:recipe], :username => params[:user]).is_a? NilClass)
+				params[:user].gsub!(' ','-')
+				{:control => 0, :username => params[:user]}.to_json
 			else
 				{:control => 1}.to_json
 			end
@@ -265,7 +267,8 @@ class MyApp < Sinatra::Base
 
 	get '/home/recipe/:name' do
 		params[:name].gsub!('-',' ')
-		@recipe = Recipe.first(:name => params[:name])
+		c = GetIds(params[:name]);
+		@recipe = Recipe.first(:name => c[0], :username => c[1])
 		@ing = Ingredient.all(:recipe => @recipe)
 		@current_user = session[:username]
 
@@ -276,7 +279,7 @@ class MyApp < Sinatra::Base
 	get '/home/edit-recipe/:name' do
 		rec = params[:name]
 		rec.gsub!('-',' ')
-		@rec = Recipe.first(:name => rec)
+		@rec = Recipe.first(:name => rec, :username => session[:username])
 		@ing = Ingredient.all(:recipe => @rec)
 
 		erb :'edit-recipe', :layout => :'layouts/default3'
@@ -286,49 +289,44 @@ class MyApp < Sinatra::Base
 	post '/home/edit-recipe/:name' do
 		content_type 'application/json'
 		if (!User.first(:username => session[:username]).is_a? NilClass)
-			rec = Recipe.first(:name => params[:recipe_name])
-			rec.update(:nration => params[:nration])
-			rec.update(:ration_cost => (rec.cost / params[:nration].to_i));
-			rec.update(:pos => params[:order])
-			rec.update(:type => params[:type])
-			rec.update(:nivel => params[:nivel])
-			rec.update(:production_time => params[:time])
-			if (params[:vegan] == "yes")
-				rec.update(:vegan => true)
-			else
-				rec.update(:vegan => false)
-			end
-			if (params[:allergens] == "")
-				rec.update(:warning => "")
-			else
-				rec.update(:warning => params[:allergens])
-			end
-			if (params[:origin] == "")
-				rec.update(:origin => "")
-			else
-				rec.update(:origin => params[:origin])
-			end
-			if (params[:recipe_name] != params[:new_recipe_name]) #Se ha modificado el nombre de la receta
-				rec.update(:name => params[:new_recipe_name])
-				ing = Ingredient.all(:recipe => Recipe.first(:name => params[:recipe_name]))
-				ing.each do |i|
-					Ingredient.first_or_create(:name => i.name, :cost => i.cost, :unity_cost => i.unity_cost, :quantity => i.quantity, :weight => i.weight, :weight_un => i.weight_un, :volume => i.volume, :volume_un => i.volume_un, :decrease => i.decrease, :recipe => rec)
+			rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
+			if (!rec.is_a? NilClass)
+				rec.update(:nration => params[:nration])
+				rec.update(:ration_cost => (rec.cost / params[:nration].to_i));
+				rec.update(:pos => params[:order])
+				rec.update(:type => params[:type])
+				rec.update(:nivel => params[:nivel])
+				rec.update(:production_time => params[:time])
+				if (params[:vegan] == "yes")
+					rec.update(:vegan => true)
+				else
+					rec.update(:vegan => false)
 				end
-				ing.destroy
-				#update? ing.update(:recipe => rec) #Recuerda, cambia la clave primaria
-				{:control => 0, :new_name => true}.to_json
-			else
-				{:control => 0, :new_name => false}.to_json
+				if (params[:allergens] == "")
+					rec.update(:warning => "")
+				else
+					rec.update(:warning => params[:allergens])
+				end
+				if (params[:origin] == "")
+					rec.update(:origin => "")
+				else
+					rec.update(:origin => params[:origin])
+				end
+				if (params[:instructions] == "")
+					rec.update(:instructions => "")
+				else
+					rec.update(:instructions => params[:instructions])
+				end
 			end
 		else
-			{:control => 1}.to_json #Error
+			{:control => -1}.to_json #Error
 		end
 	end
 
 
 	post '/home/delete-recipe/:name' do
 		#params[:name].gsub!('-',' ')
-		rec = Recipe.first(:name => params[:recipe_name])
+		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 		content_type 'application/json'
 		if (session[:username] == rec.username)
 			Ingredient.all(:recipe => rec).destroy
