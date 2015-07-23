@@ -248,7 +248,7 @@
 		    </thead>
 		    <tbody>
 		    	<% @rec.each do |rec| %>
-			        <tr id="<%= rec.name %>=<%= rec.username %>">
+			        <tr id="<%= rec.name %>&<%= rec.username %>">
 			            <td><%= rec.name %></td>
 			            <td><%= rec.nration %></td>
 			            <td><%= rec.cost %></td>
@@ -404,7 +404,6 @@
 				error: function(xhr){
 					console.log(xhr.status);
 	    			console.log(xhr.statusText);
-	    			//window.location = '/home';
 	    		}
 			});
 		});

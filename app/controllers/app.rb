@@ -58,7 +58,7 @@ class MyApp < Sinatra::Base
 		}
 	end
 
-########################################################################
+############################## LOGIN & LOGOUT #########################################
 	get '/' do
 		if (session[:username] != nil)
 			redirect '/home'
@@ -85,6 +85,11 @@ class MyApp < Sinatra::Base
 				{:control => 2}.to_json #pass no coinciden
 		   	end
 		end
+	end
+
+	get '/logout' do
+	   session.clear
+	   redirect '/'
 	end
 
 
@@ -119,6 +124,7 @@ class MyApp < Sinatra::Base
 		end
 	end
 
+############################## CRUD USER #########################################
 
 	get '/register' do
 		@user = User.first(:username => session[:username])
@@ -149,16 +155,39 @@ class MyApp < Sinatra::Base
 		end
 	end
 
-
-	get '/home' do
-		@user = User.first(:username => session[:username])
-		@rec = Recipe.all
-		if (!@user.is_a? NilClass)
-			@current_user = session[:username]
-			erb :home
-		else
-			redirect '/'
+	post '/home/settings/edit-user' do
+		user = User.first(:username => session[:username])
+		cambio = 1 #no se han producido cambios
+		if (params[:new_email] != "")
+			if ( (User.first(:email => params[:new_email])).is_a? NilClass )
+				user.update(:email => params[:new_email])
+				cambio = 0
+			else #Ese correo ya esta registrado en la bbdd
+				cambio = 2
+			end
 		end
+		if (params[:new_password] != "")
+			user.update(:password => params[:new_password])
+			cambio = 0
+		end
+		
+		content_type 'application/json'
+		case cambio
+		when 0
+			{:control => 0}.to_json
+		when 1 #no se han producido cambios
+			{:control => 1}.to_json
+		when 2 #correo en uso
+			{:control => 2}.to_json
+		end
+	end
+
+
+	post '/home/settings/delete-user' do
+		user = User.first(:username => session[:username])
+		user.destroy
+	  	session.clear
+	  	redirect '/'
 	end
 
 
@@ -175,6 +204,47 @@ class MyApp < Sinatra::Base
 		else
 			{:control => 1}.to_json #El usuario no existe
 		end
+	end
+
+############################## CRUD RECIPE & ING #########################################
+
+	get '/home' do
+		@user = User.first(:username => session[:username])
+		@rec = Recipe.all
+		if (!@user.is_a? NilClass)
+			@current_user = session[:username]
+			erb :home
+		else
+			redirect '/'
+		end
+	end
+
+
+	get '/home/recipe' do
+		user = User.first(:username => session[:username])
+		content_type 'application/json'
+		if (!user.is_a? NilClass)
+			#rec = GetIds(params[:recipe])
+			if (!Recipe.first(:name => params[:recipe], :username => params[:user]).is_a? NilClass)
+				params[:user].gsub!(' ','-')
+				{:control => 0, :username => params[:user]}.to_json
+			else
+				{:control => 1}.to_json
+			end
+		else
+			{:control => 1}.to_json
+		end
+	end
+
+
+	get '/home/recipe/:name' do
+		params[:name].gsub!('-',' ')
+		c = GetIds(params[:name]);
+		@recipe = Recipe.first(:name => c[0], :username => c[1])
+		@ing = Ingredient.all(:recipe => @recipe)
+		@current_user = session[:username]
+
+		erb :recipe, :layout => :'layouts/default3'
 	end
 
 
@@ -238,41 +308,13 @@ class MyApp < Sinatra::Base
 				nuevo_costo = (@recipe.cost + (params[:ing_cost].to_f * params[:n_quantity].to_f)).round(2)
 				nuevo_costo_rat = (nuevo_costo/@recipe.nration).round(2)
 				@recipe.update(:cost => nuevo_costo,:ration_cost => nuevo_costo_rat)
-				{:control => 0, :cost => @recipe.cost, :ration_cost => nuevo_costo_rat}.to_json
+				{:control => 0, :cost => nuevo_costo, :ration_cost => nuevo_costo_rat}.to_json
 			else
 				{:control => 1}.to_json #Ese ingrediente ya se encuentra en la bbdd
 			end
 		else
-			redirect '/'
+			{:control => -1}
 		end
-	end
-
-
-	get '/home/recipe' do
-		user = User.first(:username => session[:username])
-		content_type 'application/json'
-		if (!user.is_a? NilClass)
-			#rec = GetIds(params[:recipe])
-			if (!Recipe.first(:name => params[:recipe], :username => params[:user]).is_a? NilClass)
-				params[:user].gsub!(' ','-')
-				{:control => 0, :username => params[:user]}.to_json
-			else
-				{:control => 1}.to_json
-			end
-		else
-			{:control => 1}.to_json
-		end
-	end
-
-
-	get '/home/recipe/:name' do
-		params[:name].gsub!('-',' ')
-		c = GetIds(params[:name]);
-		@recipe = Recipe.first(:name => c[0], :username => c[1])
-		@ing = Ingredient.all(:recipe => @recipe)
-		@current_user = session[:username]
-
-		erb :recipe, :layout => :'layouts/default3'
 	end
 
 
@@ -336,8 +378,64 @@ class MyApp < Sinatra::Base
 			{:control => 1}.to_json
 		end
 	end
+
+
+	post '/home/:recipe_name/add-ingredient' do
+		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
+		content_type 'application/json'
+		if (!rec.is_a? NilClass)
+			if (Ingredient.first(:name => params[:ing_name], :recipe => rec).is_a? NilClass) #Si no existe en esa receta
+				case params[:quantity_op]
+				when 'Quantity'
+					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => params[:n_quantity], :weight => 0.0, :weight_un => "", :volume => 0.0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => rec)
+				when 'Weight'
+					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => params[:n_quantity], :weight_un => params[:weight_un], :volume => 0.0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => rec)
+				when 'Volume'
+					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => 0.0, :weight_un => "", :volume => params[:n_quantity], :volume_un => params[:volume_un], :decrease => params[:ing_decrease], :recipe => rec)
+				end
+				nuevo_costo = (rec.cost + (params[:ing_cost].to_f * params[:n_quantity].to_f)).round(2)
+				nuevo_costo_rat = (nuevo_costo/rec.nration).round(2)
+				rec.update(:cost => nuevo_costo,:ration_cost => nuevo_costo_rat)
+				{:control => 0, :cost => nuevo_costo, :ration_cost => nuevo_costo_rat}.to_json
+			else
+				{:control => 2}.to_json #Ese ingrediente ya existe en la receta
+			end
+		else
+			{:control => 1}.to_json #Error. No se encuentra esa receta
+		end
+	end
+
+
+	post 'home/delete-ingredient/:name' do
+		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
+		content_type 'application/json'
+		if (!rec.is_a? NilClass)
+			params[:name].gsub!('-',' ')
+			ing = Ingredient.first(:name => params[:name], :recipe => rec)
+			if (!ing.is_a? NilClass)
+				if (ing.weight != 0)
+					n = ing.weight * ing.cost
+				elsif (ing.volume != 0)
+					n = ing.volume * ing.cost
+				else
+					n = ing.quantity * ing.cost
+				end
+				nuevo_costo = rec.cost - n
+				rec.update(:cost => nuevo_costo)
+				rec.update(:ration_cost => (nuevo_costo/rec.ration_cost))
+				ing.destroy
+				{:control => 0, :cost => nuevo_costo, :ration_cost => rec.ration_cost}.to_json #Ing borrado con exito
+			else
+				{:control => 2}.to_json #No existe ingrediente
+			end
+		else
+			{:control => 1}.to_json #No existe recipe
+		end
+	end
+
 =begin
-	post '/home/delete-ingredient/:name' do
+#Edit Ingredient
+	post '/home/edit-ingredient/:name' do
 		#params[:name].gsub!('-',' ')
 		rec = Recipe.first(:name => params[:recipe_name])
 		content_type 'application/json'
@@ -351,7 +449,7 @@ class MyApp < Sinatra::Base
 	end
 =end
 
-###################################################################SETTINGS
+################################# OTROS ##################################
 	get '/home/settings' do
 		@user = User.first(:username => session[:username])
 		if (!@user.is_a? NilClass)
@@ -359,48 +457,6 @@ class MyApp < Sinatra::Base
 		else
 			redirect '/'
 		end
-	end
-
-
-	post '/home/settings/edit-user' do
-		user = User.first(:username => session[:username])
-		cambio = 1 #no se han producido cambios
-		if (params[:new_email] != "")
-			if ( (User.first(:email => params[:new_email])).is_a? NilClass )
-				user.update(:email => params[:new_email])
-				cambio = 0
-			else #Ese correo ya esta registrado en la bbdd
-				cambio = 2
-			end
-		end
-		if (params[:new_password] != "")
-			user.update(:password => params[:new_password])
-			cambio = 0
-		end
-		
-		content_type 'application/json'
-		case cambio
-		when 0
-			{:control => 0}.to_json
-		when 1 #no se han producido cambios
-			{:control => 1}.to_json
-		when 2 #correo en uso
-			{:control => 2}.to_json
-		end
-	end
-
-
-	post '/home/settings/delete-user' do
-		user = User.first(:username => session[:username])
-		user.destroy
-	  	session.clear
-	  	redirect '/'
-	end
-
-
-	get '/logout' do
-	   session.clear
-	   redirect '/'
 	end
 
 

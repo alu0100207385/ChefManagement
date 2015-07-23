@@ -37,8 +37,7 @@ function ClearIngredient(){
 	$("#n-quantity").val('');
 	$("#decrease").val(0.0);
 	$('#quantity-op').val("weight");
-	//$('#coin').val("euro");
-	//$('#unity').val("unity");
+	$('#weight-un').val("kg");
 	$('#unity').text("kg");
 	$('#quantity-un').hide();
 	$('#weight-un').show();
@@ -54,6 +53,6 @@ function Redirect(base, cad){
 }
 
 function GetIds(cad){
-	n = cad.indexOf("=");
+	n = cad.indexOf("&");
 	return [cad.slice(0,n), cad.slice(n+1,cad.length)]
 }

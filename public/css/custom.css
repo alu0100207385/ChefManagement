@@ -92,6 +92,14 @@ body{
     cursor:pointer;
 }
 
+table{
+   width:100%;
+}
+
+table.ing-list > tbody > tr {
+    border-bottom: solid 1px #B4B5B0;
+}
+
 /*-------------------------------------------------
 Welcome background
 --------------------------------------------------*/
