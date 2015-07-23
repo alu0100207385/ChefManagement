@@ -241,7 +241,7 @@ class MyApp < Sinatra::Base
 		params[:name].gsub!('-',' ')
 		c = GetIds(params[:name]);
 		@recipe = Recipe.first(:name => c[0], :username => c[1])
-		@ing = Ingredient.all(:recipe => @recipe)
+		@ing = Ingredient.all(:order => [:name.asc] ,:recipe => @recipe)
 		@current_user = session[:username]
 
 		erb :recipe, :layout => :'layouts/default3'
@@ -307,6 +307,8 @@ class MyApp < Sinatra::Base
 				end
 				nuevo_costo = (@recipe.cost + (params[:ing_cost].to_f * params[:n_quantity].to_f)).round(2)
 				nuevo_costo_rat = (nuevo_costo/@recipe.nration).round(2)
+				puts "-->nuevo_costo= #{nuevo_costo}"
+				puts "-->nuevo_costo_rat= #{nuevo_costo_rat}"
 				@recipe.update(:cost => nuevo_costo,:ration_cost => nuevo_costo_rat)
 				{:control => 0, :cost => nuevo_costo, :ration_cost => nuevo_costo_rat}.to_json
 			else
@@ -322,7 +324,7 @@ class MyApp < Sinatra::Base
 		rec = params[:name]
 		rec.gsub!('-',' ')
 		@rec = Recipe.first(:name => rec, :username => session[:username])
-		@ing = Ingredient.all(:recipe => @rec)
+		@ing = Ingredient.all(:order => [:name.asc], :recipe => @rec)
 
 		erb :'edit-recipe', :layout => :'layouts/default3'
 	end
@@ -334,7 +336,7 @@ class MyApp < Sinatra::Base
 			rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 			if (!rec.is_a? NilClass)
 				rec.update(:nration => params[:nration])
-				rec.update(:ration_cost => (rec.cost / params[:nration].to_i));
+				rec.update(:ration_cost => (rec.cost / params[:nration].to_i).round(2));
 				rec.update(:pos => params[:order])
 				rec.update(:type => params[:type])
 				rec.update(:nivel => params[:nivel])
@@ -359,6 +361,7 @@ class MyApp < Sinatra::Base
 				else
 					rec.update(:instructions => params[:instructions])
 				end
+				{:control => 0, :user => rec.username}.to_json #Actualizado con exito
 			end
 		else
 			{:control => -1}.to_json #Error
@@ -406,7 +409,7 @@ class MyApp < Sinatra::Base
 	end
 
 
-	post 'home/delete-ingredient/:name' do
+	post '/home/delete-ingredient/:name' do
 		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 		content_type 'application/json'
 		if (!rec.is_a? NilClass)
@@ -420,9 +423,9 @@ class MyApp < Sinatra::Base
 				else
 					n = ing.quantity * ing.cost
 				end
-				nuevo_costo = rec.cost - n
+				nuevo_costo = (rec.cost - n).round(2)
 				rec.update(:cost => nuevo_costo)
-				rec.update(:ration_cost => (nuevo_costo/rec.ration_cost))
+				rec.update(:ration_cost => (nuevo_costo/rec.ration_cost).round(2))
 				ing.destroy
 				{:control => 0, :cost => nuevo_costo, :ration_cost => rec.ration_cost}.to_json #Ing borrado con exito
 			else
