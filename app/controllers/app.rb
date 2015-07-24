@@ -307,8 +307,6 @@ class MyApp < Sinatra::Base
 				end
 				nuevo_costo = (@recipe.cost + (params[:ing_cost].to_f * params[:n_quantity].to_f)).round(2)
 				nuevo_costo_rat = (nuevo_costo/@recipe.nration).round(2)
-				puts "-->nuevo_costo= #{nuevo_costo}"
-				puts "-->nuevo_costo_rat= #{nuevo_costo_rat}"
 				@recipe.update(:cost => nuevo_costo,:ration_cost => nuevo_costo_rat)
 				{:control => 0, :cost => nuevo_costo, :ration_cost => nuevo_costo_rat}.to_json
 			else
@@ -436,21 +434,106 @@ class MyApp < Sinatra::Base
 		end
 	end
 
-=begin
-#Edit Ingredient
-	post '/home/edit-ingredient/:name' do
-		#params[:name].gsub!('-',' ')
-		rec = Recipe.first(:name => params[:recipe_name])
+
+	get '/home/edit-ingredient/:name' do
+		params[:name].gsub!('-',' ')
+		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 		content_type 'application/json'
-		if (session[:username] == rec.username)
-			Ingredient.all(:recipe => rec).destroy
-			rec.destroy
-			{:control => 0}.to_json
+		if (!rec.is_a? NilClass)
+			ing = Ingredient.first(:name => params[:name], :recipe => rec)
+			if (!ing.is_a? NilClass)
+				if (ing.weight != 0)
+					{:control => 'weight', :cost => ing.cost, :weight => ing.weight, :weight_un => ing.weight_un, :decrease => ing.decrease}.to_json
+				elsif (ing.volume != 0)
+					{:control => 'volume', :cost => ing.cost, :volume => ing.volume, :volume_un => ing.volume_un, :decrease => ing.decrease}.to_json
+				else
+					{:control => 'quantity', :cost => ing.cost, :quantity => ing.quantity, :decrease => ing.decrease}.to_json
+				end
+			else
+				{:control => 2}.to_json #No existe ese ing en la receta
+			end
 		else
-			{:control => 1}.to_json
+			{:control => 1}.to_json #No existe esa receta
 		end
 	end
-=end
+
+
+	post '/home/edit-ingredient/:name' do
+		params[:name].gsub!('-',' ') # = new_name
+		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
+		c = true
+		content_type 'application/json'
+		if (!rec.is_a? NilClass)
+			if (params[:name] != params[:old_name]) #Ha sido modificado el nombre del ingrediente
+				ing = Ingredient.first(:name => params[:name], :recipe => rec)
+				if (ing.is_a? NilClass) #El ing no esta y se puede actualizar
+					c = false
+				else 
+					c = true
+					{:control => 2}.to_json #El nombre de ese ing ya esta en uso
+				end
+			else
+				ing = Ingredient.first(:name => params[:name], :recipe => rec)
+				c = false #No se cambio el nombre, actualizar campos
+			end
+		else
+			{:control => 1}.to_json #No existe esa receta
+		end
+		if (c == false)
+			if (ing.weight != 0)
+				old_cost = ing.weight * ing.cost
+			elsif (ing.volume != 0)
+				old_cost = ing.volume * ing.cost
+			else
+				old_cost = ing.quantity * ing.cost
+			end
+			ing.update(:cost => params[:cost])
+			ing.update(:unity_cost => params[:unity_cost])
+			case params[:quantity_op]
+			when 'Quantity'
+				ing.update(:quantity => params[:n_quantity])
+				ing.update(:weight => 0.0)
+				ing.update(:weight_un => "")
+				ing.update(:volume => 0.0)
+				ing.update(:volume_un => "")
+			when 'Weight'
+				ing.update(:quantity => 0)
+				ing.update(:weight => params[:n_quantity])
+				ing.update(:weight_un => params[:weight_un])
+				ing.update(:volume => 0.0)
+				ing.update(:volume_un => "")
+			when 'Volume'
+				ing.update(:quantity => 0)
+				ing.update(:weight => 0.0)
+				ing.update(:weight_un => "")
+				ing.update(:volume => params[:n_quantity])
+				ing.update(:volume_un => params[:volume_un])
+			end
+			ing.update(:decrease => params[:decrease])
+			if (params[:name] != params[:old_name])
+				ing.update(:name => params[:name])
+			end
+			#Actualizamos los costos de la receta
+			if (ing.weight != 0)
+				new_cost = ing.weight * ing.cost
+			elsif (ing.volume != 0)
+				new_cost = ing.volume * ing.cost
+			else
+				new_cost = ing.quantity * ing.cost
+			end
+			rec.update(:cost => (rec.cost - old_cost + new_cost).round(2))
+			rec.update(:ration_cost => (rec.cost/rec.ration_cost).round(2))
+			if (ing.weight != 0)
+				{:control => 0, :control2 => 'weight', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :weight => ing.weight, :weight_un => ing.weight_un, :decrease => ing.decrease}.to_json
+			elsif (ing.volume != 0)
+				{:control => 0, :control2 => 'volume', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :volume => ing.volume, :volume_un => ing.weight_un, :decrease => ing.decrease}.to_json
+			else
+				{:control => 0, :control2 => 'quantity', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :quantity => ing.quantity, :decrease => ing.decrease}.to_json
+			end
+		end
+	end
+
+
 
 ################################# OTROS ##################################
 	get '/home/settings' do
