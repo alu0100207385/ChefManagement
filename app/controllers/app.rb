@@ -459,21 +459,20 @@ class MyApp < Sinatra::Base
 
 
 	post '/home/edit-ingredient/:name' do
-		params[:name].gsub!('-',' ') # = new_name
+		old_name = params[:name].gsub('-',' ')
 		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 		c = true
 		content_type 'application/json'
 		if (!rec.is_a? NilClass)
-			if (params[:name] != params[:old_name]) #Ha sido modificado el nombre del ingrediente
-				ing = Ingredient.first(:name => params[:name], :recipe => rec)
+			if (params[:new_name] != old_name) #Ha sido modificado el nombre del ingrediente
+				ing = Ingredient.first(:name => params[:new_name], :recipe => rec)
 				if (ing.is_a? NilClass) #El ing no esta y se puede actualizar
 					c = false
 				else 
 					c = true
-					{:control => 2}.to_json #El nombre de ese ing ya esta en uso
 				end
 			else
-				ing = Ingredient.first(:name => params[:name], :recipe => rec)
+				ing = Ingredient.first(:name => old_name, :recipe => rec)
 				c = false #No se cambio el nombre, actualizar campos
 			end
 		else
@@ -510,7 +509,7 @@ class MyApp < Sinatra::Base
 				ing.update(:volume_un => params[:volume_un])
 			end
 			ing.update(:decrease => params[:decrease])
-			if (params[:name] != params[:old_name])
+			if (params[:name] != old_name)
 				ing.update(:name => params[:name])
 			end
 			#Actualizamos los costos de la receta
@@ -524,12 +523,14 @@ class MyApp < Sinatra::Base
 			rec.update(:cost => (rec.cost - old_cost + new_cost).round(2))
 			rec.update(:ration_cost => (rec.cost/rec.ration_cost).round(2))
 			if (ing.weight != 0)
-				{:control => 0, :control2 => 'weight', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :weight => ing.weight, :weight_un => ing.weight_un, :decrease => ing.decrease}.to_json
+				{:control => 0, :control2 => 'weight', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :weight => ing.weight, :weight_un => ing.weight_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			elsif (ing.volume != 0)
-				{:control => 0, :control2 => 'volume', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :volume => ing.volume, :volume_un => ing.weight_un, :decrease => ing.decrease}.to_json
+				{:control => 0, :control2 => 'volume', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :volume => ing.volume, :volume_un => ing.weight_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			else
-				{:control => 0, :control2 => 'quantity', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :quantity => ing.quantity, :decrease => ing.decrease}.to_json
+				{:control => 0, :control2 => 'quantity', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :quantity => ing.quantity, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			end
+		else
+			{:control => 2}.to_json
 		end
 	end
 

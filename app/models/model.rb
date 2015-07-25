@@ -27,7 +27,7 @@ class Recipe
 	property :warning, String							#Aviso alérgicos
 	property :origin, String						#País originario de la receta
 
-	#property :score, Integer
+	#property :score, Float
 	#property :create_at, DateTime
 	#property :edit_date, DateTime
 
@@ -66,6 +66,7 @@ class Comment
 	property :username, String, :required => true	#Persona que hace el comentario
 	property :posted, DateTime
 	property :content, Text
+	property :score, Float
 
 	belongs_to :recipe
 end
