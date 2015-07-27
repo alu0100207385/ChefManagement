@@ -278,7 +278,7 @@ class MyApp < Sinatra::Base
 					recipe.origin = params[:origin]
 				end
 				recipe.save
-				{:control => 0}.to_json
+				{:control => 0, :user => session[:username]}.to_json
 			else
 				{:control => 1}.to_json #Esa receta ya se encuentra en la bbdd
 			end
@@ -308,7 +308,7 @@ class MyApp < Sinatra::Base
 				nuevo_costo = (@recipe.cost + (params[:ing_cost].to_f * params[:n_quantity].to_f)).round(2)
 				nuevo_costo_rat = (nuevo_costo/@recipe.nration).round(2)
 				@recipe.update(:cost => nuevo_costo,:ration_cost => nuevo_costo_rat)
-				{:control => 0, :cost => nuevo_costo, :ration_cost => nuevo_costo_rat}.to_json
+				{:control => 0, :cost => nuevo_costo, :ration_cost => nuevo_costo_rat, :nivel => @recipe.nivel, :time => @recipe.production_time, :vegan => @recipe.vegan, :user => @recipe.username}.to_json
 			else
 				{:control => 1}.to_json #Ese ingrediente ya se encuentra en la bbdd
 			end

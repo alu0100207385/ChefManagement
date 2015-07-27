@@ -33,6 +33,6 @@ module AppHelpers
 	#Esta funcion recibe una cadena y devuelve un array [name,username]
 	#Usada para obtener id fila de la tabla lista de recetas.
 	def GetIds (cad)
-		return [cad[0..(cad.index('&')-1)], cad[(cad.index('&')+1)..cad.size]]
+		return [cad[0..(cad.index('_')-1)], cad[(cad.index('_')+1)..cad.size]]
 	end
 end

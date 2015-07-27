@@ -248,7 +248,7 @@
 		    </thead>
 		    <tbody>
 		    	<% @rec.each do |rec| %>
-			        <tr id="<%= rec.name %>&<%= rec.username %>">
+			        <tr id="<%= rec.name %>_<%= rec.username %>">
 			            <td><%= rec.name %></td>
 			            <td><%= rec.nration %></td>
 			            <td><%= rec.cost %></td>
@@ -303,84 +303,83 @@
 	$(document).ready(function(){
 		$('select').addClass('form-control');
 
+		$("#make-recipe").click(function(){
+			$('#message').hide();
+			$("#message2").hide();
+			$('#calculator-view').hide();
+			$('#import').hide();
+			$('#export').hide();
+			$('#show').hide();
+			$('#section-title').html('<h3>New recipe</h3><hr>');
+			$('#make').show();
+			$('#recipe-buttons').show();
+			$('.fila').show();
+			$('#avatar').show();
+			$('#accordion').hide();
+			$('#ingredient').hide();
+			$('#current-recipe').hide();
+			ClearRecipe();
+		});
 
-	$("#make-recipe").click(function(){
-		$('#message').hide();
-		$("#message2").hide();
-		$('#calculator-view').hide();
-		$('#import').hide();
-		$('#export').hide();
-		$('#show').hide();
-		$('#section-title').html('<h3>New recipe</h3><hr>');
-		$('#make').show();
-		$('#recipe-buttons').show();
-		$('.fila').show();
-		$('#avatar').show();
-		$('#accordion').hide();
-		$('#ingredient').hide();
-		$('#current-recipe').hide();
-		ClearRecipe();
-	});
+		$("#cancel").click(function(){
+			$('#message').hide();
+			$('#calculator-view').hide();
+			$('#make').hide();
+			$('#import').hide();
+			$('#export').hide();
+			$('#current-recipe').hide();
+			$('#section-title').html('<h3>Recipe list</h3><hr>');
+			$('#show').show();
+			return false;
+		});
 
-	$("#cancel").click(function(){
-		$('#message').hide();
-		$('#calculator-view').hide();
-		$('#make').hide();
-		$('#import').hide();
-		$('#export').hide();
-		$('#current-recipe').hide();
-		$('#section-title').html('<h3>Recipe list</h3><hr>');
-		$('#show').show();
-		return false;
-	});
+		$("#import-recipe").click(function(){
+			$('#message').hide();
+			$('#calculator-view').hide();
+			$('#make').hide();
+			$('#export').hide();
+			$('#show').hide();
+			$('#current-recipe').hide();
+			$('#section-title').html('<h3>Import recipe</h3><hr>');
+			$('#import').show();
+			return false;
+		});
 
-	$("#import-recipe").click(function(){
-		$('#message').hide();
-		$('#calculator-view').hide();
-		$('#make').hide();
-		$('#export').hide();
-		$('#show').hide();
-		$('#current-recipe').hide();
-		$('#section-title').html('<h3>Import recipe</h3><hr>');
-		$('#import').show();
-		return false;
-	});
+		$("#export-recipe").click(function(){
+			$('#message').hide();
+			$('#calculator-view').hide();
+			$('#make').hide();
+			$('#import').hide();
+			$('#show').hide();
+			$('#current-recipe').hide();
+			$('#section-title').html('<h3>Export recipe</h3><hr>');
+			$('#export').show();
+			return false;
+		});
 
-	$("#export-recipe").click(function(){
-		$('#message').hide();
-		$('#calculator-view').hide();
-		$('#make').hide();
-		$('#import').hide();
-		$('#show').hide();
-		$('#current-recipe').hide();
-		$('#section-title').html('<h3>Export recipe</h3><hr>');
-		$('#export').show();
-		return false;
-	});
+		$("#show-all").click(function(){
+			$('#message').hide();
+			$('#calculator-view').hide();
+			$('#make').hide();
+			$('#import').hide();
+			$('#export').hide();
+			$('#current-recipe').hide();
+			$('#section-title').html('<h3>Recipe list</h3><hr>');
+			$('#show').show();
+			return false;
+		});
 
-	$("#show-all").click(function(){
-		$('#message').hide();
-		$('#calculator-view').hide();
-		$('#make').hide();
-		$('#import').hide();
-		$('#export').hide();
-		$('#current-recipe').hide();
-		$('#section-title').html('<h3>Recipe list</h3><hr>');
-		$('#show').show();
-		return false;
-	});
-
-	$("#calculator").click(function(){
-		$('#message').hide();
-		$('#calculator-view').show();
-		$('#make').hide();
-		$('#import').hide();
-		$('#export').hide();
-		$('#current-recipe').hide();
-		$('#section-title').html('<h3>Recipe calculator</h3><hr>');
-		$('#show').hide();
-		return false;
-	});
+		$("#calculator").click(function(){
+			$('#message').hide();
+			$('#calculator-view').show();
+			$('#make').hide();
+			$('#import').hide();
+			$('#export').hide();
+			$('#current-recipe').hide();
+			$('#section-title').html('<h3>Recipe calculator</h3><hr>');
+			$('#show').hide();
+			return false;
+		});
 	//############################## RECIPE LIST ##############################
     	$('#recipe-list-tb').DataTable();
 	
@@ -396,7 +395,7 @@
 
 				success: function(data){
 					if(data.control == 0)
-						window.location = '/home/recipe/'+clear_name+'&'+data.username;
+						window.location = '/home/recipe/'+clear_name+'_'+data.username;
 					else
 						window.location = '/';
 				},

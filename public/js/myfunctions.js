@@ -53,6 +53,6 @@ function Redirect(base, cad){
 }
 
 function GetIds(cad){
-	n = cad.indexOf("&");
+	n = cad.indexOf("_");
 	return [cad.slice(0,n), cad.slice(n+1,cad.length)]
 }
