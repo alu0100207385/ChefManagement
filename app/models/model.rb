@@ -27,7 +27,6 @@ class Recipe
 	property :warning, String							#Aviso alérgicos
 	property :origin, String						#País originario de la receta
 
-	#property :score, Float
 	#property :create_at, DateTime
 	#property :edit_date, DateTime
 

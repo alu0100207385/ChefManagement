@@ -56,3 +56,12 @@ function GetIds(cad){
 	n = cad.indexOf("_");
 	return [cad.slice(0,n), cad.slice(n+1,cad.length)]
 }
+
+function CheckString(cad){
+	//if(/^[a-zA-Z0-9- ]*$/.test(cad) == false)
+	//if (cad.indexOf(/^[a-zA-Z0-9- ]*$/) == -1)
+	if (cad.match(/[_\W0-9]/))
+		return true;
+	else
+		return false;
+}

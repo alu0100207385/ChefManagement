@@ -547,6 +547,39 @@ class MyApp < Sinatra::Base
 	end
 
 
+	get '/home/export' do
+		content_type 'application/json'
+		if (file = File.new("public/"+params[:name]+".json", "w+"))
+			recipe = Recipe.all
+			file.puts("{ ")
+			file.puts("{recipes: #{recipe.to_json}}")
+			ing = Ingredient.all(:recipe => recipe)
+			file.puts("{ingredients: #{ing.to_json}}")
+			file.puts("}")
+
+=begin
+			puts "#{recipe.to_json}"
+			file.puts("{ ")
+			recipe.each do |r|
+				#ing_list = []
+				ing = Ingredient.all(:recipe => recipe)
+				puts "#{ing.to_json}"
+				#ing.each do |i|
+				#	ing.to_json
+				#end
+				#ing_list << ing.json
+				#file.puts("{ name: #{r.name}, cost: #{r.cost}, ration_cost: #{r.ration_cost}, nration: #{r.nration}, username: #{r.username},  pos: #{r.pos}, type: #{r.type}, nivel: #{r.nivel}, production_time: #{r.production_time}, vegan: #{r.vegan}, warning: #{r.warning}, origin: #{r.origin}, instructions: #{r.instructions}")
+			end
+			file.puts("}")
+=end
+
+			file.close
+			{:control => 0}.to_json
+		else
+			{:control => 1}.to_json
+		end
+	end
+
 	# start the server if ruby file executed directly
   	run! if app_file == $0
 end

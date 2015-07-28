@@ -1,0 +1,287 @@
+<div class="row-fliud" style="margin-bottom:1%">
+	<div class="col-md-8">
+		<h1><%= @rec.name %></h1>
+	</div>
+	<div class="col-md-4" style="text-align:right;">
+		<a id="cancel" type="button" href="javascript:Redirect('/home/recipe/','<%= @rec.name %>_<%= @rec.username %>')" class="btn btn-default">Cancel</a>
+		<button id="modify-recipe1" class="btn btn-warning">Modify</button>
+	</div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row-fluid"><hr><div id="message"></div></div>
+
+<div class="row-fluid">
+	<div class="col-md-2"><label id="label-name">Name</label></div>
+	<div class="col-md-4"><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name" value="<%= @rec.name %>" readonly></div>
+
+	<div class="col-md-2"><label id="rations">Rations</label></div>
+	<div class="col-md-4">
+		<input id="n-rations" class="input-small" type="number" min="1" title="Number of rations (> 0)" value="<%= @rec.nration %>">
+	</div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row-fluid">
+	<div class="col-md-2"><label>Cost (€)</label></div>
+	<div class="col-md-4">
+		<input type="text" style="text-align:right;" id="recipe_cost" value="<%= @rec.cost %>" readonly>
+	</div>
+	<div class="col-md-2"><label>Ration cost (€)</label></div>
+	<div class="col-md-4">
+			<input id="recipe_cost_ration" type="text" style="text-align:right;" value="<%= @rec.ration_cost %>" readonly>
+	</div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row-fluid fila"><div class="col-md-12"><hr><h6>Labels</h6></div></div>
+
+<div class="row-fluid fila">
+	<div class="col-md-2"><label>Order</label></div>
+	<div class="col-md-4">
+		<select id="pos" class="input-medium">
+			<% pos = ['incoming', 'first', 'second', 'third', 'single', 'afters', 'other'] %>
+			<% pos.each do |i| %>
+				<% if (i == @rec.pos.to_s[2..@rec.pos.to_s.size-2]) %>
+					<option value="<%= i %>" selected="selected"><%= i %></option>
+				<% else %>
+					<option value="<%= i %>"><%= i %></option>
+				<% end %>
+			<% end %>
+		</select>
+	</div>
+	<div class="col-md-2"><label>Type</label></div>
+	<div class="col-md-4">
+		<select id="type" class="input-medium">
+			<% t = ['snack', 'homemade_food', 'tapas', 'fast_food', 'tasting', 'other'] %>
+			<% t.each do |i| %>
+				<% if (i == @rec.type.to_s) %>
+					<option value="<%= i %>" selected="selected"><%= i %></option>
+				<% else %>
+					<option value="<%= i %>"><%= i %></option>
+				<% end %>
+			<% end %>
+		</select>
+	</div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row-fluid fila">
+	<div class="col-md-12"><hr><h6>Production</h6></div>
+</div>
+<div class="clearfix"></div>
+<div class="row-fluid fila">
+	<div class="col-md-2"><label>Nivel</label></div>
+	<div class="col-md-4">
+		<select id="nivel" class="input-medium">
+			<% n = ['very easy','easy', 'medium', 'hard', 'very hard'] %>
+			<% n.each do |i| %>
+				<% if (i == @rec.nivel.to_s) %>
+					<option value="<%= i %>" selected="selected"><%= i %></option>
+				<% else %>
+					<option value="<%= i %>"><%= i %></option>
+				<% end %>
+			<% end %>
+		</select>
+	</div>
+
+	<div class="col-md-2"><label>Time</label></div>
+	<div class="col-md-4">
+		<input id="h" class="input-small" type="number" min="0" max="12" style="text-align:right;" title="Production time" value="<%= @rec.production_time[0..(@rec.production_time.index("'")-1)] %>">h
+		<input id="m" class="input-small" type="number" min="0" max="59" style="text-align:right;" title="Production time" value="<%= @rec.production_time[(@rec.production_time.index("'")+1)..(@rec.production_time.index("''")-1)] %>">m
+	</div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row-fluid fila">
+	<div class="col-md-12"><hr><h6>Warnings</h6></div>
+</div>
+
+<div class="row-fluid fila">
+	<div class="col-md-2"><label>Vegan</label></div>
+	<div class="col-md-4">
+		<select id="vegan" class="input-small">
+			<% if @rec.vegan %>
+				<option value="no">no</option>
+				<option value="yes" selected="selected">yes</option>
+			<% else %>
+				<option value="no" selected="selected">no</option>
+				<option value="yes">yes</option>
+			<% end %>
+		</select>
+	</div>
+	<div class="col-md-2"><label>Allergens</label></div>
+	<div class="col-md-4">
+		<input id="allergens" name="allergens" type="text" title="Warning allergens" value="<%= @rec.warning %>">
+	</div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row-fluid fila">
+	<br>
+	<div class="col-md-2"><label>Origin</label></div>
+	<div class="col-md-4">
+		<input id="origin" type="text" title="Recipe origin country" value="<%= @rec.origin %>">
+	</div>
+	<div class="col-md-6"></div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row-fluid fila">
+	<div class="col-md-12"><hr><h6>Avatar</h6></div>
+</div>
+
+<div class="row-fluid fila">
+	<div class="col-md-10"><input type="file" name="avatar"></div>
+</div>
+
+<div class="clearfix"></div>
+
+<!--#################################### ING  LIST ###########################################-->
+<div class="row-fliud" style="margin-top:3%;"><h3>Ingredient list</h3></div><hr>
+
+<div class="row-fluid">
+	<div class="col-md-12">
+		<table id="ing-list" class="ing-list">
+			<thead style="font-weight:bold">
+				<tr><td>Ingredient</td><td>Quantity</td><td>Price(€)</td><td>Subtotal(€)</td><td></td></tr>
+			</thead>
+			<tbody>
+				<% @ing.each do |i| %>
+					<tr id="<%= i.name %>">
+						<td><%= i.name %></td>
+						<% if i.quantity != 0 %>
+							<td><%= i.quantity %> un</td>
+							<% n = i.cost * i.quantity %>
+						<% end %>
+						<% if i.weight != 0 %>
+							<td><%= i.weight %> <%= i.weight_un %></td>
+							<% n = i.cost * i.weight %>
+						<% end %>
+						<% if i.volume != 0 %>
+							<td><%= i.volume %> <%= i.volume_un %></td>
+							<% n = i.cost * i.volume %>
+						<% end %>
+						<td><%= i.cost %> <%= i.unity_cost %></td>
+						<td><%= n.round(2) %></td>
+						<td><a href="javascript:ConfirmDelete('<%= i.name %>')"><i class="fa fa-trash-o"></i></a></td>
+						<td><a href="javascript:EditIngredient('<%= i.name %>')"><i class="fa fa-pencil-square-o"></i></a></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="clearfix"></div>
+
+<!--#################################### NEW ING ###########################################-->
+<div class="row-fliud" style="margin-top:3%;"><h3>Add ingredient</h3></div>
+<div id="message2"></div>
+<div class="row-fluid">
+	<div class="col-md-2">
+		<label>Name</label>
+	</div>
+	<div class="col-md-4">
+		<input type="text" id="ingredient-name" name="name" placeholder="New ingredient name">
+	</div>
+	<div class="col-md-3">
+		<label>
+			<select id="quantity-op" class="input-medium">
+				<option value="quantity">Quantity</option>
+				<option value="weight">Weight</option>
+				<option value="volume">Volume</option>
+			</select>
+		</label>
+		<input id="n-quantity" name="n-quantity" type="number" step="0.01" min="0" class="input-small">
+	</div>
+	<div class="col-md-3">
+		<span id="quantity-un"> (u)</span>
+		<select id="weight-un" class="input-small">
+			<option value="kg">kg</option>
+			<option value="gr">gr</option>
+		</select>
+		<select id="volume-un" class="input-small">
+			<option value="l">l</option>
+			<option value="cl">cl</option>
+			<option value="ml">ml</option>
+		</select>
+	</div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row-fluid">
+	<div class="col-md-2">
+		<label>€ / </label><label id="unity">kg</label>
+	</div>
+	<div class="col-md-4">
+		<input id="ing-cost" name="price" title="Price per unity/weight/volume" type="number" step="0.01" min="0" class="input-small">
+	</div>
+	<div class="col-md-6">
+		<label>Decrease (%)</label>
+			<input id="decrease" name="decrease" type="number" step="0.01" min="0" max="100" value="0" class="input-small">
+	</div>
+</div>
+
+<div class="row-fluid">
+	<input id="old-name" type="hidden" value="">
+</div>
+
+<div class="row-fluid my-buttons" style="text-align:right;">
+	<div class="col-md-12" style="margin-top:4%;">
+		<button id="cancel-ingredient" class="btn btn-default">Clear</button>
+		<button id="save-ingredient" class="btn btn-success">Save ingredient</button>
+		<button id="update-ingredient" class="btn btn-warning">Update ingredient</button>
+	</div>
+</div>
+
+<div class="clearfix"></div>
+
+<!--##################################### INSTRUCTIONS ################################## -->
+<div class="row-fliud" style="margin-top:2%;"><h3>Instructions</h3></div><hr>
+<div class="row-fluid">
+	<div class="col-md-12">
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingThree">
+						<h3 class="panel-title">
+						<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#instructions-panel" aria-expanded="false">
+  							<i class="fa fa-pencil" style="color:inherit;"> Write your recipe instructions</i></a>
+						</h3>
+				</div>
+				<div id="instructions-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+					<div class="panel-body">
+						<textarea name="editor1" id="instructions" rows="10" cols="80"></textarea>
+						<script type="text/javascript">
+							CKEDITOR.replace( 'editor1', {language: 'en',});
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<textarea id="instructions2" style="display:none;"><%= @rec.instructions %></textarea>
+
+<div class="clearfix"></div>
+
+<div class="row-fluid fila">
+	<div class="col-md-12">
+		<div class="my-buttons">
+			<a id="cancel" type="button" href="javascript:Redirect('/home/recipe/','<%= @rec.name %>_<%= @rec.username %>')" class="btn btn-default">Cancel</a>
+			<button id="modify-recipe2" class="btn btn-warning">Modify</button>
+		</div>
+	</div>
+</div>
+
+
+<script src="/js/edit-recipe.js"></script>
+<script src="/js/edit-ingredient.js"></script>

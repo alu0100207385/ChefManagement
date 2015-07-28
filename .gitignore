@@ -2,3 +2,4 @@
 *.swp
 bbdd.db
 app/config/config.yml
+*.json
