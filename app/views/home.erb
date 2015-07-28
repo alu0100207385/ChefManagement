@@ -436,8 +436,20 @@
 						if(data.control == 0){
 							$('#message').hide();
 							$('#message').html('<p class ="alert alert-success" role="alert">File created successfully</p>').show(1000);
-							window.setTimeout(function(){window.location.href = '/'+$('#file-name').val()+'.json';}, 2000 );
-							//window.setTimeout(function(){window.location.href = '/'+$('#file-name').val()+'.json';}, 2000 );
+							/*var url = '/'+$('#file-name').val()+'.json';
+        					var $a = $('<a />', {
+          						'href': url,
+          						'download': $('#file-name').val()+'.json',
+          						'text': "click"
+        					}).hide().appendTo("body")[0].click();*/
+							window.setTimeout(function(){
+								var url = '/'+$('#file-name').val()+'.json';
+								var $a = $('<a />', {
+          						'href': url,
+          						'download': $('#file-name').val()+'.json',
+          						'text': "click"
+        					}).hide().appendTo("body")[0].click();
+							}, 2000 );
 							//considerar borrar fichero
 						}
 						else{
