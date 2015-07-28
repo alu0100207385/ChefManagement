@@ -548,11 +548,18 @@ class MyApp < Sinatra::Base
 
 
 	get '/home/export' do
-		#Buscar y borrar ficheros json
+		#Si existe alguna copia de backup en el servidor la borramos
+		if (Dir.glob(File.dirname(__FILE__)+"/../../public/*.json").size > 0)
+			b = Dir.glob(File.dirname(__FILE__)+"/../../public/*.json")
+			b.each do |i|
+				File.delete(i)
+			end
+		end
+
 		content_type 'application/json'
 		if (file = File.new("public/"+params[:name]+".json", "w+"))
 			recipe = Recipe.all
-			file.puts("{{"+"recipes"+":\n#{recipe.to_json}}")
+			file.puts("{{"+"recipes"+":\n#{recipe.to_json},}")
 			ing = Ingredient.all(:recipe => recipe)
 			file.puts("{"+"ingredients"+":\n#{ing.to_json}}}")
 			file.close
