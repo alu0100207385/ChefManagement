@@ -177,7 +177,7 @@
 		<div id="ingredient">
 			<h4>Ingredients</h4>
 			<div id="message2"></div>
-			
+			<h5>Add new ingredient</h5>
 			<div class="row-fluid">
 				<div class="col-md-2"><label>Name</label></div>
 				<div class="col-md-4">
@@ -227,6 +227,28 @@
 					<button id="save-ingredient" class="btn btn-success">Save &#38; New ingredient</button>
 				</div>
 			</div>
+
+			<div class="clearfix"></div>
+
+			<% if !@rec.is_a? NilClass %>
+				<p class="legend-or" style="maring-bottom:10%;"><span>Or</span></p>
+				<h5>Add Recipe</h5>
+				<div class="row-fluid">
+					<div class="col-md-6">
+						<select id="recipe2">
+							<option value="none" selected="selected">-Select one-</option>
+							<% 	@rec.each do |n| %>
+								<option value="<%= n.name %>_<%= n.username %>"><%= n.name %> (<%= n.username %>)</option>
+							<% end %>				
+						</select>
+					</div>
+					<div class="col-md-6">
+						<input id="nration" type="number" min="1" class="input-small" value="1">
+						<button id="add-recipe2" class="btn btn-success">Add+</button>
+					</div>
+				</div>
+				<div class="row-fluid" style="height: 25%;"></div>
+			<% end %>
 		</div>
 	</div>
 
@@ -280,7 +302,7 @@
 	<!--###########EXPORTAR####################################################-->
 	<div id="export">
 		<div class="row-fluid">
-			<p>You can make a backup of current recipe list. </p>
+			<p>You can make a backup of your current recipe list. </p>
 			<label>Write name file</label>
 			<input id="file-name" type="text">
 			<button id="create-file" class="btn btn-success">Create</button>
@@ -413,60 +435,11 @@
 	    		}
 			});
 		});
-	});
-
-	//############################### export #########################
-		$('#create-file').click(function(){
-			if ($('#file-name').val() == ""){
-				$('#message').hide();
-				$('#message').html('<p class ="alert alert-danger" role="alert">Type a file name</p>').show(1000);
-				return false;
-			}
-			if (CheckString($('#file-name').val()) == true){
-				$('#message').hide();
-				$('#message').html('<p class ="alert alert-danger" role="alert">Invalid name. String cannot contain illegal characters.</p>').show(1000);
-			}
-			else{
-				$('#message').hide();
-				$.ajax({
-    				type: "GET",
-					url: "/home/export",
-      				data: {name: $('#file-name').val()},
-      				success: function(data){
-						if(data.control == 0){
-							$('#message').hide();
-							$('#message').html('<p class ="alert alert-success" role="alert">File created successfully</p>').show(1000);
-							/*var url = '/'+$('#file-name').val()+'.json';
-        					var $a = $('<a />', {
-          						'href': url,
-          						'download': $('#file-name').val()+'.json',
-          						'text': "click"
-        					}).hide().appendTo("body")[0].click();*/
-							window.setTimeout(function(){
-								var url = '/'+$('#file-name').val()+'.json';
-								var $a = $('<a />', {
-          						'href': url,
-          						'download': $('#file-name').val()+'.json',
-          						'text': "click"
-        					}).hide().appendTo("body")[0].click();
-							}, 2000 );
-							//considerar borrar fichero
-						}
-						else{
-							$('#message').hide();
-							$('#message').html('<p class ="alert alert-danger" role="alert">Error creating file</p>').show(1000);
-						}
-					},
-
-					error: function(xhr){
-						console.log(xhr.status);
-	    				console.log(xhr.statusText);
-	    			}
-				});
-			}
-			//Save file
-		});
+	});		
 </script>
+
+<!--############################### export #########################-->
+<script src="/js/export.js"></script>
 <!--############################## INGREDIENTES ##############################-->
 <script src="/js/new-ingredient.js"></script>
 <!--############################## RECETAS ###################################-->

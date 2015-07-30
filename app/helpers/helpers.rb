@@ -35,4 +35,13 @@ module AppHelpers
 	def GetIds (cad)
 		return [cad[0..(cad.index('_')-1)], cad[(cad.index('_')+1)..cad.size]]
 	end
+
+	#Esta funcion calcula el nuevo precio de una receta segun el numero de comensales
+	def calculator(cost, nplatos, nplatos2)
+		if (nplatos2 != nplatos)
+			return ((nplatos2 * cost)/nplatos)
+		else
+			return cost
+		end
+	end
 end

@@ -163,6 +163,7 @@ function EditIngredient(ing_name){
 					$('#n-quantity').val(data.weight);
 					$('#weight-un').val(data.weight_un);
 					$('#weight-un').show();
+					$('#unity').text($('#weight-un').val());
 					$('#volume-un').hide();
 					$('#quantity-un').hide();
 					$("#n-quantity").attr('step',0.01);
@@ -173,6 +174,7 @@ function EditIngredient(ing_name){
 					$('#volume-un').val(data.volume_un);
 					$('#weight-un').hide();
 					$('#volume-un').show();
+					$('#unity').text($('#volume-un').val());
 					$('#quantity-un').hide();
 					$("#n-quantity").attr('step',0.01);
 				break;
@@ -180,6 +182,7 @@ function EditIngredient(ing_name){
 					$('#quantity-op').val('quantity');
 					$('#n-quantity').val(data.quantity);
 					$('#quantity-un').show();
+					$('#unity').text('u');
 					$('#weight-un').hide();
 					$('#volume-un').hide();
 					$('#quantity-un').show();

@@ -289,31 +289,55 @@ class MyApp < Sinatra::Base
 
 	post '/home/new-ingredient' do
 		user = User.first(:username => session[:username])
+		content_type 'application/json'
 		if (!user.is_a? NilClass)
 			@recipe = Recipe.first(:name => params[:recipe_name], :username => session[:username])
-			content_type 'application/json'
-			if (Ingredient.first(:name => params[:ing_name], :recipe => @recipe).is_a? NilClass) #Si no existe en esa receta
-				if (!params[:instructions].empty?)
-					params[:instructions] = params[:instructions].gsub(/<\/?[^>]*>/, '').gsub(/\n\n+/, "\n").gsub(/^\n|\n$/, '')
-					@recipe.update(:instructions => params[:instructions])
+			if (!params[:ing_recipe].is_a? NilClass) #Se introdujo una receta
+				if (Recipe2.first(:name => params[:ing_recipe], :recipe => @recipe).is_a? NilClass)
+					Recipe2.first_or_create(:name => params[:ing_recipe], :nration => params[:rations], :recipe => @recipe)
+					rec = Recipe.first(:name => params[:ing_recipe], :username => params[:username])
+					nuevo_costo = (calculator(rec.cost, rec.nration, params[:rations].to_i) + @recipe.cost).round(2)
+					@recipe.update(:cost => nuevo_costo)
+					@recipe.update(:ration_cost => (nuevo_costo/@recipe.nration).round(2))
+					if @recipe.vegan
+						if !rec.vegan
+							@recipe.update(:vegan => false)
+						end
+					end
+					if !rec.warning.empty?
+						aux = @recipe.warning+", "+rec.warning
+						puts "#{aux}"
+						@recipe.update(:warning => aux)
+					end
+					{:control => 0, :cost => nuevo_costo, :ration_cost => @recipe.ration_cost, :nivel => @recipe.nivel, :time => @recipe.production_time, :vegan => @recipe.vegan, :user => @recipe.username}.to_json
+				else #Ya existe en esa receta
+					{:control => 1}.to_json
 				end
-				case params[:quantity_op]
-				when 'Quantity'
-					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => params[:n_quantity], :weight => 0.0, :weight_un => "", :volume => 0.0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => @recipe)
-				when 'Weight'
-					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => params[:n_quantity], :weight_un => params[:weight_un], :volume => 0.0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => @recipe)
-				when 'Volume'
-					Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => 0.0, :weight_un => "", :volume => params[:n_quantity], :volume_un => params[:volume_un], :decrease => params[:ing_decrease], :recipe => @recipe)
+			
+			else #Se introdujo un ingrediente
+				if (Ingredient.first(:name => params[:ing_name], :recipe => @recipe).is_a? NilClass) #Si no existe en esa receta
+					if (!params[:instructions].empty?)
+						params[:instructions] = params[:instructions].gsub(/<\/?[^>]*>/, '').gsub(/\n\n+/, "\n").gsub(/^\n|\n$/, '')
+						@recipe.update(:instructions => params[:instructions])
+					end
+					case params[:quantity_op]
+					when 'Quantity'
+						Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => params[:n_quantity], :weight => 0.0, :weight_un => "", :volume => 0.0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => @recipe)
+					when 'Weight'
+						Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => params[:n_quantity], :weight_un => params[:weight_un], :volume => 0.0, :volume_un => "", :decrease => params[:ing_decrease], :recipe => @recipe)
+					when 'Volume'
+						Ingredient.first_or_create(:name => params[:ing_name], :cost => params[:ing_cost], :unity_cost => params[:ing_unity_cost], :quantity => 0, :weight => 0.0, :weight_un => "", :volume => params[:n_quantity], :volume_un => params[:volume_un], :decrease => params[:ing_decrease], :recipe => @recipe)
+					end
+					nuevo_costo = (@recipe.cost + (params[:ing_cost].to_f * params[:n_quantity].to_f)).round(2)
+					nuevo_costo_rat = (nuevo_costo/@recipe.nration).round(2)
+					@recipe.update(:cost => nuevo_costo,:ration_cost => nuevo_costo_rat)
+					{:control => 0, :cost => nuevo_costo, :ration_cost => nuevo_costo_rat, :nivel => @recipe.nivel, :time => @recipe.production_time, :vegan => @recipe.vegan, :user => @recipe.username}.to_json
+				else
+					{:control => 1}.to_json #Ese ingrediente ya se encuentra en la bbdd
 				end
-				nuevo_costo = (@recipe.cost + (params[:ing_cost].to_f * params[:n_quantity].to_f)).round(2)
-				nuevo_costo_rat = (nuevo_costo/@recipe.nration).round(2)
-				@recipe.update(:cost => nuevo_costo,:ration_cost => nuevo_costo_rat)
-				{:control => 0, :cost => nuevo_costo, :ration_cost => nuevo_costo_rat, :nivel => @recipe.nivel, :time => @recipe.production_time, :vegan => @recipe.vegan, :user => @recipe.username}.to_json
-			else
-				{:control => 1}.to_json #Ese ingrediente ya se encuentra en la bbdd
 			end
 		else
-			{:control => -1}
+			{:control => -1}.to_json
 		end
 	end
 
@@ -373,6 +397,7 @@ class MyApp < Sinatra::Base
 		content_type 'application/json'
 		if (session[:username] == rec.username)
 			Ingredient.all(:recipe => rec).destroy
+			Recipe2.all(:recipe => rec).destroy
 			rec.destroy
 			{:control => 0}.to_json
 		else
@@ -556,18 +581,25 @@ class MyApp < Sinatra::Base
 			end
 		end
 
+		special_users = ["admin", "administrator", "administrador", "root", "superadmin"]
+		if special_users.include?(session[:username])
+			recipe = Recipe.all #Backup de todas las recetas
+		else
+			recipe = Recipe.all(:username => session[:username]) #Backup de sus recetas
+		end
+		
 		content_type 'application/json'
 		if (file = File.new("public/"+params[:name]+".json", "w+"))
-			recipe = Recipe.all
-			file.puts("{{"+"recipes"+":\n#{recipe.to_json},}")
+			file.puts("{"+'"recipes"'+":\n#{recipe.to_json},")
 			ing = Ingredient.all(:recipe => recipe)
-			file.puts("{"+"ingredients"+":\n#{ing.to_json}}}")
+			file.puts('"ingredients"'+":\n#{ing.to_json}}")
 			file.close
 			{:control => 0}.to_json
 		else
 			{:control => 1}.to_json
 		end
 	end
+
 
 	# start the server if ruby file executed directly
   	run! if app_file == $0

@@ -56,6 +56,53 @@ $(document).ready(function(){
 	});
 
 
+	$('#add-recipe2').click(function(){
+		if ($('#recipe2').val() == "none"){
+			$("#message2").hide();
+			$("#message2").html('<p class ="alert alert-danger" role="alert">Select recipe name</p>').show(1000);
+			return false;
+		}
+		var n = GetIds($('#recipe2').val());
+		console.log()
+
+		$.ajax({
+    		type: "POST",
+			url: "/home/new-ingredient",
+			data: {recipe_name: $('#recipe-name').val(), ing_recipe: n[0], rations: $('#nration').val(), username: n[1]},
+
+			success: function(data){
+				if(data.control == 0){
+					$("#message2").hide();
+		        	$("#message2").html('<p class ="alert alert-success" role="alert">'+$('#recipe2').val()+' has been added</p>').show(1000);
+		        	$('#current-recipe').html($('#current-recipe').html() + " + " + GetIds($('#recipe2').val())[0] + "<br>").show(1000);
+		        	$('#recipe_cost').val(data.cost);
+		        	$('#recipe_cost_ration').val(data.ration_cost);
+		        	//Actualizamos la lista de recetas en home
+		        	var table = $('#recipe-list-tb').DataTable();
+		        	var n = '"'+$('#recipe-name').val()+"_"+data.user+'"';
+		        	if (data.vegan == true)
+		        		vegan = "YES";
+		        	else
+		        		vegan = "NO";
+					table.row( n ).data([ $('#recipe-name').val(), $('#n-rations').val() , data.cost, data.ration_cost, data.nivel, data.time, vegan, data.user ]);
+					table.draw();
+					return false;
+				}
+				if (data.control == 1){
+					$("#message2").hide();
+		        	$("#message2").html('<p class ="alert alert-danger" role="alert">This recipe already exists in the current recipe.</p>').show(1000);
+		        	return false;
+				}
+
+			},
+			error: function(xhr){
+				console.log(xhr.status);
+	    		console.log(xhr.statusText);
+	    	}
+	    });
+	});
+
+
 	$('#save-ingredient, #save-finish').click(function(){
 		if ($('#ingredient-name').val() == ""){
 			$("#message2").hide();
@@ -100,7 +147,6 @@ $(document).ready(function(){
 		        	var table = $('#recipe-list-tb').DataTable();
 		        	//var n = ($('#recipe-list-tb tr').length) - 2;
 		        	var n = $('#recipe-name').val()+"_"+data.user;
-		        	console.log(n);
 		        	if (data.vegan == true)
 		        		vegan = "YES";
 		        	else
