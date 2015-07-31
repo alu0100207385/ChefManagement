@@ -224,7 +224,6 @@ class MyApp < Sinatra::Base
 		user = User.first(:username => session[:username])
 		content_type 'application/json'
 		if (!user.is_a? NilClass)
-			#rec = GetIds(params[:recipe])
 			if (!Recipe.first(:name => params[:recipe], :username => params[:user]).is_a? NilClass)
 				params[:user].gsub!(' ','-')
 				{:control => 0, :username => params[:user]}.to_json
@@ -236,6 +235,25 @@ class MyApp < Sinatra::Base
 		end
 	end
 
+=begin
+	get '/home/load-recipe-list' do
+		content_type 'application/json'
+		if (!User.first(:username => session[:username]).is_a? NilClass)
+			#ok devolver array de recetas
+			recipe = Recipe.all
+			aux = []
+			recipe.each do |i|
+				aux << [i.name, {"cost" => i.cost, "ration_cost" => i.ration_cost, "nration" => i.nration, "username" => i.username, "nivel" => i.nivel, "production_time" => i.production_time, "vegan" => i.vegan} ]
+				#puts JSON(aux)
+			end
+			#puts "------"
+			#puts aux
+			{:control => 0, :recipe => aux.to_json}.to_json
+		else
+			{:control => 1}.to_json
+		end
+	end
+=end
 
 	get '/home/recipe/:name' do
 		params[:name].gsub!('-',' ')
@@ -243,6 +261,13 @@ class MyApp < Sinatra::Base
 		@recipe = Recipe.first(:name => c[0], :username => c[1])
 		@ing = Ingredient.all(:order => [:name.asc] ,:recipe => @recipe)
 		@current_user = session[:username]
+		ing_recipe = Recipe2.all(:recipe => @recipe)
+		@info = []
+		ing_recipe.each do |n|
+			r = Recipe.first(:name => n.name, :username => n.username)
+			url = n.name.gsub(' ','-')+"_"+r.username
+			@info << [n.name, n.nration, calculator(r.cost, r.nration, n.nration), url]
+		end
 
 		erb :recipe, :layout => :'layouts/default3'
 	end
@@ -294,7 +319,7 @@ class MyApp < Sinatra::Base
 			@recipe = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 			if (!params[:ing_recipe].is_a? NilClass) #Se introdujo una receta
 				if (Recipe2.first(:name => params[:ing_recipe], :recipe => @recipe).is_a? NilClass)
-					Recipe2.first_or_create(:name => params[:ing_recipe], :nration => params[:rations], :recipe => @recipe)
+					Recipe2.first_or_create(:name => params[:ing_recipe], :nration => params[:rations], :recipe => @recipe, :username => params[:username])
 					rec = Recipe.first(:name => params[:ing_recipe], :username => params[:username])
 					nuevo_costo = (calculator(rec.cost, rec.nration, params[:rations].to_i) + @recipe.cost).round(2)
 					@recipe.update(:cost => nuevo_costo)
@@ -306,7 +331,6 @@ class MyApp < Sinatra::Base
 					end
 					if !rec.warning.empty?
 						aux = @recipe.warning+", "+rec.warning
-						puts "#{aux}"
 						@recipe.update(:warning => aux)
 					end
 					{:control => 0, :cost => nuevo_costo, :ration_cost => @recipe.ration_cost, :nivel => @recipe.nivel, :time => @recipe.production_time, :vegan => @recipe.vegan, :user => @recipe.username}.to_json

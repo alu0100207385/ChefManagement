@@ -60,6 +60,7 @@ class Recipe2										#Almacenamos aquellas recetas que sirven
 	property :id, Serial
 	property :name, String, :required => true
 	property :nration, Integer, :required => true
+	property :username, String, :required => true
 
 	belongs_to :recipe
 end

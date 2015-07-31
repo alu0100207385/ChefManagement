@@ -72,6 +72,16 @@
 						<td><%= n.round(2) %></td>
 					</tr>
 				<% end %>
+				<% if @info.any? %>
+					<% @info.each do |i| %>
+						<tr>
+							<td><a href="/home/recipe/<%= i[3] %>"><%= i[0] %></a></td>
+							<td><%= i[1] %> people</td>
+							<td><%= i[2] %></td>
+							<td><%= i[2] %></td>
+						</tr>
+					<% end %>
+				<% end %>
 			</tbody>
 		</table>
 	</div>

@@ -1,5 +1,17 @@
 $(document).ready(function(){
 
+	$("#cancel").click(function(){
+		$('#message').hide();
+		$('#calculator-view').hide();
+		$('#make').hide();
+		$('#import').hide();
+		$('#export').hide();
+		$('#current-recipe').hide();
+		$('#section-title').html('<h3>Recipe list</h3><hr>');
+		$('#show').show();
+		return false;
+	});
+		
 	$("#save-recipe").click(function(){
 		var entrada = false;
 		if ($('#recipe-name').val() == ""){
@@ -45,8 +57,12 @@ $(document).ready(function(){
 					$('#accordion').show(1500);
 					$('#current-recipe').html("<h4>"+$('#recipe-name').val()+"</h4>").show(1500);
 					//Actualizamos la tabla de recetas -> home
-					var table = $('#recipe-list-tb').DataTable();
-					table.row.add([$('#recipe-name').val(), $('#n-rations').val(), $('#recipe_cost').val(), $('#recipe_cost_ration').val(), $('#nivel').val(), $('#h').val()+"'"+$('#m').val()+"''", $('#vegan').val(), data.user]).draw();
+					//var table = $('#recipe-list-tb').DataTable();
+					//table.row.add([$('#recipe-name').val(), $('#n-rations').val(), $('#recipe_cost').val(), $('#recipe_cost_ration').val(), $('#nivel').val(), $('#h').val()+"'"+$('#m').val()+"''", $('#vegan').val(), data.user]).draw();
+					
+					var rowIndex = $('#recipe-list-tb').dataTable().fnAddData([$('#recipe-name').val(), $('#n-rations').val(), "0.0", "0.0", $('#nivel').val(), $('#h').val()+"'"+$('#m').val()+"''", $('#vegan').val(), data.user]);
+					var row = $('#recipe-list-tb').dataTable().fnGetNodes(rowIndex);
+					$(row).attr('id', $('#recipe-name').val()+"_"+data.user);
 					return false;
       			}
       			if(data.control == 1){

@@ -85,7 +85,6 @@ $(document).ready(function(){
 		        	else
 		        		vegan = "NO";
 					table.row( n ).data([ $('#recipe-name').val(), $('#n-rations').val() , data.cost, data.ration_cost, data.nivel, data.time, vegan, data.user ]);
-					table.draw();
 					return false;
 				}
 				if (data.control == 1){
