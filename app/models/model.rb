@@ -60,9 +60,9 @@ class Recipe2										#Almacenamos aquellas recetas que sirven
 	property :id, Serial
 	property :name, String, :required => true
 	property :nration, Integer, :required => true
-	property :username, String, :required => true
+	property :username, String, :required => true	#Usuario creador de la receta (Recipe)
 
-	belongs_to :recipe
+	belongs_to :recipe 								#Receta a la que esta asociada
 end
 
 =begin

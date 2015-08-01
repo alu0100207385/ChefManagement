@@ -151,7 +151,7 @@ $(document).ready(function(){
 		        	else
 		        		vegan = "NO";
 		        	//n= uede ser n fil o ID
-					table.row( 0 ).data([ $('#recipe-name').val(), $('#n-rations').val() , data.cost, data.ration_cost, data.nivel, data.time, vegan, data.user ]);
+					table.row( n ).data([ $('#recipe-name').val(), $('#n-rations').val() , data.cost, data.ration_cost, data.nivel, data.time, vegan, data.user ]);
       				if (finished == true)
       					window.setTimeout(function(){window.location = '/home';}, 2000 );
 		        	return false;

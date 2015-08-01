@@ -4,7 +4,7 @@
 	</div>
 	<div class="col-md-3"><h1 style="color:red">¡puntuacion!</h1></div>
 	<div class="col-md-3" style="text-align:right">
-		<% if @current_user == @recipe.username %>
+		<% if (@current_user == @recipe.username) || ((@current_user == 'admin') %>
 			<h1>
 				<a href="javascript:ConfirmDelete('<%= @recipe.name %>')"><span class="label label-danger"><i class="fa fa-trash-o"></i></span></a>
 				<a href="javascript:EditRecipe('<%= @recipe.name %>')"><span class="label label-warning"><i class="fa fa-pencil-square-o"></i></span></a>

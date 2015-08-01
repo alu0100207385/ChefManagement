@@ -20,6 +20,14 @@
 	    	<label>Email</label>
 	    	<input type="email" class="form-control" placeholder="Enter email" name="email" id="email">
 	  	</div>
+	  	<div class="form-group" style="background-color:white; opacity: 0.8;">
+	  		<h5>Terms and conditions</h5>
+	  		<ol><font size="2">
+	  			<li>Register and ChefManagement software use is free.</li>
+	  			<li>If you delete your account, your profile and your personal data will be erased but your recipes will remain stored in the database indefinitely.</li>
+	  		</font></ol>
+	  		<p style="text-align:right;"><input type="checkbox" id="accept_terms" style=" cursor:pointer;"> I accept the terms and conditions</p>
+	  	</div>
 	  	<div style="text-align:right">
 	  		<a href="/" type="button" class="btn btn-default">Cancel</a>
 	  		<button class="btn btn-primary" id="reg">Register</button>
@@ -31,48 +39,57 @@
 
 
 <script type="text/javascript">
-
 $(document).ready(function(){
+	
+	$( "#reg" ).prop( "disabled", true );
+	$('#accept_terms').click(function() {
+   		if($('#accept_terms').is(':checked')){ 
+   			$( "#reg" ).prop( "disabled", false );
+   		}
+   		else
+   			$( "#reg" ).prop( "disabled", true );
+	});
+
+
 	$("#reg").click(function(){
 
-	if ( ($('#username').val() == "") || ($('#pass').val() == "") || ($('#email').val() == "") ){
-		$("#message").hide();
-        $("#message").html('<p class ="alert alert-warning" role="alert">All fields are required</p>');
-        $("#message").show(1000);
-        return false;
-	}
-
-
-    $.ajax({
-    	type: "POST",
-		url: "/register",
-		//contentType: "application/json; charset=utf-8",
-      	//dataType: "json",
-      	data: {username: $('#username').val(), password: $('#pass').val(), email: $('#email').val()},
-
-      	success: function(data){
-			if(data.control == 0){
-				$("#message").hide();
-		        $("#message").html('<p class ="alert alert-success" role="alert">Register success. Welcome</p>');
-		        $("#message").show(1000);
-				window.setTimeout(function(){window.location = '/home';}, 3000 );
-			}
-        	if(data.control == 1){
-		        $("#message").hide();
-		        $("#message").html('<p class ="alert alert-danger" role="alert">Username is already in use</p>');
-		        $("#message").show(1000);
-        	}
-	        if(data.control == 2){
-	          $("#message").hide();
-	          $("#message").html('<p class="alert alert-danger" role="alert">Email is already in use</p>');
-	          $("#message").show(1000);
-	        }
-		},
-
-		error: function(xhr){
-			console.log(xhr.status);
-	    	console.log(xhr.statusText);
+		if ( ($('#username').val() == "") || ($('#pass').val() == "") || ($('#email').val() == "") ){
+			$("#message").hide();
+	        $("#message").html('<p class ="alert alert-warning" role="alert">All fields are required</p>');
+	        $("#message").show(1000);
+	        return false;
 		}
+
+	    $.ajax({
+	    	type: "POST",
+			url: "/register",
+			//contentType: "application/json; charset=utf-8",
+	      	//dataType: "json",
+	      	data: {username: $('#username').val(), password: $('#pass').val(), email: $('#email').val()},
+
+	      	success: function(data){
+				if(data.control == 0){
+					$("#message").hide();
+			        $("#message").html('<p class ="alert alert-success" role="alert">Register success. Welcome</p>');
+			        $("#message").show(1000);
+					window.setTimeout(function(){window.location = '/home';}, 3000 );
+				}
+	        	if(data.control == 1){
+			        $("#message").hide();
+			        $("#message").html('<p class ="alert alert-danger" role="alert">Username is already in use</p>');
+			        $("#message").show(1000);
+	        	}
+		        if(data.control == 2){
+		          $("#message").hide();
+		          $("#message").html('<p class="alert alert-danger" role="alert">Email is already in use</p>');
+		          $("#message").show(1000);
+		        }
+			},
+
+			error: function(xhr){
+				console.log(xhr.status);
+		    	console.log(xhr.statusText);
+			}
 		});
 	});
 });

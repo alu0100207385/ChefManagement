@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'sinatra-base'
-gem 'sinatra-flash'
 gem 'data_mapper'
 gem 'mail'
 gem 'omniauth-oauth2'

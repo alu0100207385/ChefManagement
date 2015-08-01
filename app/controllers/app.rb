@@ -97,7 +97,6 @@ class MyApp < Sinatra::Base
 		config = YAML.load_file 'app/config/config.yml'
 		auth = request.env['omniauth.auth']
 		user = User.new
-		#user = User.first(:username => session[:username])
 		case params[:name]
 
 		when 'google_oauth2'
@@ -105,20 +104,48 @@ class MyApp < Sinatra::Base
 			user.email = auth['info'].email
 			session[:network] = user.network = 'google'
 			#if (User.count(:username => session[:username]) == 0) || (User.count(:username => session[:username], :network => 'google') == 0) #Si no existe lo incluimos en la bbdd
-			if (User.first(:username => auth['info'].name).is_a? NilClass)
-				user.save
+			go = User.first(:username => auth['info'].name, :email => auth['info'].email)
+			if (go.is_a? NilClass)
+				if (User.first(:username => auth['info'].name).is_a? NilClass) 
+					if (User.first(:email => auth['info'].email).is_a? NilClass)
+						user.save
+						redirect '/home'
+					else
+						session.clear
+						redirect '/auth/failure'
+					end
+				else
+					session.clear
+					redirect '/auth/failure'
+				end
+			else #Ya existe en la bbdd
+				redirect '/home'
 			end
-			redirect '/home'
 
 		when 'facebook'
 			session[:username] = user.username = auth['info'].name
 			user.email = auth['info'].email
 			session[:network] = user.network = 'facebook'
 			#if (User.count(:username => user.username) == 0) || (User.count(:username => session[:username], :network => 'facebook') == 0)  #Si no existe lo incluimos en la bbdd
-			if (User.first(:username => auth['info'].name).is_a? NilClass)
-				user.save
+			#register
+			fa = User.first(:username => auth['info'].name, :email => auth['info'].email)
+			if (fa.is_a? NilClass)
+				if (User.first(:username => auth['info'].name).is_a? NilClass) 
+					if (User.first(:email => auth['info'].email).is_a? NilClass)
+						user.save
+						redirect '/home'
+					else
+						session.clear
+						redirect '/auth/failure'
+					end
+				else
+					session.clear
+					redirect '/auth/failure'
+				end
+			else #Ya existe en la bbdd
+				redirect '/home'
 			end
-			redirect '/home'
+		
 		else
 			redirect '/auth/failure'
 		end
@@ -185,8 +212,13 @@ class MyApp < Sinatra::Base
 
 	post '/home/settings/delete-user' do
 		user = User.first(:username => session[:username])
-		user.destroy
-	  	session.clear
+		if (!user.is_a? NilClass)
+			recipe = Recipe.all(:username => session[:username])
+			#Recipe2.all()
+			recipe.destroy
+			user.destroy
+	  		session.clear
+	  	end
 	  	redirect '/'
 	end
 
@@ -262,11 +294,13 @@ class MyApp < Sinatra::Base
 		@ing = Ingredient.all(:order => [:name.asc] ,:recipe => @recipe)
 		@current_user = session[:username]
 		ing_recipe = Recipe2.all(:recipe => @recipe)
-		@info = []
-		ing_recipe.each do |n|
-			r = Recipe.first(:name => n.name, :username => n.username)
-			url = n.name.gsub(' ','-')+"_"+r.username
-			@info << [n.name, n.nration, calculator(r.cost, r.nration, n.nration), url]
+		if (!ing_recipe.is_a? NilClass)
+			@info = []
+			ing_recipe.each do |n|
+				r = Recipe.first(:name => n.name, :username => n.username)
+				url = n.name.gsub(' ','-')+"_"+r.username
+				@info << [n.name, n.nration, calculator(r.cost, r.nration, n.nration), url]
+			end
 		end
 
 		erb :recipe, :layout => :'layouts/default3'
@@ -421,7 +455,7 @@ class MyApp < Sinatra::Base
 		content_type 'application/json'
 		if (session[:username] == rec.username)
 			Ingredient.all(:recipe => rec).destroy
-			Recipe2.all(:recipe => rec).destroy
+			Recipe2.all(:recipe => rec, :username => session[:username]).destroy
 			rec.destroy
 			{:control => 0}.to_json
 		else
@@ -605,7 +639,7 @@ class MyApp < Sinatra::Base
 			end
 		end
 
-		special_users = ["admin", "administrator", "administrador", "root", "superadmin"]
+		special_users = ["admin", "administrator", "administrador", "root", "superadmin", "aaron"]
 		if special_users.include?(session[:username])
 			recipe = Recipe.all #Backup de todas las recetas
 		else
@@ -614,14 +648,33 @@ class MyApp < Sinatra::Base
 		
 		content_type 'application/json'
 		if (file = File.new("public/"+params[:name]+".json", "w+"))
-			file.puts("{"+'"recipes"'+":\n#{recipe.to_json},")
-			ing = Ingredient.all(:recipe => recipe)
-			file.puts('"ingredients"'+":\n#{ing.to_json}}")
-			file.close
-			{:control => 0}.to_json
+			if (!recipe.is_a? NilClass)
+				file.puts("{"+'"recipes"'+":\n#{recipe.to_json},")
+				ing = Ingredient.all(:recipe => recipe)
+				file.puts('"ingredients"'+":\n#{ing.to_json},")
+				rec = Recipe2.all(:recipe => recipe)
+				if (!rec.is_a? NilClass)
+					file.puts('"recipes2"'+":\n#{rec.to_json}")
+				end
+				file.puts("}")
+				file.close
+				{:control => 0}.to_json
+			end
 		else
 			{:control => 1}.to_json
 		end
+	end
+
+	#Cualquier error de ruta debe ser redireccionada aqui
+	get '/auth/failure' do
+    	%Q{<h3>Error</h3> &#60; 
+    		<h4>Possible reasons</h4>
+    		<hr>
+    		<ol>
+    			<li>Error during authentication process</li>
+    			<li>Username or email already in use</li>
+    		</ol>
+    		<a href="/">Back</a> }
 	end
 
 
