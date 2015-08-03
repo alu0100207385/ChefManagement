@@ -63,7 +63,6 @@ $(document).ready(function(){
 			return false;
 		}
 		var n = GetIds($('#recipe2').val());
-		console.log()
 
 		$.ajax({
     		type: "POST",
@@ -78,13 +77,13 @@ $(document).ready(function(){
 		        	$('#recipe_cost').val(data.cost);
 		        	$('#recipe_cost_ration').val(data.ration_cost);
 		        	//Actualizamos la lista de recetas en home
-		        	var table = $('#recipe-list-tb').DataTable();
-		        	var n = '"'+$('#recipe-name').val()+"_"+data.user+'"';
+		        	//var table = $('#recipe-list-tb').DataTable();
+		        	//var n = '"'+$('#recipe-name').val()+"_"+data.user+'"';
 		        	if (data.vegan == true)
 		        		vegan = "YES";
 		        	else
 		        		vegan = "NO";
-					table.row( n ).data([ $('#recipe-name').val(), $('#n-rations').val() , data.cost, data.ration_cost, data.nivel, data.time, vegan, data.user ]);
+					//table.row( n ).data([ $('#recipe-name').val(), $('#n-rations').val() , data.cost, data.ration_cost, data.nivel, data.time, vegan, data.user ]);
 					return false;
 				}
 				if (data.control == 1){
@@ -143,15 +142,14 @@ $(document).ready(function(){
 		        	$('#recipe_cost').val(data.cost);
 		        	$('#recipe_cost_ration').val(data.ration_cost);
 		        	//Actualizamos la lista de recetas en home
-		        	var table = $('#recipe-list-tb').DataTable();
-		        	//var n = ($('#recipe-list-tb tr').length) - 2;
-		        	var n = $('#recipe-name').val()+"_"+data.user;
+		        	//var table = $('#recipe-list-tb').DataTable();
+		        	//var n = $('#recipe-name').val()+"_"+data.user;
 		        	if (data.vegan == true)
 		        		vegan = "YES";
 		        	else
 		        		vegan = "NO";
 		        	//n= uede ser n fil o ID
-					table.row( n ).data([ $('#recipe-name').val(), $('#n-rations').val() , data.cost, data.ration_cost, data.nivel, data.time, vegan, data.user ]);
+					//table.row( n ).data([ $('#recipe-name').val(), $('#n-rations').val() , data.cost, data.ration_cost, data.nivel, data.time, vegan, data.user ]);
       				if (finished == true)
       					window.setTimeout(function(){window.location = '/home';}, 2000 );
 		        	return false;

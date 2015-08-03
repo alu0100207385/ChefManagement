@@ -1,4 +1,8 @@
 $(document).ready(function(){
+	$('#publish').click(function(){
+		alert("Warning: This recipe will be public. You cannot change it later. Click 'Modify' to accept changes");
+	});
+
 	$('#create-file').click(function(){
 		if ($('#file-name').val() == ""){
 			$('#message').hide();

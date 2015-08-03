@@ -214,7 +214,8 @@ class MyApp < Sinatra::Base
 		user = User.first(:username => session[:username])
 		if (!user.is_a? NilClass)
 			recipe = Recipe.all(:username => session[:username])
-			#Recipe2.all()
+			ing = Ingredient.all(:recipe => recipe).destroy
+			Recipe2.all(:username => session[:username]).destroy
 			recipe.destroy
 			user.destroy
 	  		session.clear
@@ -242,7 +243,7 @@ class MyApp < Sinatra::Base
 
 	get '/home' do
 		@user = User.first(:username => session[:username])
-		@rec = Recipe.all
+		@rec = Recipe.all(:username => session[:username])
 		if (!@user.is_a? NilClass)
 			@current_user = session[:username]
 			erb :home
@@ -267,25 +268,6 @@ class MyApp < Sinatra::Base
 		end
 	end
 
-=begin
-	get '/home/load-recipe-list' do
-		content_type 'application/json'
-		if (!User.first(:username => session[:username]).is_a? NilClass)
-			#ok devolver array de recetas
-			recipe = Recipe.all
-			aux = []
-			recipe.each do |i|
-				aux << [i.name, {"cost" => i.cost, "ration_cost" => i.ration_cost, "nration" => i.nration, "username" => i.username, "nivel" => i.nivel, "production_time" => i.production_time, "vegan" => i.vegan} ]
-				#puts JSON(aux)
-			end
-			#puts "------"
-			#puts aux
-			{:control => 0, :recipe => aux.to_json}.to_json
-		else
-			{:control => 1}.to_json
-		end
-	end
-=end
 
 	get '/home/recipe/:name' do
 		params[:name].gsub!('-',' ')
@@ -465,7 +447,7 @@ class MyApp < Sinatra::Base
 
 
 	post '/home/:recipe_name/add-ingredient' do
-		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
+		rec = Recipe.first(:name => params[:recipe_name].gsub!('-',' '), :username => session[:username])
 		content_type 'application/json'
 		if (!rec.is_a? NilClass)
 			if (Ingredient.first(:name => params[:ing_name], :recipe => rec).is_a? NilClass) #Si no existe en esa receta
@@ -543,6 +525,8 @@ class MyApp < Sinatra::Base
 
 	post '/home/edit-ingredient/:name' do
 		old_name = params[:name].gsub('-',' ')
+		puts "old name = #{old_name}"
+		puts "new name = #{params[:new_name]}"
 		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 		c = true
 		content_type 'application/json'
@@ -556,6 +540,7 @@ class MyApp < Sinatra::Base
 				end
 			else
 				ing = Ingredient.first(:name => old_name, :recipe => rec)
+				puts "#{ing.name}"
 				c = false #No se cambio el nombre, actualizar campos
 			end
 		else
@@ -592,8 +577,8 @@ class MyApp < Sinatra::Base
 				ing.update(:volume_un => params[:volume_un])
 			end
 			ing.update(:decrease => params[:decrease])
-			if (params[:name] != old_name)
-				ing.update(:name => params[:name])
+			if (params[:new_name] != old_name)
+				ing.update(:name => params[:new_name])
 			end
 			#Actualizamos los costos de la receta
 			if (ing.weight != 0)
@@ -639,7 +624,7 @@ class MyApp < Sinatra::Base
 			end
 		end
 
-		special_users = ["admin", "administrator", "administrador", "root", "superadmin", "aaron"]
+		special_users = ["admin", "administrator", "administrador", "root", "superadmin"]
 		if special_users.include?(session[:username])
 			recipe = Recipe.all #Backup de todas las recetas
 		else

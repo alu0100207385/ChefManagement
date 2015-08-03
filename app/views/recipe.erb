@@ -2,15 +2,18 @@
 	<div class="col-md-6">
 		<h1><%= @recipe.name %> (<%= @recipe.nration %> people) </h1>
 	</div>
-	<div class="col-md-3"><h1 style="color:red">¡puntuacion!</h1></div>
-	<div class="col-md-3" style="text-align:right">
-		<% if (@current_user == @recipe.username) || ((@current_user == 'admin') %>
-			<h1>
-				<a href="javascript:ConfirmDelete('<%= @recipe.name %>')"><span class="label label-danger"><i class="fa fa-trash-o"></i></span></a>
-				<a href="javascript:EditRecipe('<%= @recipe.name %>')"><span class="label label-warning"><i class="fa fa-pencil-square-o"></i></span></a>
-			</h1>
-		<% end %>
-	</div>
+	<% if (@recipe.username == "public") %>
+		<div class="col-md-6"><h1 style="color:red">¡puntuacion!</h1></div>
+	<% else %>
+		<div class="col-md-6" style="text-align:right">
+			<% if (@current_user == @recipe.username) %>
+				<h1>
+					<a href="javascript:ConfirmDelete('<%= @recipe.name %>')"><span class="label label-danger"><i class="fa fa-trash-o"></i></span></a>
+					<a href="javascript:EditRecipe('<%= @recipe.name %>')"><span class="label label-warning"><i class="fa fa-pencil-square-o"></i></span></a>
+				</h1>
+			<% end %>
+		</div>
+	<% end %>
 </div>
 <div class="clearfix"></div>
 <hr>
@@ -97,24 +100,26 @@
 	<a href="/home" type="button" class="btn btn-default">Back</a>
 </div>
 
-<div class="clearfix"></div>
-<hr>
-<div id="post-comment" class="row-fluid">
-	<div class="col-md-9">
-		<%= @current_user %>
-		<textarea id="content" style="width:100%"></textarea>
-	</div>
-	<div class="col-md-2"><span id="score">puntuacion</span></div>
-	<div class="col-md-1" style="text-align:center;">
-		<button id="post" class="btn btn-primary">Post</button>
-	</div>
-</div>
-    
-    
-<div id="post-comment" class="row-fluid" style="margin-top:10%;">
+<% if (@recipe.username == "public") %>
+	<div class="clearfix"></div>
 	<hr>
-	<!--AQUI MOSTRAR LOS COMENTARIOS Y PUNTUACIONES DE ESA RECETA-->
-</div>
+	<div id="post-comment" class="row-fluid">
+		<div class="col-md-9">
+			<%= @current_user %>
+			<textarea id="content" style="width:100%"></textarea>
+		</div>
+		<div class="col-md-2"><span id="score">puntuacion</span></div>
+		<div class="col-md-1" style="text-align:center;">
+			<button id="post" class="btn btn-primary">Post</button>
+		</div>
+	</div>
+	    
+	    
+	<div id="post-comment" class="row-fluid" style="margin-top:10%;">
+		<hr>
+		<!--AQUI MOSTRAR LOS COMENTARIOS Y PUNTUACIONES DE ESA RECETA-->
+	</div>
+<% end %>
 
 
 <script type="text/javascript">

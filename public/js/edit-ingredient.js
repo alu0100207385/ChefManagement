@@ -97,7 +97,8 @@ $(document).ready(function(){
 		        	$("#message2").html('<p class ="alert alert-success" role="alert">'+$('#ingredient-name').val()+' has been added</p>').show(1000);
 		        	$('#recipe_cost').val(data.recipe_cost);
 		        	$("#recipe_cost_ration").val(data.ration_cost);
-		        	$('#ing-list tr:last').after('<tr id='+$('#ingredient-name').val()+'><td>'+$('#ingredient-name').val()+'</td><td>'+$('#n-quantity').val()+" "+$('#unity').text()+'</td><td>'+$('#ing-cost').val()+" €/"+$('#unity').text()+'</td><td><i class="fa fa-trash-o"></td><td><i class="fa fa-pencil-square-o"></td></tr>').show(1000);
+		        	var quant = ($('#n-quantity').val()*$('#ing-cost').val());
+		        	$('#ing-list tr:last').after('<tr id='+ClearSpace($('#ingredient-name').val())+'><td>'+$('#ingredient-name').val()+'</td><td>'+$('#n-quantity').val()+" "+$('#unity').text()+'</td><td>'+$('#ing-cost').val()+" €/"+$('#unity').text()+'</td><td>'+quant+'</td><td><a href="javascript:ConfirmDelete('+"'"+ClearSpace($('#ingredient-name').val())+"'"+')"><i class="fa fa-trash-o"></i></a></td><td><a href="javascript:EditIngredient('+"'"+ClearSpace($('#ingredient-name').val())+"'"+')"><i class="fa fa-pencil-square-o"></i></a></td></tr>').show(1000);
 		        	ClearIngredient();
 		        	$('#recipe_cost').val(data.cost);
 		        	$('#recipe_cost_ration').val(data.ration_cost);
@@ -189,8 +190,8 @@ function EditIngredient(ing_name){
 					$("#n-quantity").attr('step',0);
 				break;
 			}
-			$('#ingredient-name').val(ing_name);
 			$('#old-name').val(ing_name);
+			$('#ingredient-name').val(ing_name.replace(/-/g," "));
 			$('#ing-cost').val(data.cost);
 			$('#decrease').val(data.decrease);
 			$('#save-ingredient').hide(1000);
@@ -232,6 +233,7 @@ $('#update-ingredient').click(function(){
 		data: {recipe_name: $('#recipe-name').val(), new_name: $('#ingredient-name').val(), /*old_name: $('#old-name').val(),*/ cost: $('#ing-cost').val(), unity_cost: "€/"+$('#unity').text(), quantity_op: $('#quantity-op option:selected').text(), n_quantity: $('#n-quantity').val(), weight_un: $("#weight-un option:selected").text(), volume_un: $("#volume-un option:selected").text(), decrease: $("#decrease").val()},
 
 		success: function(data){
+			alert(data.name);
 			if (data.control == 0){
 				ClearIngredient();
 				$('#save-ingredient').show();
