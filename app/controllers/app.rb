@@ -525,8 +525,6 @@ class MyApp < Sinatra::Base
 
 	post '/home/edit-ingredient/:name' do
 		old_name = params[:name].gsub('-',' ')
-		puts "old name = #{old_name}"
-		puts "new name = #{params[:new_name]}"
 		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 		c = true
 		content_type 'application/json'
@@ -540,7 +538,6 @@ class MyApp < Sinatra::Base
 				end
 			else
 				ing = Ingredient.first(:name => old_name, :recipe => rec)
-				puts "#{ing.name}"
 				c = false #No se cambio el nombre, actualizar campos
 			end
 		else
@@ -588,8 +585,10 @@ class MyApp < Sinatra::Base
 			else
 				new_cost = ing.quantity * ing.cost
 			end
-			rec.update(:cost => (rec.cost - old_cost + new_cost).round(2))
-			rec.update(:ration_cost => (rec.cost/rec.ration_cost).round(2))
+			cost = (rec.cost - old_cost + new_cost).round(2)
+			rec.update(:cost => cost)
+			cost = (rec.cost/rec.nration).round(2)
+			rec.update(:ration_cost => cost)
 			if (ing.weight != 0)
 				{:control => 0, :control2 => 'weight', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :weight => ing.weight, :weight_un => ing.weight_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			elsif (ing.volume != 0)

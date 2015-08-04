@@ -233,7 +233,6 @@ $('#update-ingredient').click(function(){
 		data: {recipe_name: $('#recipe-name').val(), new_name: $('#ingredient-name').val(), /*old_name: $('#old-name').val(),*/ cost: $('#ing-cost').val(), unity_cost: "€/"+$('#unity').text(), quantity_op: $('#quantity-op option:selected').text(), n_quantity: $('#n-quantity').val(), weight_un: $("#weight-un option:selected").text(), volume_un: $("#volume-un option:selected").text(), decrease: $("#decrease").val()},
 
 		success: function(data){
-			alert(data.name);
 			if (data.control == 0){
 				ClearIngredient();
 				$('#save-ingredient').show();
@@ -256,7 +255,7 @@ $('#update-ingredient').click(function(){
   						var un = 'u';
   					break;
   				}
-  				window.location = window.location.href+'#message2';
+  				window.location = "/home/edit-ingredient/"+ClearSpace($('#old-name').val())+'#message2';
   				$('#ing-list tr:last').after('<tr id='+data.name+'><td>'+data.name+'</td><td>'+quant+" "+un+'</td><td>'+data.cost+" "+data.unity_cost+'</td><td>'+Math.round((quant *data.cost)*100)/100+'</td><td><a href="javascript:ConfirmDelete('+"'"+data.name+"'"+')"><i class="fa fa-trash-o"></i></a></td><td><a href="javascript:EditIngredient('+"'"+data.name+"'"+')"><i class="fa fa-pencil-square-o"></i></a></td></tr>').show(1000);
 				$('#recipe_cost').val(data.rec_cost);
 	        	$('#recipe_cost_ration').val(data.rec_ration_cost);
@@ -265,13 +264,13 @@ $('#update-ingredient').click(function(){
 			if (data.control == 2){
 				$("#message2").hide();
 		        $("#message2").html('<p class ="alert alert-danger" role="alert">Ingredient name is in use</p>').show(1000);
-		        window.location = window.location.href+'#message2';
+		        window.location = "/home/edit-ingredient/"+ClearSpace($('#old-name').val())+'#message2';
 		        return false;
 			}
 			else{
 				$("#message2").hide();
 		        $("#message2").html('<p class ="alert alert-danger" role="alert">Error update</p>').show(1000);
-		        window.location = window.location.href+'#message2';
+		        window.location = "/home/edit-ingredient/"+ClearSpace($('#old-name').val())+'#message2';
 		        return false;
 			}
 		},
