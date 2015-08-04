@@ -1,11 +1,8 @@
 $(document).ready(function(){
-	$('#publish').click(function(){
-		alert("Warning: This recipe will be public. You cannot change it later. Click 'Modify' to accept changes");
-	});
-
 	$("#message").hide();
 	$("#message2").hide();
 	CKEDITOR.instances['instructions'].setData($('#instructions2').text());
+	
 
 	$("#modify-recipe1, #modify-recipe2").click(function(){
 		var entrada = false;
@@ -59,3 +56,4 @@ $(document).ready(function(){
 	    });
 	});
 });
+

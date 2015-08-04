@@ -8,7 +8,7 @@
 		<div class="col-md-6" style="text-align:right">
 			<% if (@current_user == @recipe.username) %>
 				<h1>
-					<a href="javascript:alert('publicar');"><span class="label label-default"><i class="fa fa-paper-plane-o"></i></span></a>
+					<!--<a href="javascript:PublishRecipe('<%= @recipe.name %>');"><span class="label label-default"><i class="fa fa-paper-plane-o"></i></span></a>-->
 					<a href="javascript:ConfirmDelete('<%= @recipe.name %>')"><span class="label label-danger"><i class="fa fa-trash-o"></i></span></a>
 					<a href="javascript:EditRecipe('<%= @recipe.name %>')"><span class="label label-warning"><i class="fa fa-pencil-square-o"></i></span></a>
 				</h1>
@@ -19,11 +19,13 @@
 <div class="clearfix"></div>
 <hr>
 
+<div id="message"></div>
+
 <div class="row-fluid">
 	<div class="col-md-4">
 		<h3>Production costs</h3>
-		<p><strong>Production cost: </strong><%= @recipe.cost %></p>
-		<p><strong>Ration cost: </strong><%= @recipe.ration_cost %></p>
+		<p><strong>Production cost: </strong><%= @recipe.cost %> €</p>
+		<p><strong>Ration cost: </strong><%= @recipe.ration_cost %> €/p</p>
 		<p><strong>Nivel: </strong><%= @recipe.nivel %></p>
 		<p><strong>Time: </strong><%= @recipe.production_time %></p>
 	</div>
@@ -81,11 +83,12 @@
 						<tr>
 							<td><a href="/home/recipe/<%= i[3] %>"><%= i[0] %></a></td>
 							<td><%= i[1] %> people</td>
-							<td><%= i[2] %></td>
-							<td><%= i[2] %></td>
+							<td><%= i[2].round(2) %></td>
+							<td><%= i[2].round(2) %></td>
 						</tr>
 					<% end %>
 				<% end %>
+				<tr style="background-color:#e5e5e5; font-weight: bold;"><td>TOTAL</td><td></td><td></td><td><%= @recipe.cost %></td></tr>
 			</tbody>
 		</table>
 	</div>
@@ -124,6 +127,12 @@
 
 
 <script type="text/javascript">
+	function PublishRecipe(recipe_name){
+		if (confirm("Warning: This recipe will be public. You cannot change it later. continue?")){
+				console.log(ClearSpace(recipe_name));
+		}
+	};
+
 	function ConfirmDelete(recipe_name){
 		if (confirm('Are you sure?')){
 			var url = "/home/delete-recipe/"+ClearSpace(recipe_name);
@@ -133,9 +142,16 @@
       			data: {recipe_name: recipe_name},
 
       			success: function(data){
-      				if (data.control == 0)
+      				if (data.control == 0){
       					window.location = '/home';
-      				else{
+      					return false;
+      				}
+      				if (data.control == 2){
+      					$("#message").hide();
+		        		$("#message").html('<p class ="alert alert-danger" role="alert">Error. This recipe is in use in other recipes like an ingredient. If you want delete it, first you must delete it from ingredient list.</p>').show(1500);
+		        		return false;
+      				}
+      				if (data.control == 1){
 	  					$("#message").hide();
 		        		$("#message").html('<p class ="alert alert-danger" role="alert">Error</p>').show(1500);
 		        		return false;

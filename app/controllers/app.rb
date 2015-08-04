@@ -387,6 +387,14 @@ class MyApp < Sinatra::Base
 		rec.gsub!('-',' ')
 		@rec = Recipe.first(:name => rec, :username => session[:username])
 		@ing = Ingredient.all(:order => [:name.asc], :recipe => @rec)
+		@rec2 = Recipe2.all(:recipe => @rec)
+		if !@rec2.is_a? NilClass
+			@prices = []
+			@rec2.each do |n|
+				aux = Recipe.first(:name => n.name, :username => n.username)
+				@prices << calculator(aux.cost, aux.nration, n.nration)
+			end
+		end
 
 		erb :'edit-recipe', :layout => :'layouts/default3'
 	end
@@ -432,14 +440,18 @@ class MyApp < Sinatra::Base
 
 
 	post '/home/delete-recipe/:name' do
-		#params[:name].gsub!('-',' ')
+		params[:name].gsub!('-',' ')
 		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 		content_type 'application/json'
 		if (session[:username] == rec.username)
-			Ingredient.all(:recipe => rec).destroy
-			Recipe2.all(:recipe => rec, :username => session[:username]).destroy
-			rec.destroy
-			{:control => 0}.to_json
+			if (Recipe2.first(:name => params[:name], :username => session[:username]).is_a? NilClass)
+				Ingredient.all(:recipe => rec).destroy
+				Recipe2.all(:recipe => rec, :username => session[:username]).destroy
+				rec.destroy
+				{:control => 0}.to_json
+			else
+				{:control => 2}.to_json #No se puede eliminar pq sirve de rec_ing a otras recetas
+			end
 		else
 			{:control => 1}.to_json
 		end
@@ -633,14 +645,11 @@ class MyApp < Sinatra::Base
 		content_type 'application/json'
 		if (file = File.new("public/"+params[:name]+".json", "w+"))
 			if (!recipe.is_a? NilClass)
-				file.puts("{"+'"recipes"'+":\n#{recipe.to_json},")
 				ing = Ingredient.all(:recipe => recipe)
-				file.puts('"ingredients"'+":\n#{ing.to_json},")
 				rec = Recipe2.all(:recipe => recipe)
-				if (!rec.is_a? NilClass)
-					file.puts('"recipes2"'+":\n#{rec.to_json}")
-				end
-				file.puts("}")
+				out = {:recipes => recipe, :ingredients => ing, :recipes2 => rec}.to_json
+				puts out
+				file.puts(out)
 				file.close
 				{:control => 0}.to_json
 			end
@@ -648,6 +657,22 @@ class MyApp < Sinatra::Base
 			{:control => 1}.to_json
 		end
 	end
+
+
+	get '/home/import' do
+		user = User.first(:username => session[:username])
+		content_type 'application/json'
+		if (!user.is_a? NilClass)
+			puts "#{params[:file].class}"
+			puts "#{params[:file]}"
+			puts "----------"
+			puts "#{params[:file].to_json}"
+			{:control => 0}.to_json
+		else
+			{:control => 1}.to_json
+		end
+	end
+
 
 	#Cualquier error de ruta debe ser redireccionada aqui
 	get '/auth/failure' do
