@@ -53,4 +53,10 @@ module AppHelpers
 		end
 		return name+n
 	end
+
+	#Al leer de fichero, los campos tipo string como vegan lo convertimos en tipo bool
+	def to_bool(cad)
+		return true if cad == true || cad =~ (/^(true|t|yes|y|1)$/i)
+		return false if cad == false || cad.blank? || cad =~ (/^(false|f|no|n|0)$/i)
+	end
 end

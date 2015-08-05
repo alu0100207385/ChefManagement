@@ -639,7 +639,7 @@ class MyApp < Sinatra::Base
 		if special_users.include?(session[:username])
 			recipe = Recipe.all #Backup de todas las recetas
 		else
-			recipe = Recipe.all(:username => session[:username]) #Backup de sus recetas
+			recipe = Recipe.all(:username => session[:username]) #Backup de las recetas de ese usuario
 		end
 		
 		content_type 'application/json'
@@ -648,7 +648,6 @@ class MyApp < Sinatra::Base
 				ing = Ingredient.all(:recipe => recipe)
 				rec = Recipe2.all(:recipe => recipe)
 				out = {:recipes => recipe, :ingredients => ing, :recipes2 => rec}.to_json
-				puts out
 				file.puts(out)
 				file.close
 				{:control => 0}.to_json
@@ -662,14 +661,29 @@ class MyApp < Sinatra::Base
 	get '/home/import' do
 		user = User.first(:username => session[:username])
 		content_type 'application/json'
-		if (!user.is_a? NilClass)
-			puts "#{params[:file].class}"
-			puts "#{params[:file]}"
-			puts "----------"
-			puts "#{params[:file].to_json}"
+		USER_FILE = params[:file]
+		if ((!user.is_a? NilClass) && (!USER_FILE.is_a? NilClass))
+			#puts "#{USER_FILE}"
+			n = USER_FILE["recipes"].size
+			for i in 0...n
+				Recipe.first_or_create(:name => USER_FILE["recipes"][i.to_s]["name"], :cost => USER_FILE["recipes"][i.to_s]["cost"], :ration_cost => USER_FILE["recipes"][i.to_s]["ration_cost"], :nration => USER_FILE["recipes"][i.to_s]["nration"], :instructions => USER_FILE["recipes"][i.to_s]["instructions"], :username => USER_FILE["recipes"][i.to_s]["username"], :pos => USER_FILE["recipes"][i.to_s]["pos"], :type => USER_FILE["recipes"][i.to_s]["type"], :nivel => USER_FILE["recipes"][i.to_s]["nivel"], :production_time => USER_FILE["recipes"][i.to_s]["production_time"], :vegan => to_bool(USER_FILE["recipes"][i.to_s]["vegan"]), :warning => USER_FILE["recipes"][i.to_s]["warning"], :origin => USER_FILE["recipes"][i.to_s]["origin"])
+			end
+
+			n = USER_FILE["ingredients"].size
+			for i in 0...n
+				rec = Recipe.first(:name => USER_FILE["ingredients"][i.to_s]["recipe_name"], :username => USER_FILE["ingredients"][i.to_s]["recipe_username"])
+				Ingredient.first_or_create(:name => USER_FILE["ingredients"][i.to_s]["name"], :cost => USER_FILE["ingredients"][i.to_s]["cost"], :unity_cost => USER_FILE["ingredients"][i.to_s]["unity_cost"], :quantity => USER_FILE["ingredients"][i.to_s]["quantity"], :weight => USER_FILE["ingredients"][i.to_s]["weight"], :weight_un => USER_FILE["ingredients"][i.to_s]["weight_un"], :volume => USER_FILE["ingredients"][i.to_s]["volume"], :volume_un => USER_FILE["ingredients"][i.to_s]["volume_un"], :decrease => USER_FILE["ingredients"][i.to_s]["decrease"], :recipe => rec)
+			end
+
+			n = USER_FILE["recipes2"].size
+			for i in 0...n
+				rec = Recipe.first(:name => USER_FILE["recipes2"][i.to_s]["recipe_name"], :username => USER_FILE["recipes2"][i.to_s]["recipe_username"])
+				Recipe2.first_or_create(:name => USER_FILE["recipes2"][i.to_s]["name"], :nration => USER_FILE["recipes2"][i.to_s]["nration"],:username => USER_FILE["recipes2"][i.to_s]["username"], :recipe => rec)
+			end
+
 			{:control => 0}.to_json
 		else
-			{:control => 1}.to_json
+			{:control => 1}.to_json #No user online o no hay fichero
 		end
 	end
 
