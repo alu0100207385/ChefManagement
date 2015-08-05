@@ -294,7 +294,30 @@
 	<div id="recipe-selected"></div>
 
 	<!--###########CALCULATOR########################################-->
-	<div id="calculator-view">calculadora</div>
+	<div id="calculator-view">
+		<div class="row-fluid">
+			<div class="col-md-6">
+				<select id="calc-recipe">
+					<option value="none" selected="selected">-Select one-</option>
+					<% 	@rec.each do |n| %>
+						<option value="<%= n.name %>_<%= n.username %>"><%= n.name %> (<%= n.username %>)</option>
+					<% end %>				
+				</select>
+			</div>
+			<div class="col-md-6">
+				<label>Rations</label>
+				<input id="calc-rations" class="input-small" type="number" min="1" value="1" title="Number of rations (> 0)">
+			</div>
+		</div>
+		<div class="row-fluid" style="text-align:right">
+			<a href="/home" type="button" class="btn btn-default">Cancel</a>
+			<button id="calculate" class="btn btn-success">Calculate</button>
+		</div>
+		<hr>
+		<div class="row-fluid">
+			<div id="calc-result"></div>
+		</div>
+	</div>
 
 	<!--###########IMPORTAR####################################################-->
 	<div id="import">
@@ -442,6 +465,8 @@
 </script>
 
 
+<!--############################### calculator #########################-->
+<script src="/js/calculate.js"></script>
 <!--############################### import #########################-->
 <script src="/js/import.js"></script>
 <!--############################### export #########################-->

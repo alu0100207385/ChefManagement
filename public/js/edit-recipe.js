@@ -47,6 +47,7 @@ $(document).ready(function(){
       				}
       			if(data.control == -1)
 					window.location = '/';
+				return false;
       		},
 
       		error: function(xhr){

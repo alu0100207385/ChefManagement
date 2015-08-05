@@ -614,18 +614,7 @@ class MyApp < Sinatra::Base
 	end
 
 
-
-################################# OTROS ##################################
-	get '/home/settings' do
-		@user = User.first(:username => session[:username])
-		if (!@user.is_a? NilClass)
-			erb :settings, :layout => :'layouts/default2'
-		else
-			redirect '/'
-		end
-	end
-
-
+################################# EXPORT & IMPORT ##################################
 	get '/home/export' do
 		#Si existe alguna copia de backup en el servidor la borramos
 		if (Dir.glob(File.dirname(__FILE__)+"/../../public/*.json").size > 0)
@@ -684,6 +673,40 @@ class MyApp < Sinatra::Base
 			{:control => 0}.to_json
 		else
 			{:control => 1}.to_json #No user online o no hay fichero
+		end
+	end
+
+
+################################# CALCULATOR ###############################
+	get '/home/calculate' do
+		if (!User.first(:username => session[:username]).is_a? NilClass)
+			params[:recipe_name].gsub!('-',' ')
+			params[:recipe_username].gsub!('-',' ')
+			recipe = Recipe.first(:name => params[:recipe_name], :username => params[:recipe_username])
+			ing = Ingredient.all(:recipe => recipe)
+			list = []
+			ing.each do |n|
+				list << n.name
+			end
+			rec2 = Recipe2.all(:recipe => recipe)
+			list2 = []
+			rec2.each do |n|
+				list2 << n.name
+			end
+			content_type 'application/json'
+			{:control => 0, :recipe_name => recipe.name, :ing => list, :rec2 => list2}.to_json
+		end
+	end
+
+
+
+################################# EXTRAS ##################################
+	get '/home/settings' do
+		@user = User.first(:username => session[:username])
+		if (!@user.is_a? NilClass)
+			erb :settings, :layout => :'layouts/default2'
+		else
+			redirect '/'
 		end
 	end
 

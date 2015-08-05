@@ -92,8 +92,8 @@ $(document).ready(function(){
       		data: {ing_name: $('#ingredient-name').val(), ing_cost: $('#ing-cost').val(), ing_unity_cost: "€/"+$('#unity').text(), quantity_op: $('#quantity-op option:selected').text(), n_quantity: $('#n-quantity').val(), weight_un: $("#weight-un option:selected").text(), volume_un: $("#volume-un option:selected").text(),ing_decrease: $("#decrease").val(), recipe_name: $('#recipe-name').val()},
 
       		success: function(data){
+      			$("#message2").hide();
       			if(data.control == 0){
-	  				$("#message2").hide();
 		        	$("#message2").html('<p class ="alert alert-success" role="alert">'+$('#ingredient-name').val()+' has been added</p>').show(1000);
 		        	$('#recipe_cost').val(data.recipe_cost);
 		        	$("#recipe_cost_ration").val(data.ration_cost);
@@ -102,13 +102,10 @@ $(document).ready(function(){
 		        	ClearIngredient();
 		        	$('#recipe_cost').val(data.cost);
 		        	$('#recipe_cost_ration').val(data.ration_cost);
-		        	return false;
       			}
-      			if(data.control == 1){
-	  				$("#message2").hide();
+      			if(data.control == 1)
 		        	$("#message2").html('<p class ="alert alert-danger" role="alert">This ingredient already exists in the recipe</p>').show(1000);
-		        	return false;
-      			}
+      			return false;
       		},
 
       		error: function(xhr){
@@ -134,13 +131,12 @@ function ConfirmDelete(ing_name){
   					$("#"+ing_name+"").remove();
   				   	$('#recipe_cost').val(data.cost);
 	        		$('#recipe_cost_ration').val(data.ration_cost);
-	        		return false;
   				}
   				else{
   					$("#message2").hide();
 		        	$("#message2").html('<p class ="alert alert-danger" role="alert">Error</p>').show(1000);
-		        	return false;
   				}
+		        return false;
   			},
   			error: function(xhr){
 				console.log(xhr.status);
