@@ -9,21 +9,29 @@ $(document).ready(function(){
   			data: {recipe_name: aux[0], recipe_username: aux[1], nrations: $('#calc-rations').val()},
 
   			success: function(data){
+  				console.log(data);
+  				console.log(data.rec2);
   				if (data.control == 0){
-  					console.log(data);
-  					console.log(data.recipe_name);
-  					console.log(data.ing);
-  					console.log(data.rec2);
+  					var total = 0.0;
   					$('#calc-result').hide();
-  					$('#calc-result').html('<h3>'+data.recipe_name+' for '+$('#calc-rations').val()+' people</h3>'+'\
-  						<table style="width:100%">\
+  					$('#calc-instructions').hide();
+  					var out = "";
+  					out += '<h3>'+data.recipe_name+' for '+$('#calc-rations').val()+' people</h3>'+'\
+  						<table class="ing-list">\
   							<thead><tr><th>Ingredient</th><th>Quantity</th><th>Price(€)</th><th>Subtotal(€)</th></tr></thead>\
-  							<tbody>\
-  								<tr><td>'+data.ing[0]+'</td></tr>\
-  								<tr><td>TOTAL</td></tr>\
-  							</tbody>\
-  						</table>');
-  					$('#calc-result').show(1500);
+  							<tbody>';
+  					for (var i = 0; i < data.ing.length; i++){
+  						out += '<tr><td>'+data.ing[i][0]+'</td><td>'+data.ing[i][1]+' '+data.ing[i][2]+'</td><td>'+data.ing[i][3]+'</td><td>'+data.ing[i][4]+'</td></tr>';
+  						total += data.ing[i][4];
+  					}
+  					for (var i = 0; i < data.rec2.length; i++){
+  						out += '<tr><td><a href="">'+data.rec2[i][0]+'</a></td><td>'+$('#calc-rations').val()+' (p)</td><td>'+data.rec2[i][2]+'</td><td>'+data.rec2[i][2]+'</td></tr>';
+  						total += data.rec2[i][2];
+  					}
+  					out += '<tr style="background-color:#e5e5e5; font-weight: bold;"><td>TOTAL</td><td></td><td></td><td>'+(Math.round(total * 100) / 100)+'</td></tr>';
+  					out += '</tbody></table>';
+  					$('#calc-result').html(out).show(1500);
+  					$('#calc-instructions').html('<hr><h3>Instructions</h3>'+data.instructions).show(2500);
   				}
  
   			},

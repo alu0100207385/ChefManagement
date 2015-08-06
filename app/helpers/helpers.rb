@@ -45,6 +45,7 @@ module AppHelpers
 		end
 	end
 
+
 	#Cuando un usuario se da de baja sus recetas quedan almacenadas, para ello se genera un nuevo username
 	def GenerateNewRecipeName(name)
 		n = (rand(0..9999)).to_s

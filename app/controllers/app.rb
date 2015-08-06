@@ -682,19 +682,33 @@ class MyApp < Sinatra::Base
 		if (!User.first(:username => session[:username]).is_a? NilClass)
 			params[:recipe_name].gsub!('-',' ')
 			params[:recipe_username].gsub!('-',' ')
+			nrations = params[:nrations].to_i
 			recipe = Recipe.first(:name => params[:recipe_name], :username => params[:recipe_username])
 			ing = Ingredient.all(:recipe => recipe)
 			list = []
 			ing.each do |n|
-				list << n.name
+				if (n.weight != 0)
+					aux = calculator(n.weight, recipe.nration, nrations).round(2)
+					aux2 = n.weight_un
+				elsif (n.volume != 0)
+					aux = calculator(n.volume, recipe.nration, nrations).round(2)
+					aux2 = n.volume_un
+				else
+					aux = calculator(n.quantity, recipe.nration, nrations).ceil.to_i
+					aux = 1 if aux < 1
+					aux2 = 'un'
+				end
+				#[nombre del ingrediente, cantidad necesaria para las raciones escogidas, precio del ingrediente, coste para esas raciones (subtotal)]
+				list << [n.name, aux, aux2, n.cost, (aux*n.cost).round(2)] 
 			end
 			rec2 = Recipe2.all(:recipe => recipe)
 			list2 = []
 			rec2.each do |n|
-				list2 << n.name
+				aux = Recipe.first(:name => n.name, :username => n.username)
+				list2 << [n.name, n.username, calculator(aux.cost, n.nration, nrations).round(2)]
 			end
 			content_type 'application/json'
-			{:control => 0, :recipe_name => recipe.name, :ing => list, :rec2 => list2}.to_json
+			{:control => 0, :recipe_name => recipe.name, :ing => list, :rec2 => list2, :instructions => recipe.instructions}.to_json
 		end
 	end
 
