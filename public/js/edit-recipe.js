@@ -44,7 +44,7 @@ $(document).ready(function(){
 					$("#message").hide();
 		        	$("#message").html('<p class ="alert alert-success" role="alert">Recipe has been modified</p>').show(1000);
       				window.setTimeout(function(){window.location = '/home/recipe/'+ClearSpace($('#recipe-name').val())+"_"+ClearSpace(data.user);}, 2000 );
-      				}
+      			}
       			if(data.control == -1)
 					window.location = '/';
 				return false;

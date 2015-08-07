@@ -70,8 +70,8 @@ $(document).ready(function(){
 			data: {recipe_name: $('#recipe-name').val(), ing_recipe: n[0], rations: $('#nration').val(), username: n[1]},
 
 			success: function(data){
+				$("#message2").hide();
 				if(data.control == 0){
-					$("#message2").hide();
 		        	$("#message2").html('<p class ="alert alert-success" role="alert">'+$('#recipe2').val()+' has been added</p>').show(1000);
 		        	$('#current-recipe').html($('#current-recipe').html() + " + " + GetIds($('#recipe2').val())[0] + "<br>").show(1000);
 		        	$('#recipe_cost').val(data.cost);
@@ -84,13 +84,10 @@ $(document).ready(function(){
 		        	else
 		        		vegan = "NO";
 					//table.row( n ).data([ $('#recipe-name').val(), $('#n-rations').val() , data.cost, data.ration_cost, data.nivel, data.time, vegan, data.user ]);
-					return false;
 				}
-				if (data.control == 1){
-					$("#message2").hide();
+				if (data.control == 1)
 		        	$("#message2").html('<p class ="alert alert-danger" role="alert">This recipe already exists in the current recipe.</p>').show(1000);
-		        	return false;
-				}
+		        return false;
 
 			},
 			error: function(xhr){

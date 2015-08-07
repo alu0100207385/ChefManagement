@@ -44,8 +44,8 @@ $(document).ready(function(){
       		data: {recipe_name: $('#recipe-name').val(), nration: $('#n-rations').val(), order: $('#pos').val(), type: $('#type').val(), nivel: $('#nivel').val(), time: $('#h').val()+"'"+$('#m').val()+"''", vegan: $('#vegan').val(), allergens: $('#allergens').val(), origin: $('#country').val()},
 
       		success: function(data){
+				$("#message").hide();
       			if(data.control == 0){
-	  				$("#message").hide();
 		        	$("#message").html('<p class ="alert alert-success" role="alert">Recipe created successfully</p>').show(1000);
 		        	$("#recipe-buttons").hide();
 		        	ClearIngredient();
@@ -63,13 +63,10 @@ $(document).ready(function(){
 					var rowIndex = $('#recipe-list-tb').dataTable().fnAddData([$('#recipe-name').val(), $('#n-rations').val(), "0.0", "0.0", $('#nivel').val(), $('#h').val()+"'"+$('#m').val()+"''", $('#vegan').val(), data.user]);
 					var row = $('#recipe-list-tb').dataTable().fnGetNodes(rowIndex);
 					$(row).attr('id', $('#recipe-name').val()+"_"+data.user);
-					return false;
       			}
-      			if(data.control == 1){
-      				$("#message").hide();
+      			if(data.control == 1)
 		        	$("#message").html('<p class ="alert alert-danger" role="alert">This recipe name already exists</p>').show(1000);
-		        	return false;
-      			}
+		        return false;
       		},
 
       		error: function(xhr){
