@@ -466,7 +466,8 @@ class MyApp < Sinatra::Base
 
 
 	post '/home/:recipe_name/add-ingredient' do
-		rec = Recipe.first(:name => params[:recipe_name].gsub!('-',' '), :username => session[:username])
+		params[:recipe_name].gsub!('-',' ')
+		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 		content_type 'application/json'
 		if (!rec.is_a? NilClass)
 			if (Ingredient.first(:name => params[:ing_name], :recipe => rec).is_a? NilClass) #Si no existe en esa receta
@@ -481,6 +482,19 @@ class MyApp < Sinatra::Base
 				nuevo_costo = (rec.cost + (params[:ing_cost].to_f * params[:n_quantity].to_f)).round(2)
 				nuevo_costo_rat = (nuevo_costo/rec.nration).round(2)
 				rec.update(:cost => nuevo_costo,:ration_cost => nuevo_costo_rat)
+
+				#comprobar recetas dependientes
+				rec2 = Recipe2.all(:name => params[:recipe_name], :username => session[:username])
+				if (!rec2.is_a? NilClass) #Exsite en Recipe2 => tiene recetas dependientes, hay que actualizar el costo
+					rec2.each do |n|
+						rec_aux = Recipe.first(:name => n.recipe_name, :username => n.recipe_username)
+						#Como estamos añadiendo un nuevo ingrediente solo hay q sumar el nuevo costo al de la receta dependiente
+						nuevo_costo = rec_aux.cost + (params[:ing_cost]).to_f * (params[:n_quantity]).to_f
+						rec_aux.update(:cost =>  nuevo_costo.round(2))
+						rec_aux.update(:ration_cost => (nuevo_costo/rec_aux.ration_cost).round(2) )
+					end
+				end
+
 				{:control => 0, :cost => nuevo_costo, :ration_cost => nuevo_costo_rat}.to_json
 			else
 				{:control => 2}.to_json #Ese ingrediente ya existe en la receta
@@ -509,6 +523,19 @@ class MyApp < Sinatra::Base
 				rec.update(:cost => nuevo_costo)
 				rec.update(:ration_cost => (nuevo_costo/rec.ration_cost).round(2))
 				ing.destroy
+
+				#comprobar recetas dependientes
+				rec2 = Recipe2.all(:name => params[:recipe_name], :username => session[:username])
+				if (!rec2.is_a? NilClass) #Exsite en Recipe2 => tiene recetas dependientes, hay que actualizar el costo
+					rec2.each do |m|
+						rec_aux = Recipe.first(:name => m.recipe_name, :username => m.recipe_username)
+						#Como estamos eliminando un ingrediente solo hay q restar su costo a la receta dependiente
+						nuevo_costo = rec_aux.cost - n
+						rec_aux.update(:cost =>  nuevo_costo.round(2))
+						rec_aux.update(:ration_cost => (nuevo_costo/rec_aux.ration_cost).round(2) )
+					end
+				end
+
 				{:control => 0, :cost => nuevo_costo, :ration_cost => rec.ration_cost}.to_json #Ing borrado con exito
 			else
 				{:control => 2}.to_json #No existe ingrediente

@@ -131,8 +131,8 @@ $(document).ready(function(){
       		data: {ing_name: $('#ingredient-name').val(), ing_cost: $('#ing-cost').val(), ing_unity_cost: "€/"+$('#unity').text(),/*$("#coin option:selected").text()+'/'+$("#unity option:selected").text()*/ quantity_op: $('#quantity-op option:selected').text(), n_quantity: $('#n-quantity').val(), weight_un: $("#weight-un option:selected").text(), volume_un: $("#volume-un option:selected").text(),ing_decrease: $("#decrease").val(), instructions: ins, recipe_name: $('#recipe-name').val()},
 
       		success: function(data){
+      			$("#message2").hide();
       			if(data.control == 0){
-	  				$("#message2").hide();
 		        	$("#message2").html('<p class ="alert alert-success" role="alert">'+$('#ingredient-name').val()+' has been added</p>').show(1000);
 		        	$('#current-recipe').html($('#current-recipe').html() + " + " + $('#ingredient-name').val() + "<br>").show(1000);
 		        	ClearIngredient();
@@ -149,13 +149,10 @@ $(document).ready(function(){
 					//table.row( n ).data([ $('#recipe-name').val(), $('#n-rations').val() , data.cost, data.ration_cost, data.nivel, data.time, vegan, data.user ]);
       				if (finished == true)
       					window.setTimeout(function(){window.location = '/home';}, 2000 );
-		        	return false;
       			}
-      			if(data.control == 1){
-	  				$("#message2").hide();
+      			if(data.control == 1)
 		        	$("#message2").html('<p class ="alert alert-danger" role="alert">This ingredient already exists in the recipe</p>').show(1000);
-		        	return false;
-      			}
+		        return false;
       		},
 
       		error: function(xhr){
