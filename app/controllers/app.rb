@@ -244,7 +244,14 @@ class MyApp < Sinatra::Base
 	get '/home' do
 		@user = User.first(:username => session[:username])
 		@rec = Recipe.all(:username => session[:username])
-		if (!@user.is_a? NilClass)
+		@aux_rec = []
+		@rec.each do |n| #Solo pueden usarse recetas basicas para crear compuestas
+			if (Recipe2.first(:recipe_name => n.name, :recipe_username => n.username).is_a? NilClass)
+				@aux_rec << [n.name, n.username]
+			end
+		end
+
+		if (!@user.is_a? NilClass) #Solo los usuarios creadores de la receta pueden borrarla
 			@current_user = session[:username]
 			erb :home
 		else
@@ -699,7 +706,7 @@ class MyApp < Sinatra::Base
 					aux2 = 'un'
 				end
 				#[nombre del ingrediente, cantidad necesaria para las raciones escogidas, precio del ingrediente, coste para esas raciones (subtotal)]
-				list << [n.name, aux, aux2, n.cost, (aux*n.cost).round(2)] 
+				list << [n.name, aux, aux2, n.cost] 
 			end
 			rec2 = Recipe2.all(:recipe => recipe)
 			list2 = []

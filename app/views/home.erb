@@ -129,7 +129,7 @@
 			</div>
 			<div class="col-md-6"></div>
 		</div>
-
+<!--
 		<div class="row-fluid fila">
 			<div class="col-md-12"><hr><h6>Avatar</h6></div>
 		</div>
@@ -137,7 +137,7 @@
 		<div class="row-fluid fila">
 			<div class="col-md-10"><input type="file" name="avatar"></div>
 		</div>
-
+-->
 		<div class="row-fluid fila">
 			<div class="col-md-12">
 				<div id="recipe-buttons" class="my-buttons">
@@ -230,15 +230,16 @@
 
 			<div class="clearfix"></div>
 
-			<% if !@rec.is_a? NilClass %>
+			<% if @aux_rec.any? %>
+				<p><%= @aux_rec %></p>
 				<p class="legend-or" style="maring-bottom:10%;"><span>Or</span></p>
 				<h5>Add Recipe</h5>
 				<div class="row-fluid">
 					<div class="col-md-6">
 						<select id="recipe2">
 							<option value="none" selected="selected">-Select one-</option>
-							<% 	@rec.each do |n| %>
-								<option value="<%= n.name %>_<%= n.username %>"><%= n.name %> (<%= n.username %>)</option>
+							<% 	for i in 0...@aux_rec.size %>
+									<option value="<%= @aux_rec[i][0] %>_<%= @aux_rec[i][1] %>"><%= @aux_rec[i][0] %> (<%= @aux_rec[i][1] %>)</option>
 							<% end %>				
 						</select>
 					</div>
@@ -381,7 +382,7 @@
 			$('#make').show();
 			$('#recipe-buttons').show();
 			$('.fila').show();
-			$('#avatar').show();
+			//$('#avatar').show();
 			$('#accordion').hide();
 			$('#ingredient').hide();
 			$('#current-recipe').hide();

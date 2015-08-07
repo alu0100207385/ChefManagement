@@ -9,8 +9,6 @@ $(document).ready(function(){
   			data: {recipe_name: aux[0], recipe_username: aux[1], nrations: $('#calc-rations').val()},
 
   			success: function(data){
-  				console.log(data);
-  				console.log(data.rec2);
   				if (data.control == 0){
   					var total = 0.0;
   					$('#calc-result').hide();
@@ -21,8 +19,9 @@ $(document).ready(function(){
   							<thead><tr><th>Ingredient</th><th>Quantity</th><th>Price(€)</th><th>Subtotal(€)</th></tr></thead>\
   							<tbody>';
   					for (var i = 0; i < data.ing.length; i++){
-  						out += '<tr><td>'+data.ing[i][0]+'</td><td>'+data.ing[i][1]+' '+data.ing[i][2]+'</td><td>'+data.ing[i][3]+'</td><td>'+data.ing[i][4]+'</td></tr>';
-  						total += data.ing[i][4];
+  						var subtotal = Math.round((data.ing[i][1] * data.ing[i][3]) * 100) / 100;
+  						out += '<tr><td>'+data.ing[i][0]+'</td><td>'+data.ing[i][1]+' '+data.ing[i][2]+'</td><td>'+data.ing[i][3]+'</td><td>'+subtotal+'</td></tr>';
+  						total += subtotal;
   					}
   					for (var i = 0; i < data.rec2.length; i++){
   						out += '<tr><td><a href="">'+data.rec2[i][0]+'</a></td><td>'+$('#calc-rations').val()+' (p)</td><td>'+data.rec2[i][2]+'</td><td>'+data.rec2[i][2]+'</td></tr>';
