@@ -635,6 +635,19 @@ class MyApp < Sinatra::Base
 			rec.update(:cost => cost)
 			cost = (rec.cost/rec.nration).round(2)
 			rec.update(:ration_cost => cost)
+
+			#comprobar recetas dependientes
+			rec2 = Recipe2.all(:name => params[:recipe_name], :username => session[:username])
+			if (!rec2.is_a? NilClass) #Exsite en Recipe2 => tiene recetas dependientes, hay que actualizar el costo
+				rec2.each do |m|
+					rec_aux = Recipe.first(:name => m.recipe_name, :username => m.recipe_username)
+					#Como estamos editando un ingrediente habra que restar su anterior costo a la receta y sumar el nuevo
+					nuevo_costo = rec_aux.cost - old_cost + new_cost
+					rec_aux.update(:cost =>  nuevo_costo.round(2))
+					rec_aux.update(:ration_cost => (nuevo_costo/rec_aux.ration_cost).round(2))
+				end
+			end
+
 			if (ing.weight != 0)
 				{:control => 0, :control2 => 'weight', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :weight => ing.weight, :weight_un => ing.weight_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			elsif (ing.volume != 0)
@@ -737,10 +750,31 @@ class MyApp < Sinatra::Base
 			end
 			rec2 = Recipe2.all(:recipe => recipe)
 			list2 = []
-			rec2.each do |n|
-				aux = Recipe.first(:name => n.name, :username => n.username)
-				list2 << [n.name, n.username, calculator(aux.cost, n.nration, nrations).round(2)]
+			if !rec2.is_a? NilClass
+				rec2.each do |n|
+					recipe2 = Recipe.first(:name => n.name, :username => n.username)
+					ing = Ingredient.all(:recipe => recipe2)
+					cost = 0.0
+					ing.each do |m|
+						if (m.weight != 0)
+							aux = calculator(m.weight, recipe2.nration, nrations).round(2)
+						elsif (m.volume != 0)
+							aux = calculator(m.volume, recipe2.nration, nrations).round(2)
+						else
+							aux = calculator(m.quantity, recipe2.nration, nrations).ceil.to_i
+							aux = 1 if aux < 1
+						end
+						cost += (aux*m.cost)
+					end
+					list2 << [n.name, n.username, cost]
+				end
 			end
+=begin
+				rec2.each do |n|
+					aux = Recipe.first(:name => n.name, :username => n.username)
+					list2 << [n.name, n.username, calculator(aux.cost, n.nration, nrations).round(2)]
+				end
+=end
 			content_type 'application/json'
 			{:control => 0, :recipe_name => recipe.name, :ing => list, :rec2 => list2, :instructions => recipe.instructions}.to_json
 		end

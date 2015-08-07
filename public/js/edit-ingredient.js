@@ -131,6 +131,7 @@ function ConfirmDelete(ing_name){
   					$("#"+ing_name+"").remove();
   				   	$('#recipe_cost').val(data.cost);
 	        		$('#recipe_cost_ration').val(data.ration_cost);
+	        		$("#message2").html('<p class ="alert alert-success" role="alert">Ingredient removed</p>').show(1000);
   				}
   				else{
   					$("#message2").hide();
