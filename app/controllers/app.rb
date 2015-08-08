@@ -661,6 +661,23 @@ class MyApp < Sinatra::Base
 	end
 
 
+	post '/home/delete-ing-rec/:name' do
+		if (!User.first(:username => session[:username]).is_a? NilClass)
+			rec = Recipe.first(:name => params[:original_recipe], :username => session[:username])
+			rec2 = Recipe2.first(:recipe => rec)
+			if (!rec2.is_a? NilClass)
+				#Actualizar costos
+				aux = Recipe.first(:name => params[:rec_name].gsub("-"," "), :username => params[:rec_username].gsub("-"," "))
+				nuevo_costo = rec.cost - params[:price].to_f
+				rec.update(:cost => nuevo_costo.round(2))
+				rec.update(:ration_cost => (nuevo_costo/rec.nration).round(2))
+				rec2.destroy
+				content_type 'application/json'
+				{:control => 0, :cost => rec.cost, :ration_cost => rec.ration_cost}.to_json
+			end
+		end
+	end
+
 ################################# EXPORT & IMPORT ##################################
 	get '/home/export' do
 		#Si existe alguna copia de backup en el servidor la borramos

@@ -65,3 +65,38 @@ function CheckString(cad){
 	else
 		return false;
 }
+
+
+function ConfirmDeleteIngRec(rec_name){
+	var aux = GetIds(rec_name);
+	var aux2 = GetIds(aux[1]);
+
+	if (confirm('Delete '+aux[0]+'. Are you sure?')){
+		var url = "/home/delete-ing-rec/"+ClearSpace(rec_name);
+		$.ajax({
+			type: "POST",
+			url: url,
+  			data: {rec_name: aux[0], rec_username: aux2[0], price: aux2[1], original_recipe: $('#recipe-name').val()},
+
+  			success: function(data){
+  				if (data.control == 0){
+  					$("#"+ClearSpace(aux[0])+"").hide(1000);
+  					console.log(ClearSpace(aux[0]));
+  					$("#"+ClearSpace(aux[0])+"").remove();
+  				   	$('#recipe_cost').val(data.cost);
+	        		$('#recipe_cost_ration').val(data.ration_cost);
+	        		$("#message2").html('<p class ="alert alert-success" role="alert">'+rec_name+' removed</p>').show(1000);
+  				}
+  				else{
+  					$("#message2").hide();
+		        	$("#message2").html('<p class ="alert alert-danger" role="alert">Error</p>').show(1000);
+  				}
+		        return false;
+  			},
+  			error: function(xhr){
+				console.log(xhr.status);
+    			console.log(xhr.statusText);
+    		}
+    	});
+	}
+}
