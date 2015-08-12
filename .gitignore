@@ -1,3 +1,4 @@
 *~
 *.swp
 bbdd.db
+public/recipe.json
