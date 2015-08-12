@@ -724,16 +724,17 @@ class MyApp < Sinatra::Base
 				recipe.each do |m|
 					Ingredient.all(:recipe => m).destroy if !Ingredient.all(:recipe => m).is_a? NilClass
 				end
-				recipe.destroy
 			end
 			Recipe2.all(:username => session[:username]).destroy if !Recipe2.all(:username => session[:username]).is_a? NilClass
+			Recipe.all(:username => session[:username]).destroy
+
 
 			#Creamos las nuevas tablas
 			if (fich["recipes"] != nil)
 				n = fich["recipes"].size
 
 				for i in 0...n
-					puts i
+					puts fich["recipes"][i.to_s]["name"]
 					Recipe.create(:name => fich["recipes"][i.to_s]["name"], :cost => fich["recipes"][i.to_s]["cost"], :ration_cost => fich["recipes"][i.to_s]["ration_cost"], :nration => fich["recipes"][i.to_s]["nration"], :instructions => fich["recipes"][i.to_s]["instructions"], :username => fich["recipes"][i.to_s]["username"], :pos => fich["recipes"][i.to_s]["pos"], :type => fich["recipes"][i.to_s]["type"], :nivel => fich["recipes"][i.to_s]["nivel"], :production_time => fich["recipes"][i.to_s]["production_time"], :vegan => to_bool(fich["recipes"][i.to_s]["vegan"]), :warning => fich["recipes"][i.to_s]["warning"], :origin => fich["recipes"][i.to_s]["origin"])
 				end
 
@@ -752,10 +753,9 @@ class MyApp < Sinatra::Base
 						Recipe2.create(:name => fich["recipes2"][i.to_s]["name"], :nration => fich["recipes2"][i.to_s]["nration"],:username => fich["recipes2"][i.to_s]["username"], :recipe => rec)
 					end
 				end
-
+				{:control => 0}.to_json
 			end
 
-			{:control => 0}.to_json
 		else
 			{:control => 1}.to_json #No user online o no hay fichero
 		end
@@ -808,12 +808,7 @@ class MyApp < Sinatra::Base
 					list2 << [n.name, n.username, cost]
 				end
 			end
-=begin
-				rec2.each do |n|
-					aux = Recipe.first(:name => n.name, :username => n.username)
-					list2 << [n.name, n.username, calculator(aux.cost, n.nration, nrations).round(2)]
-				end
-=end
+
 			content_type 'application/json'
 			{:control => 0, :recipe_name => recipe.name, :ing => list, :rec2 => list2, :instructions => recipe.instructions}.to_json
 		end
