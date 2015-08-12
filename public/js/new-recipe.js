@@ -13,6 +13,10 @@ $(document).ready(function(){
 	});
 		
 	$("#save-recipe").click(function(){
+		$('#inputId').prop('readonly', false);
+		$('#nration').val($('#n-rations').val()); //Numero de raciones
+		$('#inputId').prop('readonly', true);
+
 		var entrada = false;
 		if ($('#recipe-name').val() == ""){
 			$('#label-name').css("color", "red");

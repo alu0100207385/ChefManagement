@@ -231,7 +231,6 @@
 			<div class="clearfix"></div>
 
 			<% if @aux_rec.any? %>
-				<p><%= @aux_rec %></p>
 				<p class="legend-or" style="maring-bottom:10%;"><span>Or</span></p>
 				<h5>Add Recipe</h5>
 				<div class="row-fluid">
@@ -244,7 +243,8 @@
 						</select>
 					</div>
 					<div class="col-md-6">
-						<input id="nration" type="number" min="1" class="input-small" value="1">
+						<!--<input id="nration" type="number" min="1" class="input-small" value="1">-->
+						<input id="nration" min="1" class="input-small" readonly="readonly">
 						<button id="add-recipe2" class="btn btn-success">Add+</button>
 					</div>
 				</div>

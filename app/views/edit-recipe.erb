@@ -184,7 +184,7 @@
 							<td><%= @prices[n] %></td>
 							<td><%= @prices[n] %></td>
 							<td><a href="javascript:ConfirmDeleteIngRec('<%= i.name.gsub(' ','-') %>_<%= i.username.gsub(' ','-') %>_<%= @prices[n] %>')"><i class="fa fa-trash-o"></i></a></td>
-							<td><a href="javascript:EditIngRec('<%= i.name.gsub(' ','-') %>')"><i class="fa fa-pencil-square-o"></i></a></td>
+							<td><!--<a href="javascript:EditIngRec('<%= i.name.gsub(' ','-') %>')"><i class="fa fa-pencil-square-o"></i>--></a></td>
 							<% n += 1 %>
 						</tr>
 					<% end %>

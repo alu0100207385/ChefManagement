@@ -24,7 +24,8 @@ $(document).ready(function(){
   						total += subtotal;
   					}
   					for (var i = 0; i < data.rec2.length; i++){
-  						out += '<tr><td><a href="">'+data.rec2[i][0]+'</a></td><td>'+$('#calc-rations').val()+' (p)</td><td>'+data.rec2[i][2]+'</td><td>'+data.rec2[i][2]+'</td></tr>';
+              var link = 'home/recipe/'+ClearSpace(data.rec2[i][0])+"_"+ClearSpace(data.rec2[i][1]);
+  						out += '<tr><td><a href="'+link+'">'+data.rec2[i][0]+'</a></td><td>'+$('#calc-rations').val()+' (p)</td><td>'+data.rec2[i][2]+'</td><td>'+data.rec2[i][2]+'</td></tr>';
   						total += data.rec2[i][2];
   					}
   					out += '<tr style="background-color:#e5e5e5; font-weight: bold;"><td>TOTAL</td><td></td><td></td><td>'+(Math.round(total * 100) / 100)+'</td></tr>';

@@ -714,24 +714,45 @@ class MyApp < Sinatra::Base
 	get '/home/import' do
 		user = User.first(:username => session[:username])
 		content_type 'application/json'
-		USER_FILE = params[:file]
-		if ((!user.is_a? NilClass) && (!USER_FILE.is_a? NilClass))
-			#puts "#{USER_FILE}"
-			n = USER_FILE["recipes"].size
-			for i in 0...n
-				Recipe.first_or_create(:name => USER_FILE["recipes"][i.to_s]["name"], :cost => USER_FILE["recipes"][i.to_s]["cost"], :ration_cost => USER_FILE["recipes"][i.to_s]["ration_cost"], :nration => USER_FILE["recipes"][i.to_s]["nration"], :instructions => USER_FILE["recipes"][i.to_s]["instructions"], :username => USER_FILE["recipes"][i.to_s]["username"], :pos => USER_FILE["recipes"][i.to_s]["pos"], :type => USER_FILE["recipes"][i.to_s]["type"], :nivel => USER_FILE["recipes"][i.to_s]["nivel"], :production_time => USER_FILE["recipes"][i.to_s]["production_time"], :vegan => to_bool(USER_FILE["recipes"][i.to_s]["vegan"]), :warning => USER_FILE["recipes"][i.to_s]["warning"], :origin => USER_FILE["recipes"][i.to_s]["origin"])
-			end
+		fich = params[:file]
+		#puts params[:file]
+		if ((!user.is_a? NilClass) && (!fich.is_a? NilClass))
 
-			n = USER_FILE["ingredients"].size
-			for i in 0...n
-				rec = Recipe.first(:name => USER_FILE["ingredients"][i.to_s]["recipe_name"], :username => USER_FILE["ingredients"][i.to_s]["recipe_username"])
-				Ingredient.first_or_create(:name => USER_FILE["ingredients"][i.to_s]["name"], :cost => USER_FILE["ingredients"][i.to_s]["cost"], :unity_cost => USER_FILE["ingredients"][i.to_s]["unity_cost"], :quantity => USER_FILE["ingredients"][i.to_s]["quantity"], :weight => USER_FILE["ingredients"][i.to_s]["weight"], :weight_un => USER_FILE["ingredients"][i.to_s]["weight_un"], :volume => USER_FILE["ingredients"][i.to_s]["volume"], :volume_un => USER_FILE["ingredients"][i.to_s]["volume_un"], :decrease => USER_FILE["ingredients"][i.to_s]["decrease"], :recipe => rec)
+			#Borramos las tablas anteriores para cargar la lista backup
+			recipe = Recipe.all(:username => session[:username])
+			if !recipe.is_a? NilClass
+				recipe.each do |m|
+					Ingredient.all(:recipe => m).destroy if !Ingredient.all(:recipe => m).is_a? NilClass
+				end
+				recipe.destroy
 			end
+			Recipe2.all(:username => session[:username]).destroy if !Recipe2.all(:username => session[:username]).is_a? NilClass
 
-			n = USER_FILE["recipes2"].size
-			for i in 0...n
-				rec = Recipe.first(:name => USER_FILE["recipes2"][i.to_s]["recipe_name"], :username => USER_FILE["recipes2"][i.to_s]["recipe_username"])
-				Recipe2.first_or_create(:name => USER_FILE["recipes2"][i.to_s]["name"], :nration => USER_FILE["recipes2"][i.to_s]["nration"],:username => USER_FILE["recipes2"][i.to_s]["username"], :recipe => rec)
+			#Creamos las nuevas tablas
+			if (fich["recipes"] != nil)
+				n = fich["recipes"].size
+
+				for i in 0...n
+					puts i
+					Recipe.create(:name => fich["recipes"][i.to_s]["name"], :cost => fich["recipes"][i.to_s]["cost"], :ration_cost => fich["recipes"][i.to_s]["ration_cost"], :nration => fich["recipes"][i.to_s]["nration"], :instructions => fich["recipes"][i.to_s]["instructions"], :username => fich["recipes"][i.to_s]["username"], :pos => fich["recipes"][i.to_s]["pos"], :type => fich["recipes"][i.to_s]["type"], :nivel => fich["recipes"][i.to_s]["nivel"], :production_time => fich["recipes"][i.to_s]["production_time"], :vegan => to_bool(fich["recipes"][i.to_s]["vegan"]), :warning => fich["recipes"][i.to_s]["warning"], :origin => fich["recipes"][i.to_s]["origin"])
+				end
+
+				if (fich["ingredients"] != nil)
+					n = fich["ingredients"].size
+					for i in 0...n
+						rec = Recipe.first(:name => fich["ingredients"][i.to_s]["recipe_name"], :username => fich["ingredients"][i.to_s]["recipe_username"])
+						Ingredient.create(:name => fich["ingredients"][i.to_s]["name"], :cost => fich["ingredients"][i.to_s]["cost"], :unity_cost => fich["ingredients"][i.to_s]["unity_cost"], :quantity => fich["ingredients"][i.to_s]["quantity"], :weight => fich["ingredients"][i.to_s]["weight"], :weight_un => fich["ingredients"][i.to_s]["weight_un"], :volume => fich["ingredients"][i.to_s]["volume"], :volume_un => fich["ingredients"][i.to_s]["volume_un"], :decrease => fich["ingredients"][i.to_s]["decrease"], :recipe => rec)
+					end
+				end
+				
+				if (fich["recipes2"] != nil)
+					n = fich["recipes2"].size
+					for i in 0...n
+						rec = Recipe.first(:name => fich["recipes2"][i.to_s]["recipe_name"], :username => fich["recipes2"][i.to_s]["recipe_username"])
+						Recipe2.create(:name => fich["recipes2"][i.to_s]["name"], :nration => fich["recipes2"][i.to_s]["nration"],:username => fich["recipes2"][i.to_s]["username"], :recipe => rec)
+					end
+				end
+
 			end
 
 			{:control => 0}.to_json
@@ -783,6 +804,7 @@ class MyApp < Sinatra::Base
 						end
 						cost += (aux*m.cost)
 					end
+					cost = cost.round(2)
 					list2 << [n.name, n.username, cost]
 				end
 			end
