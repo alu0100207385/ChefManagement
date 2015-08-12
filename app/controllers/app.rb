@@ -734,7 +734,6 @@ class MyApp < Sinatra::Base
 				n = fich["recipes"].size
 
 				for i in 0...n
-					puts fich["recipes"][i.to_s]["name"]
 					Recipe.create(:name => fich["recipes"][i.to_s]["name"], :cost => fich["recipes"][i.to_s]["cost"], :ration_cost => fich["recipes"][i.to_s]["ration_cost"], :nration => fich["recipes"][i.to_s]["nration"], :instructions => fich["recipes"][i.to_s]["instructions"], :username => fich["recipes"][i.to_s]["username"], :pos => fich["recipes"][i.to_s]["pos"], :type => fich["recipes"][i.to_s]["type"], :nivel => fich["recipes"][i.to_s]["nivel"], :production_time => fich["recipes"][i.to_s]["production_time"], :vegan => to_bool(fich["recipes"][i.to_s]["vegan"]), :warning => fich["recipes"][i.to_s]["warning"], :origin => fich["recipes"][i.to_s]["origin"])
 				end
 
