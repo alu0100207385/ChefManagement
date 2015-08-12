@@ -1,10 +1,7 @@
 source 'https://rubygems.org'
 
-#ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.19'
-
 gem 'sinatra'
 gem 'sinatra-base'
-gem 'sinatra-flash'
 gem 'data_mapper'
 gem 'mail'
 gem 'omniauth-oauth2'
@@ -14,10 +11,10 @@ gem 'json'
 gem 'thin', :platforms => :ruby
 
 group :development do
-	gem 'sinatra-contrib'
-	gem 'sqlite3', :platforms => :ruby
-	gem 'activerecord-jdbcsqlite3-adapter', :platforms => :jruby
-	gem 'dm-sqlite-adapter'
+  gem 'sinatra-contrib'
+  gem 'sqlite3', :platforms => :ruby
+  gem 'activerecord-jdbcsqlite3-adapter', :platforms => :jruby
+  gem 'dm-sqlite-adapter'
 end
 =begin
 group :production do
@@ -36,9 +33,9 @@ group :production do
 end
 =end
 group :test do
-   gem 'rack-test'
-   gem 'rake'
-   gem 'minitest'
-   gem 'test-unit'
-   gem 'selenium-webdriver', '~> 2.46.2'
+  gem 'rack-test'
+  gem 'rake'
+  gem 'minitest'
+  gem 'test-unit'
+  gem 'selenium-webdriver', '~> 2.46.2'
 end

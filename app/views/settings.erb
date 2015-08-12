@@ -1,19 +1,116 @@
 <div class="col-md-3"></div>
-
 <div class="col-md-6">
+	<div id="message" style="text-align: center;"></div>
 	<legend><h2>Profile</h2></legend>
-	<p>User: <%= @user.username %></p>
-	<p>Email: <%= @user.email %></p>
-	<hr>
-	<a href="/delete-user" type="button" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
-	<!--
-	<form name="deleteuser" action="/delete-user" method="POST">
-		<button type="submit" class="btn btn-danger">Delete user</button>
-	</form>
-	-->
-	<div  style="text-align:right">
+	<div class="row-fluid">
+		<div class="col-md-6">
+			<p><strong>User: </strong><%= @user.username %></p>
+			<p><strong>Email: </strong><span id="mail"><%= @user.email %></span></p>
+		</div>
+		<div class="col-md-6 form-group">
+			<% if @user.network.is_a? NilClass %>
+	  			<input id="pass" type="password" class="form-control" name="new_password" placeholder="New password">
+	  			<div class="checkbox" style="text-align:left">
+					<label><input type="checkbox" onclick="showPassword()"> Show password</label>
+				</div>
+	  			<input id="new_email" type="email" class="form-control" name="new_email" placeholder="New email">
+	  			<div style="margin-top:4%;">
+	  				<button class="btn btn-primary btn-block" id="save">Save</button>
+	  			</div>
+	  		<% end %>
+		</div>
+	</div>
+	<br>
+	<!--<legend><h3>Language</h3></legend>
+	<a href="#">ES</a> - <a href="#">EN</a>-->
+	
+	<legend style="margin-top:10%;"><h4>Cancel account</h4></legend>
+	<button class="btn btn-danger" id="delete-user">Delete user</button>
+	<div id="confirm">
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<form name="deleteuser" action="/home/settings/delete-user" method="POST">
+				<div class="btn-group btn-group-justified" role="group">
+  					<div class="btn-group" role="group">
+  						<a type="button" class="btn btn-default" id="no-delete">No</a>
+  					</div>
+  					<div class="btn-group" role="group">
+  						<button type="submit" class="btn btn-danger" id="yes-delete">Yes</button>
+  					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-3"></div>
+	</div>
+	<div style="text-align:right; margin-top:7%;">
 		<a href="/home" type="button" class="btn btn-default btn-lg">Back</a>
 	</div>
 </div>
 
 <div class="col-md-3"></div>
+
+<script type="text/javascript">
+	$('#confirm').hide();
+	$('#save').hide();
+	$('#lateral-menu').hide();
+
+	$(document).ready(function(){
+		$("#delete-user").click(function(){
+		    $("#confirm").show(1000);
+		});
+
+		$("#no-delete").click(function(){
+			$('#confirm').hide(1000);
+		});
+
+
+		$("#new_email, #pass").keypress(function( event ) {
+/*			if ( isEmpty($("#new_email").val()) && isEmpty($("#pass").val()) )
+				$('#save').hide(1000);
+			else
+				$('#save').show(1000);
+*/
+			if ( ($("#new_email").val().length > 1) || ($("#pass").val().length > 1) )
+				$('#save').show(1000);
+			if ( ($("#new_email").val().length <= 1) && ($("#pass").val().length <= 1) )
+				$('#save').hide(1000);
+		});
+
+		$("#save").click(function(){
+			$.ajax({
+	    	type: "POST",
+			url: "/home/settings/edit-user",
+	      	data: {new_password: $('#pass').val(), new_email: $('#new_email').val()},
+
+	      	success: function(data){
+	        	if(data.control == 0){
+			        $("#message").hide();
+			        $("#message").html('<p class ="alert alert-success" role="alert">Successful edition</p>');
+			        $("#message").show(1000);
+			        if ($('#new_email').val() != '')
+			        	$("#mail").hide();
+			        	$("#mail").html($("#new_email").val()).show(1000);
+			        $("#new_email").val('');
+			        $("#pass").val('');
+			        $("#save").hide(1000);
+	        	}
+		        if(data.control == 1){
+		          $("#message").hide();
+		          $("#message").html('<p class="alert alert-danger" role="alert">Error. Check input fields</p>');
+		          $("#message").show(1000);
+		        }
+		        if(data.control == 2){
+		          $("#message").hide();
+		          $("#message").html('<p class="alert alert-danger" role="alert">Error. Email in use</p>');
+		          $("#message").show(1000);
+		        }
+			},
+
+			error: function(xhr){
+				console.log(xhr.status);
+		    	console.log(xhr.statusText);
+			}
+		});
+	});
+});
+</script>

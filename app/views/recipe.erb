@@ -1,0 +1,180 @@
+<div class="row-fliud">
+	<div class="col-md-6">
+		<h1><%= @recipe.name %> (<%= @recipe.nration %> people) </h1>
+	</div>
+	<% if (@recipe.username == "public") %>
+		<div class="col-md-6"><h1 style="color:red">¡puntuacion!</h1></div>
+	<% else %>
+		<div class="col-md-6" style="text-align:right">
+			<% if (@current_user == @recipe.username) %>
+				<h1>
+					<!--<a href="javascript:PublishRecipe('<%= @recipe.name %>');"><span class="label label-default"><i class="fa fa-paper-plane-o"></i></span></a>-->
+					<a href="javascript:ConfirmDelete('<%= @recipe.name %>')"><span class="label label-danger"><i class="fa fa-trash-o"></i></span></a>
+					<a href="javascript:EditRecipe('<%= @recipe.name %>')"><span class="label label-warning"><i class="fa fa-pencil-square-o"></i></span></a>
+				</h1>
+			<% end %>
+		</div>
+	<% end %>
+</div>
+<div class="clearfix"></div>
+<hr>
+
+<div id="message"></div>
+
+<div class="row-fluid">
+	<div class="col-md-4">
+		<h3>Production costs</h3>
+		<p><strong>Production cost: </strong><%= @recipe.cost %> €</p>
+		<p><strong>Ration cost: </strong><%= @recipe.ration_cost %> €/p</p>
+		<p><strong>Nivel: </strong><%= @recipe.nivel %></p>
+		<p><strong>Time: </strong><%= @recipe.production_time %></p>
+	</div>
+	<div class="col-md-4">
+		<h3>Warning</h3>
+		<% if @recipe.vegan %>
+			<p style="color:green">Suitable for vegetarians</p>
+		<% else %>
+			<p style="color:red">Not suitable for vegetarians</p>
+		<% end %>
+		<% if !@recipe.warning.empty? %>
+			<p>Warning allegerns, it may contain: <%= @recipe.warning %></p>
+		<% end %>
+	</div>
+	<div class="col-md-4">
+		<h3>General information</h3>
+		<p><strong>Order: </strong><%= @recipe.pos %></p>
+		<p><strong>Type: </strong><%= @recipe.type %></p>
+		<p><strong>Origin country: </strong><%= @recipe.origin %></p>
+		<p><strong>Created by: </strong><%= @recipe.username %></p>
+	</div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row-fluid">
+	<div class="col-md-5">
+		<h3>Ingredients</h3>
+		<table class="ing-list">
+			<thead style="font-weight:bold">
+				<tr><td>Ingredient</td><td>Quantity</td><td>Price(€)</td><td>Subtotal(€)</td></tr>
+			</thead>
+			<tbody>
+				<% aux = 0.0 %>
+				<% @ing.each do |i| %>
+					<tr>
+						<td><%= i.name %></td>
+						<% if i.quantity != 0 %>
+							<td><%= i.quantity %> un</td>
+							<% n = i.cost * i.quantity %>
+						<% end %>
+						<% if i.weight != 0 %>
+							<td><%= i.weight %> <%= i.weight_un %></td>
+							<% n = i.cost * i.weight %>
+						<% end %>
+						<% if i.volume != 0 %>
+							<td><%= i.volume %> <%= i.volume_un %></td>
+							<% n = i.cost * i.volume %>
+						<% end %>
+						<td><%= i.cost %> <%= i.unity_cost %></td>
+						<td><%= n.round(2) %></td>
+					</tr>
+					<% aux += n %>
+				<% end %>
+				<% if @info.any? %>
+					<% @info.each do |i| %>
+						<tr>
+							<td><a href="/home/recipe/<%= i[3] %>"><%= i[0] %></a></td>
+							<td><%= i[1] %> people</td>
+							<td><%= i[2].round(2) %></td>
+							<td><%= i[2].round(2) %></td>
+						</tr>
+						<% aux += i[2] %>
+					<% end %>
+				<% end %>
+				<tr style="background-color:#e5e5e5; font-weight: bold;"><td>TOTAL</td><td></td><td></td><td><%= aux.round(2) %></td></tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-6">
+		<h3>Instructions</h3>
+		<p><%= @recipe.instructions %></p>
+	</div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row-fluid my-buttons">
+	<a href="/home" type="button" class="btn btn-default">Back</a>
+</div>
+
+<% if (@recipe.username == "public") %>
+	<div class="clearfix"></div>
+	<hr>
+	<div id="post-comment" class="row-fluid">
+		<div class="col-md-9">
+			<%= @current_user %>
+			<textarea id="content" style="width:100%"></textarea>
+		</div>
+		<div class="col-md-2"><span id="score">puntuacion</span></div>
+		<div class="col-md-1" style="text-align:center;">
+			<button id="post" class="btn btn-primary">Post</button>
+		</div>
+	</div>
+	    
+	    
+	<div id="post-comment" class="row-fluid" style="margin-top:10%;">
+		<hr>
+		<!--AQUI MOSTRAR LOS COMENTARIOS Y PUNTUACIONES DE ESA RECETA-->
+	</div>
+<% end %>
+
+
+<script type="text/javascript">
+	function PublishRecipe(recipe_name){
+		if (confirm("Warning: This recipe will be public. You cannot change it later. continue?")){
+				console.log(ClearSpace(recipe_name));
+		}
+	};
+
+	function ConfirmDelete(recipe_name){
+		if (confirm('Are you sure?')){
+			var url = "/home/delete-recipe/"+ClearSpace(recipe_name);
+			$.ajax({
+    			type: "POST",
+				url: url,
+      			data: {recipe_name: recipe_name},
+
+      			success: function(data){
+      				if (data.control == 0){
+      					window.location = '/home';
+      					return false;
+      				}
+      				if (data.control == 2){
+      					$("#message").hide();
+		        		$("#message").html('<p class ="alert alert-danger" role="alert">Error. This recipe is in use in other recipes like an ingredient. If you want delete it, first you must delete it from ingredient list.</p>').show(1500);
+		        		return false;
+      				}
+      				if (data.control == 1){
+	  					$("#message").hide();
+		        		$("#message").html('<p class ="alert alert-danger" role="alert">Error</p>').show(1500);
+		        		return false;
+      				}
+      			},
+      			error: function(xhr){
+					console.log(xhr.status);
+	    			console.log(xhr.statusText);
+	    		}
+	    	});
+		}
+	}
+
+	function EditRecipe(recipe_name){
+		window.location = '/home/edit-recipe/'+ClearSpace(recipe_name);
+	}
+
+	$(document).ready(function(){
+		var h = $('#content').height();
+		$('#score').css({ 'margin-top': (h/2)+'px' });
+		$('#post').css({ 'margin-top': (h/2)+'px' });
+	});
+</script>

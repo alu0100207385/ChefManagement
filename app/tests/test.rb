@@ -15,7 +15,20 @@ end
 describe "Test Chat App: Check pages and links" do
    
 	before :all do
-		@browser = Selenium::WebDriver.for :firefox
+		case ARGV[0].to_s
+			when 'firefox'
+				@browser = Selenium::WebDriver.for :firefox
+			when 'chrome'
+				prefs = {
+				  :download => {
+				    :prompt_for_download => false, 
+				    :default_directory => "/usr/local/bin/chromedriver"
+				  }
+				}
+				@browser = Selenium::WebDriver.for :chrome, :prefs => prefs
+			else #Si no hay argumentos, default webdriver = firefox
+				@browser = Selenium::WebDriver.for :firefox
+		end
 		@site = 'http://localhost:9292/'
 		@browser.get(@site)
 		@browser.manage().window().maximize()

@@ -1,5 +1,479 @@
-<div class="row-fluid">
-	Bienvenido <%= @user.username %>
-	<a type="button" href="/settings" class="btn btn-default">Settings</a>
-	<!--<a type="button" href="/logout" class="btn btn-danger">Log out</a>-->
+<div class="col-md-10">
+	<div id="section-title"></div>
+	<div id="message"></div>
+
+	<!--###########CREAR########################################-->
+	<div id="make" class="fill">
+		<div class="row-fluid">
+			<div class="col-md-2"><label id="label-name">Name</label></div>
+			<div class="col-md-4"><input id="recipe-name" type="text" name="recipe_name" placeholder="New recipe name"></div>
+
+			<div class="col-md-2"><label id="rations">Rations</label></div>
+			<div class="col-md-4">
+				<input id="n-rations" class="input-small" type="number" min="1" value="1" title="Number of rations (> 0)">
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="row-fluid">
+			<div class="col-md-2"><label>Cost (€)</label></div>
+			<div class="col-md-4">
+				<% if !@recipe.is_a? NilClass %>
+					<input type="text" name="recipe_cost" id="recipe_cost" readonly><%= @recipe.cost %>
+				<% else %>
+					<input type="text" name="recipe_cost" id="recipe_cost" readonly>
+				<% end %>
+			</div>
+			<div class="col-md-2"><label>Ration cost (€)</label></div>
+			<div class="col-md-4">
+				<% if !@recipe.is_a? NilClass %>
+					<input name="recipe_cost_ration" id="recipe_cost_ration" type="text" readonly><%= @recipe.ration_cost %>
+				<% else %>
+					<input name="recipe_cost_ration" id="recipe_cost_ration" type="text" readonly>
+				<% end %>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="row-fluid fila">
+			<div class="col-md-12"><hr><h6>Labels</h6></div>
+		</div>
+		<div class="clearfix"></div>
+
+		<div class="row-fluid fila">
+			<div class="col-md-2"><label>Order</label></div>
+			<div class="col-md-4">
+				<select id="pos" class="input-medium">
+					<% pos = ['incoming', 'first', 'second', 'third', 'single', 'afters', 'other'] %>
+					<% pos.each do |i| %>
+						<% if (i == 'single') %>
+							<option value="<%= i %>" selected="selected"><%= i %></option>
+						<% else %>
+							<option value="<%= i %>"><%= i %></option>
+						<% end %>
+					<% end %>
+				</select>
+			</div>
+			<div class="col-md-2"><label>Type</label></div>
+			<div class="col-md-4">
+				<select id="type" class="input-medium">
+					<% t = ['snack', 'homemade_food', 'tapas', 'fast_food', 'tasting', 'other'] %>
+					<% t.each do |i| %>
+						<% if (i == 'other') %>
+							<option value="<%= i %>" selected="selected"><%= i %></option>
+						<% else %>
+							<option value="<%= i %>"><%= i %></option>
+						<% end %>
+					<% end %>
+				</select>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="row-fluid fila">
+			<div class="col-md-12"><hr><h6>Production</h6></div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row-fluid fila">
+			<div class="col-md-2"><label>Nivel</label></div>
+			<div class="col-md-4">
+				<select id="nivel" class="input-medium">
+					<% n = ['very easy','easy', 'medium', 'hard', 'very hard'] %>
+					<% n.each do |i| %>
+						<% if (i == 'medium') %>
+							<option value="<%= i %>" selected="selected"><%= i %></option>
+						<% else %>
+							<option value="<%= i %>"><%= i %></option>
+						<% end %>
+					<% end %>
+				</select>
+			</div>
+
+			<div class="col-md-2"><label>Time</label></div>
+			<div class="col-md-4">
+				<input id="h" class="input-small" type="number" min="0" max="12" style="text-align:right;" title="Production time">h
+				<input id="m" class="input-small" type="number" min="0" max="59" style="text-align:right;" title="Production time">m
+			</div>
+		</div>
+		
+		<div class="clearfix"></div>
+
+		<div class="row-fluid fila">
+			<div class="col-md-12"><hr><h6>Warnings</h6></div>
+		</div>
+
+		<div class="row-fluid fila">
+			<div class="col-md-2"><label>Vegan</label></div>
+			<div class="col-md-4">
+				<select id="vegan" class="input-small">
+					<option value="no">no</option>
+					<option value="yes">yes</option>
+				</select>
+			</div>
+			<div class="col-md-2"><label>Allergens</label></div>
+			<div class="col-md-4">
+				<input id="allergens" name="allergens" type="text" title="Warning allergens">
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="row-fluid fila">
+			<br>
+			<div class="col-md-2"><label>Origin</label></div>
+			<div class="col-md-4">
+				<input id="origin" type="text" title="Recipe origin country">
+			</div>
+			<div class="col-md-6"></div>
+		</div>
+<!--
+		<div class="row-fluid fila">
+			<div class="col-md-12"><hr><h6>Avatar</h6></div>
+		</div>
+		
+		<div class="row-fluid fila">
+			<div class="col-md-10"><input type="file" name="avatar"></div>
+		</div>
+-->
+		<div class="row-fluid fila">
+			<div class="col-md-12">
+				<div id="recipe-buttons" class="my-buttons">
+					<a id="cancel" type="button" href="/home" class="btn btn-default">Cancel</a>
+					<button id="save-recipe" class="btn btn-primary">Save recipe</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="row-fluid">
+			<div class="col-md-12" style="margin-top:3%;">
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  					<div class="panel panel-default">
+    					<div class="panel-heading" role="tab" id="headingThree">
+      						<h3 class="panel-title">
+        						<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#instructions-panel" aria-expanded="false">
+          							<i class="fa fa-pencil" style="color:inherit;"> Write your recipe instructions</i></a>
+      						</h3>
+    					</div>
+    					<div id="instructions-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      						<div class="panel-body">
+								<textarea name="editor1" id="instructions" rows="10" cols="80"></textarea>
+								<script type="text/javascript">
+									CKEDITOR.replace( 'editor1', {language: 'en',});
+								</script>
+  							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div id="ingredient">
+			<h4>Ingredients</h4>
+			<div id="message2"></div>
+			<h5>Add new ingredient</h5>
+			<div class="row-fluid">
+				<div class="col-md-2"><label>Name</label></div>
+				<div class="col-md-4">
+					<input type="text" id="ingredient-name" name="name" placeholder="New ingredient name">
+				</div>
+				<div class="col-md-4">
+					<label>
+						<select id="quantity-op" class="input-medium">
+							<option value="quantity">Quantity</option>
+							<option value="weight">Weight</option>
+							<option value="volume">Volume</option>
+						</select>
+					</label>
+					<input id="n-quantity" name="n-quantity" type="number" step="0.01" min="0" class="input-small">
+				</div>
+				<div class="col-md-2">
+					<span id="quantity-un"> (u)</span>
+					<select id="weight-un" class="input-small">
+						<option value="kg">kg</option>
+						<option value="gr">gr</option>
+					</select>
+					<select id="volume-un" class="input-small">
+						<option value="l">l</option>
+						<option value="cl">cl</option>
+						<option value="ml">ml</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="clearfix"></div>
+
+			<div class="row-fluid">
+				<div class="col-md-2"><label>€ / </label><label id="unity">kg</label></div>
+				<div class="col-md-4">
+					<input id="ing-cost" name="price" title="Price per unity/weight/volume" type="number" step="0.01" min="0" class="input-small">
+				</div>
+				<div class="col-md-2"><label>Decrease (%)</label></div>
+				<div class="col-md-4">
+					<input id="decrease" name="decrease" type="number" step="0.01" min="0" max="100" value="0" class="input-small">
+				</div>
+			</div>
+
+			<div class="row-fluid my-buttons" style="padding:7%; text-align:right;">
+				<div class="col-md-12" style="margin-top:4%;">
+					<a type="button" href="/home" id="cancel-ingredient" class="btn btn-default">Finish</a>
+					<button id="save-finish" class="btn btn-success">Save &#38; Finish</button>
+					<button id="save-ingredient" class="btn btn-success">Save &#38; New ingredient</button>
+				</div>
+			</div>
+
+			<div class="clearfix"></div>
+
+			<% if @aux_rec.any? %>
+				<p class="legend-or" style="maring-bottom:10%;"><span>Or</span></p>
+				<h5>Add Recipe</h5>
+				<div class="row-fluid">
+					<div class="col-md-6">
+						<select id="recipe2">
+							<option value="none" selected="selected">-Select one-</option>
+							<% 	for i in 0...@aux_rec.size %>
+									<option value="<%= @aux_rec[i][0] %>_<%= @aux_rec[i][1] %>"><%= @aux_rec[i][0] %> (<%= @aux_rec[i][1] %>)</option>
+							<% end %>				
+						</select>
+					</div>
+					<div class="col-md-6">
+						<!--<input id="nration" type="number" min="1" class="input-small" value="1">-->
+						<input id="nration" min="1" class="input-small" readonly="readonly">
+						<button id="add-recipe2" class="btn btn-success">Add+</button>
+					</div>
+				</div>
+				<div class="row-fluid" style="height: 25%;"></div>
+			<% end %>
+		</div>
+	</div>
+
+	<!--###########SHOW########################################################-->
+	<div id="show">
+		<table id="recipe-list-tb" class="display">
+		    <thead>
+		        <tr>
+		            <th>Name</th>
+		            <th>Diner</th>
+		            <th>Cost</th>
+		            <th>Ration cost</th>
+		            <th>Nivel</th>
+		            <th>Production time</th>
+		            <th>Vegan</th>
+		            <th>Author</th>
+		            <!--<th></th>-->
+		        </tr>
+		    </thead>
+		    <tbody>
+		    	<% @rec.each do |rec| %>
+			        <tr id="<%= rec.name %>_<%= rec.username %>">
+			            <td><%= rec.name %></td>
+			            <td><%= rec.nration %></td>
+			            <td><%= rec.cost %></td>
+			            <td><%= rec.ration_cost %></td>
+			            <td><%= rec.nivel %></td>
+			            <td><%= rec.production_time %></td>
+			            <% if rec.vegan == true %>
+			            	<td>YES</td>
+			            <% else %>
+			            	<td>NO</td>
+			            <% end %>
+			            <td><%= rec.username %></td>
+			            <!--<td><input type="checkbox" id="selected"></td>-->
+			        </tr>
+			    <% end %>
+		    </tbody>
+		</table>
+	</div>
+
+	<!--###########SHOW ONE RECIPE#############################################-->
+	<div id="recipe-selected"></div>
+
+	<!--###########CALCULATOR########################################-->
+	<div id="calculator-view">
+		<div class="row-fluid">
+			<div class="col-md-6">
+				<select id="calc-recipe">
+					<option value="none" selected="selected">-Select one-</option>
+					<% 	@rec.each do |n| %>
+						<option value="<%= n.name %>_<%= n.username %>"><%= n.name %> (<%= n.username %>)</option>
+					<% end %>				
+				</select>
+			</div>
+			<div class="col-md-6">
+				<label>Rations</label>
+				<input id="calc-rations" class="input-small" type="number" min="1" value="1" title="Number of rations (> 0)">
+			</div>
+		</div>
+		<div class="row-fluid" style="text-align:right">
+			<a href="/home" type="button" class="btn btn-default">Cancel</a>
+			<button id="calculate" class="btn btn-success">Calculate</button>
+		</div>
+		<hr>
+		<div class="row-fluid">
+			<div id="calc-result"></div>
+			<div id="calc-instructions" class="row-fluid"></div>
+		</div>
+	</div>
+
+	<!--###########IMPORTAR####################################################-->
+	<div id="import">
+		<div class="row-fluid">
+			<div class="col-md-5">
+				<label>Load your recipe list</label>
+				<input id="files" type="file" accept=".json">
+			</div>
+			<div class="col-md-7">
+				<br>
+				<button id="load-file" class="btn btn-success">Load</button>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div id="aux"></div>
+		</div>
+	</div>
+
+	<!--###########EXPORTAR####################################################-->
+	<div id="export">
+		<div class="row-fluid">
+			<p>You can make a backup of your current recipe list. </p>
+			<label>Write name file</label>
+			<input id="file-name" type="text" value="recipe">
+			<button id="create-file" class="btn btn-success">Create</button>
+		</div>
+	</div>
+
 </div>
+
+<div class="col-md-2">
+	<div id="current-recipe"></div>
+</div>
+
+<script type="text/javascript">
+	$('#make').hide();
+	$('#accordion').hide();
+	$('#calculator-view').hide();
+	$('#import').hide();
+	$('#export').hide();
+	$('#ingredient').hide();
+	$('#section-title').html('<h3>Recipe list</h3><hr>');
+	//$('#section-title').html('<h3>New recipe</h3><hr>');
+	$('#show').show();
+	//$('#show').hide();
+	$('#current-recipe').hide();
+	$('#recipe-selected').hide();
+
+	$(document).ready(function(){
+		$('select').addClass('form-control');
+
+		$("#make-recipe").click(function(){
+			$('#message').hide();
+			$("#message2").hide();
+			$('#calculator-view').hide();
+			$('#import').hide();
+			$('#export').hide();
+			$('#show').hide();
+			$('#section-title').html('<h3>New recipe</h3><hr>');
+			$('#make').show();
+			$('#recipe-buttons').show();
+			$('.fila').show();
+			//$('#avatar').show();
+			$('#accordion').hide();
+			$('#ingredient').hide();
+			$('#current-recipe').hide();
+			ClearRecipe();
+		});
+
+		$("#import-recipe").click(function(){
+			$('#message').hide();
+			$('#calculator-view').hide();
+			$('#make').hide();
+			$('#export').hide();
+			$('#show').hide();
+			$('#current-recipe').hide();
+			$('#section-title').html('<h3>Import recipe</h3><hr>');
+			$('#import').show();
+			return false;
+		});
+
+		$("#export-recipe").click(function(){
+			$('#message').hide();
+			$('#calculator-view').hide();
+			$('#make').hide();
+			$('#import').hide();
+			$('#show').hide();
+			$('#current-recipe').hide();
+			$('#section-title').html('<h3>Export recipe</h3><hr>');
+			$('#export').show();
+			return false;
+		});
+
+		$("#show-all").click(function(){
+			$('#message').hide();
+			$('#calculator-view').hide();
+			$('#make').hide();
+			$('#import').hide();
+			$('#export').hide();
+			$('#current-recipe').hide();
+			$('#section-title').html('<h3>Recipe list</h3><hr>');
+			$('#show').show();
+			window.location = '/home';
+			return false;
+		});
+
+		$("#calculator").click(function(){
+			$('#message').hide();
+			$('#calculator-view').show();
+			$('#make').hide();
+			$('#import').hide();
+			$('#export').hide();
+			$('#current-recipe').hide();
+			$('#section-title').html('<h3>Recipe calculator</h3><hr>');
+			$('#show').hide();
+			return false;
+		});
+	//############################## RECIPE LIST ##############################
+    	$('#recipe-list-tb').DataTable();
+	
+	//############################## RECIPE SELECTED ###########################
+		$("#recipe-list-tb > tbody > tr").click(function(){
+			var name = $(this).attr('id');
+			c = GetIds(name);
+			var clear_name = ClearSpace(c[0]);
+			$.ajax({
+    			type: "GET",
+				url: "/home/recipe",
+      			data: {recipe: c[0], user: c[1]},
+
+				success: function(data){
+					if(data.control == 0)
+						window.location = '/home/recipe/'+clear_name+'_'+data.username;
+					else
+						window.location = '/';
+				},
+
+				error: function(xhr){
+					console.log(xhr.status);
+	    			console.log(xhr.statusText);
+	    		}
+			});
+		});
+	});		
+</script>
+
+
+<!--############################### calculator #########################-->
+<script src="/js/calculate.js"></script>
+<!--############################### import #########################-->
+<script src="/js/import.js"></script>
+<!--############################### export #########################-->
+<script src="/js/export.js"></script>
+<!--############################## INGREDIENTES ##############################-->
+<script src="/js/new-ingredient.js"></script>
+<!--############################## RECETAS ###################################-->
+<script src="/js/new-recipe.js"></script>

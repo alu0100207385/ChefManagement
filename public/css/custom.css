@@ -9,7 +9,6 @@ body{
 	margin-top: 15%;
 	text-align: center;
 	opacity: 0.9;
-	#font-weight: bold;
 }
 
 #footer{
@@ -19,9 +18,14 @@ body{
    	width: 98%;
 }
 
-#message{
-	margin-top: 4%;
+#message, #message2{
+	margin-top: 3%;
 	text-align: center;
+}
+
+#confirm{
+    margin-top: 3%;
+    height: 25px;
 }
 
 .login-or {
@@ -58,6 +62,59 @@ body{
 	height: 100%;
 }
 
+.my-buttons{
+    text-align: right;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.espaciado{
+    margin-bottom: 4%;
+}
+
+#recipe-list-tb{
+  cursor:pointer;
+}
+
+.fill{
+    text-align: left;
+}
+
+.input-small{
+    width: 5em;
+}
+
+.input-medium{
+    width: 10em;
+}
+
+#menu{
+    cursor:pointer;
+}
+
+table{
+   width:100%;
+}
+
+table.ing-list > tbody > tr {
+    border-bottom: solid 1px #B4B5B0;
+}
+
+.legend-or {
+  height: 15px;
+  width:100%;
+  border-bottom: solid 2px #000;
+  text-align: center;
+  margin: 2em 0;
+}
+
+.legend-or span {
+  background: #fff;
+  position: relative;
+  top: 0;
+  padding: 0 20px;
+  line-height:30px;
+}
 
 /*-------------------------------------------------
 Welcome background
@@ -73,7 +130,7 @@ Welcome background
 }
 .cb-slideshow:after { 
     content: '';
-    #background: transparent url(../images/pattern.png) repeat top left; 
+    //background: transparent url(../images/pattern.png) repeat top left; 
 }
 .cb-slideshow li span { 
     width: 100%;
@@ -292,3 +349,10 @@ Welcome background
 
 .cb-slideshow ol,ul {
 	list-style:none;
+
+
+/*-------------------------------------------------
+Menu lateral
+--------------------------------------------------*/
+@import url(http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css);
+.fa-fw {width: 2em;}

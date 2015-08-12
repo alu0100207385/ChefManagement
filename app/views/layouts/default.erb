@@ -2,13 +2,18 @@
 
 <head>
 	<meta content="text/html, charset=utf-8" http-equiv="Content-Type"/>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/custom.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="js/DataTables/media/css/jquery.dataTables.css">
+
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/myfunctions.js"></script>
 	<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-
+	<script src="js/ckeditor/ckeditor.js"></script>
+	<script src="js/ckeditor/adapters/jquery.js"></script>
+	<script type="text/javascript" charset="utf8" src="js/DataTables/media/js/jquery.dataTables.js"></script>
 	<title> ChefManagement</title>
 </head>
 
@@ -20,14 +25,28 @@
 	    	</div>
 	    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      		<ul class="nav navbar-nav navbar-right">
-	        		<li><a href="/settings"><%= @user.username %></a></li>
+	        		<li><a href="/home/settings">Settings</a></li>
 	        		<li><a href="/logout">Log out</a></li>
 	      		</ul>
 	    	</div>
 	  	</div>
 	</nav>
-	<div id="message"></div>
-	<%= yield %>
+	<div class="col-md-2" id="lateral-menu">
+		<h3>Menu</h3>
+		<hr>
+	    <ul class="nav nav-pills nav-stacked" id="menu">
+	        <!--<li class="active"><a href="#"><i class="fa fa-home fa-fw"></i>Home</a></li>-->
+	        <li><a id="show-all"><i class="fa fa-list"></i> Recipe list</a></li>
+	        <li><a id="calculator"><i class="fa fa-calculator"></i> Recipe calculator</a></li>
+	        <li><a id="make-recipe"><i class="fa fa-plus-square-o"></i> New recipe</a></li>
+			<li><a id="import-recipe"><i class="fa fa-upload"></i> Import</a></li>
+			<li><a id="export-recipe"><i class="fa fa-download"></i> Export</a></li>
+			<!--<li><a id="statistics"><i class="fa fa-pie-chart"></i> Statistics</a></li>-->
+	    </ul>
+	</div>
+	<div class="col-md-10">
+		<%= yield %>
+	</div>
 </body>
 
 </html>
