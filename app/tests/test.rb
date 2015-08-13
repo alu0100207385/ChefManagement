@@ -79,6 +79,12 @@ describe "Test Chat App: Check pages and links" do
 	it "##2. I can access register page" do
 		@browser.find_element(:id,"register").click
 		@browser.manage.timeouts.implicit_wait = 3
+		assert_equal("http://localhost:9292/register", @browser.current_url)
+	end
+
+	it "##3. I can activate register button" do
+		@browser.find_element(:id,"register").click
+		@browser.manage.timeouts.implicit_wait = 3
 		@browser.find_element(:id,"accept_terms").click
 		assert(@browser.find_element(:id, "reg").enabled?, "Register button button should be activated")
 	end
