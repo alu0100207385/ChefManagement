@@ -7,8 +7,8 @@ rvm:
   #- 1.8.7
 
 script:
-   "bundle exec rake tests"
-   "bundle exec rake tests[chrome]"
+   - "bundle exec rake tests"
+   - "bundle exec rake test[chrome]"
 
 before_install:
    - export DISPLAY=:99.0

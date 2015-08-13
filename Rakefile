@@ -29,3 +29,9 @@ desc "Run tests: rake test[navigator] || navigator is an optional argument = [fi
 task :tests, [:nav] do |task, args|
 	sh "ruby app/tests/test.rb #{args[:nav]}"
 end
+=begin
+desc "Run tests on Chrome browser"
+task :test_chrome do
+	sh "ruby app/tests/test.rb chrome"
+end
+=end
