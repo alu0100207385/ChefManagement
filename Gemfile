@@ -27,9 +27,9 @@ group :production do
 	platform :ruby do
   		gem 'do_postgres', '~> 0.10.16'
   		gem 'pg'
-  	end
+  end
 
-  	gem 'dm-postgres-adapter'
+  gem 'dm-postgres-adapter'
 end
 =end
 group :test do
@@ -38,4 +38,5 @@ group :test do
   gem 'minitest'
   gem 'test-unit'
   gem 'selenium-webdriver', '~> 2.46.2'
+  gem 'chromedriver-helper'
 end
