@@ -101,7 +101,13 @@ describe "Test Chat App: User create and login" do
 			when 'firefox'
 				@browser = Selenium::WebDriver.for :firefox
 			when 'chrome'
-				@browser = Selenium::WebDriver.for :chrome
+				prefs = {
+				  :download => {
+				    :prompt_for_download => false, 
+				    :default_directory => "/usr/local/bin/chromedriver"
+				  }
+				}
+				@browser = Selenium::WebDriver.for :chrome, :prefs => prefs
 			else #Si no hay argumentos, default webdriver = firefox
 				@browser = Selenium::WebDriver.for :firefox
 		end
