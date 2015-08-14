@@ -45,7 +45,7 @@ end
 	@browser = Selenium::WebDriver.for :chrome, :prefs => prefs
 =end
 
-=begin
+
 describe "Test Chat App: Check pages and links" do
    
 	before :all do
@@ -91,7 +91,7 @@ describe "Test Chat App: Check pages and links" do
 	#....
 
 end
-=end
+
 ##################################################################################################
 
 describe "Test Chat App: User create and login" do
