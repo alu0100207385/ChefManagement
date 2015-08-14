@@ -101,13 +101,7 @@ describe "Test Chat App: User create and login" do
 			when 'firefox'
 				@browser = Selenium::WebDriver.for :firefox
 			when 'chrome'
-				prefs = {
-				  :download => {
-				    :prompt_for_download => false, 
-				    :default_directory => "/usr/local/bin/chromedriver"
-				  }
-				}
-				@browser = Selenium::WebDriver.for :chrome, :prefs => prefs
+				@browser = Selenium::WebDriver.for :chrome
 			else #Si no hay argumentos, default webdriver = firefox
 				@browser = Selenium::WebDriver.for :firefox
 		end
@@ -121,7 +115,7 @@ describe "Test Chat App: User create and login" do
 	end
 
 	after :all do
-		sleep(1)
+		@browser.manage.timeouts.implicit_wait = 2
 		@browser.quit
 		@user.destroy
 		sleep(2)
@@ -135,7 +129,7 @@ describe "Test Chat App: User create and login" do
 		@browser.find_element(:id,"enter").click
 		sleep(1)
 		( "http://localhost:9292/home" == @browser.current_url)? (a = true) : (a = false)
-		sleep(1)
+		@browser.manage.timeouts.implicit_wait = 3
 		@browser.find_element(:id,"logout").click
 		( "http://localhost:9292/" == @browser.current_url)? (b = true) : (b = false)
 		assert(a&&b)
@@ -143,3 +137,9 @@ describe "Test Chat App: User create and login" do
 
 	#....
 end
+
+=begin
+describe "Test Chat App: Helper functions tests" do
+	#....
+end
+=end
