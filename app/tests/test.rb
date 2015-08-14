@@ -121,9 +121,10 @@ describe "Test Chat App: User create and login" do
 	end
 
 	after :all do
-		sleep(2)
+		sleep(1)
 		@browser.quit
 		@user.destroy
+		sleep(2)
 	end
 
 
