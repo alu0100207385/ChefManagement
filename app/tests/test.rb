@@ -35,7 +35,17 @@ def teardown
 end
 =end
 
+=begin			
+	prefs = {
+	  :download => {
+	    :prompt_for_download => false, 
+	    :default_directory => "/usr/local/bin/chromedriver"
+	  }
+	}
+	@browser = Selenium::WebDriver.for :chrome, :prefs => prefs
+=end
 
+=begin
 describe "Test Chat App: Check pages and links" do
    
 	before :all do
@@ -44,17 +54,6 @@ describe "Test Chat App: Check pages and links" do
 				@browser = Selenium::WebDriver.for :firefox
 			when 'chrome'
 				@browser = Selenium::WebDriver.for :chrome
-
-=begin			
-				prefs = {
-				  :download => {
-				    :prompt_for_download => false, 
-				    :default_directory => "/usr/local/bin/chromedriver"
-				  }
-				}
-				@browser = Selenium::WebDriver.for :chrome, :prefs => prefs
-=end
-
 			else #Si no hay argumentos, default webdriver = firefox
 				@browser = Selenium::WebDriver.for :firefox
 		end
@@ -92,7 +91,7 @@ describe "Test Chat App: Check pages and links" do
 	#....
 
 end
-
+=end
 ##################################################################################################
 
 describe "Test Chat App: User create and login" do
@@ -121,16 +120,17 @@ describe "Test Chat App: User create and login" do
 	end
 
 
-	it "##1. I can log in" do
+	it "##1. I can log in & log out" do
 		@browser.find_element(:id,"username").send_keys(@user.username)
 		@browser.find_element(:id,"pass").send_keys("1234")
 		@browser.manage.timeouts.implicit_wait = 3
 		@browser.find_element(:id,"enter").click
-		sleep(2)
-		assert_equal("http://localhost:9292/home", @browser.current_url)
-		@browser.manage.timeouts.implicit_wait = 4
+		sleep(1)
+		( "http://localhost:9292/home" == @browser.current_url)? (a = true) : (a = false)
+		sleep(1)
 		@browser.find_element(:id,"logout").click
-		@browser.manage.timeouts.implicit_wait = 3
+		( "http://localhost:9292/" == @browser.current_url)? (b = true) : (b = false)
+		assert(a&&b)
 	end
 
 	#....
