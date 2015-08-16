@@ -22,7 +22,7 @@ class MyApp < Sinatra::Base
    	end
 
    	configure :production do
-   		DataMapper.setup(:default, ENV['HEROKU_POSTGRESQL_NAVY_URL'])
+   		DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://mjomxqusdtubzo:Txh0ACqla8XhLz8nt6OXKCAk1Y@ec2-54-235-147-211.compute-1.amazonaws.com:5432/dahe2ioenjr7si')
    	end
 
 	DataMapper::Logger.new($stdout, :debug)
