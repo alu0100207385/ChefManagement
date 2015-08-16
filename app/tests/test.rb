@@ -194,28 +194,24 @@ describe "#4. Test Chat App: I can browse in the application" do
 	end
 
 	it "#4.2. I can acces to recipe calculator" do
-		sleep(1)
 		@browser.find_element(:id,"calculator").click
 		@browser.manage.timeouts.implicit_wait = 3
 		assert_equal(@browser.find_element(:id,"section-title").text, "Recipe calculator")
 	end
 
 	it "#4.3. I can acces to new recipe" do
-		sleep(1)
 		@browser.find_element(:id,"make-recipe").click
 		@browser.manage.timeouts.implicit_wait = 3
 		assert_equal(@browser.find_element(:id,"section-title").text, "New recipe")
 	end
 
 	it "#4.4. I can acces to recipe import" do
-		sleep(1)
 		@browser.find_element(:id,"import-recipe").click
 		@browser.manage.timeouts.implicit_wait = 3
 		assert_equal(@browser.find_element(:id,"section-title").text, "Import recipe")
 	end
 
 	it "#4.5. I can acces to recipe export" do
-		sleep(1)
 		@browser.find_element(:id,"export-recipe").click
 		@browser.manage.timeouts.implicit_wait = 3
 		assert(@browser.find_element(:id,"section-title").text, "Export recipe")
