@@ -46,7 +46,7 @@ module AppHelpers
 	end
 
 
-	#Cuando un usuario se da de baja sus recetas quedan almacenadas, para ello se genera un nuevo username
+	#Cuando un usuario se da de baja sus recetas quedan almacenadas, para ello se genera un nuevo nombre de receta
 	def GenerateNewRecipeName(name)
 		n = (rand(0..9999)).to_s
 		while (n.size < 4)
@@ -58,6 +58,6 @@ module AppHelpers
 	#Al leer de fichero, los campos tipo string como vegan lo convertimos en tipo bool
 	def to_bool(cad)
 		return true if cad == true || cad =~ (/^(true|t|yes|y|1)$/i)
-		return false if cad == false || cad.blank? || cad =~ (/^(false|f|no|n|0)$/i)
+		return false if cad == false || cad =~ (/^(false|f|no|n|0)$/i)
 	end
 end

@@ -185,6 +185,7 @@ DEPENDENCIES
   chromedriver-helper
   data_mapper
   dm-sqlite-adapter
+  jdbc-sqlite3
   json
   mail
   minitest
