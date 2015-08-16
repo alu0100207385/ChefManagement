@@ -12,10 +12,15 @@ gem 'thin', :platforms => :ruby
 
 group :development do
   gem 'sinatra-contrib'
-  gem 'sqlite3', :platforms => :ruby
-  gem 'jdbc-sqlite3', :platforms => :jruby
-  gem 'activerecord-jdbcsqlite3-adapter', :platforms => :jruby
   gem 'dm-sqlite-adapter'
+  gem 'sqlite3', :platforms => :ruby
+
+  platforms :jruby do
+    gem 'jdbc-sqlite3'
+    gem 'activerecord-jdbcsqlite3-adapter'
+    gem 'jruby-openssl'
+  end
+  
 end
 =begin
 group :production do
