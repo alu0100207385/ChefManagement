@@ -26,7 +26,7 @@ end
 
 
 describe "#1. Test Chat App: Check pages and links" do
-   
+
 	before :all do
 		case ARGV[0].to_s
 			when 'firefox'
@@ -68,7 +68,6 @@ describe "#1. Test Chat App: Check pages and links" do
 	end
 
 	#....
-
 end
 
 ##################################################################################################
