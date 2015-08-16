@@ -24,20 +24,18 @@ group :development do
 end
 
 group :production do
-=begin
-	platform :jruby do
-		gem 'activerecord-jdbcpostgresql-adapter'
- 		gem 'do_jdbc'
- 		gem 'jruby-pgp'
-	end
-=end
-	platform :ruby do
-  		gem 'do_postgres', '~> 0.10.16'
-  		gem 'pg'
-  end
-
   gem 'dm-postgres-adapter'
+  gem 'do_postgres', '~> 0.10.16'
+  gem 'pg'
 end
+=begin
+  platform :jruby do
+    gem 'activerecord-jdbcpostgresql-adapter'
+    gem 'do_jdbc'
+    gem 'jruby-pgp'
+  end
+=end
+
 
 group :test do
   gem 'rack-test'
