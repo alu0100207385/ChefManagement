@@ -149,14 +149,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-jdbcsqlite3-adapter
   chromedriver-helper
   data_mapper
   dm-postgres-adapter
   dm-sqlite-adapter
   do_postgres (~> 0.10.16)
-  jdbc-sqlite3
-  jruby-openssl
   json
   mail
   minitest
