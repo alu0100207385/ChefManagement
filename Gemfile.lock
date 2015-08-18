@@ -153,7 +153,7 @@ DEPENDENCIES
   data_mapper
   dm-postgres-adapter
   dm-sqlite-adapter
-  do_postgres (~> 0.10.16)
+  do_postgres
   json
   mail
   minitest
