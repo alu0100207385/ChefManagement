@@ -18,12 +18,11 @@ class MyApp < Sinatra::Base
 	set :environment, :development
 	
 	configure :development, :test do
-   		DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/bbdd.db" )
+   		DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/bbdd.db" )
    	end
 
    	configure :production do
-   		#DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://ecvucnhjmegbpt:hbxFBQwnu1Xf6THMyvyND6qgc7@ec2-54-83-0-61.compute-1.amazonaws.com:5432/d2tpjio4gn4be8')
-   		DataMapper.setup('postgres://ecvucnhjmegbpt:hbxFBQwnu1Xf6THMyvyND6qgc7@ec2-54-83-0-61.compute-1.amazonaws.com:5432/d2tpjio4gn4be8')
+   		DataMapper.setup(:default, ENV['DATABASE_URL'] || ENV['HEROKU_POSTGRESQL_TEAL'])
    	end
 
 	DataMapper::Logger.new($stdout, :debug)
