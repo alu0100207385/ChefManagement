@@ -9,10 +9,10 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'json'
 gem 'thin', :platforms => :ruby
+gem 'dm-sqlite-adapter'
 
 group :development do
   gem 'sinatra-contrib'
-  gem 'dm-sqlite-adapter'
   gem 'sqlite3', :platforms => :ruby
 
   platforms :jruby do
