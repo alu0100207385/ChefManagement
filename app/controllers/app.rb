@@ -22,7 +22,7 @@ class MyApp < Sinatra::Base
    	end
 
    	configure :production do
-   		DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://bilxcvefwlxfev:f_X5LP05tjf1j4V4dj_VtTrHbu@ec2-54-197-255-248.compute-1.amazonaws.com:5432/d4k1on9v27vnei')
+   		DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://ecvucnhjmegbpt:hbxFBQwnu1Xf6THMyvyND6qgc7@ec2-54-83-0-61.compute-1.amazonaws.com:5432/d2tpjio4gn4be8')
    	end
 
 	DataMapper::Logger.new($stdout, :debug)
