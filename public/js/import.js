@@ -2,13 +2,16 @@ $(document).ready(function(){
 	
 	$('#load-file').click(function(){
         $.getJSON($('#files').val(), function(data){
+        	console.log(data);
+        	alert("ok");
 			$.ajax({
 	    		type: "GET",
 				url: "/home/import",
 				data: {file: data},
 
 				success: function(data){
-					console.log(data);
+					alert("dfdsf");
+					alert(data.control);
 					$("#message").hide();
 					if(data.control == 0){
 			        	$("#message").html('<p class ="alert alert-success" role="alert">Recipe list loaded successfully</p>').show(1000);

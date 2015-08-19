@@ -716,7 +716,7 @@ class MyApp < Sinatra::Base
 		user = User.first(:username => session[:username])
 		content_type 'application/json'
 		fich = params[:file]
-		puts "---->#{params[:file]}"
+		#puts "---->#{params[:file]}"
 		if ((!user.is_a? NilClass) && (!fich.is_a? NilClass))
 
 			#Borramos las tablas anteriores para cargar la lista backup
@@ -729,7 +729,6 @@ class MyApp < Sinatra::Base
 			Recipe2.all(:username => session[:username]).destroy if !Recipe2.all(:username => session[:username]).is_a? NilClass
 			Recipe.all(:username => session[:username]).destroy
 
-puts "1111111111"
 			#Creamos las nuevas tablas
 			if (fich["recipes"] != nil)
 				n = fich["recipes"].size
