@@ -8,6 +8,7 @@ $(document).ready(function(){
 				data: {file: data},
 
 				success: function(data){
+					console.log(data);
 					$("#message").hide();
 					if(data.control == 0){
 			        	$("#message").html('<p class ="alert alert-success" role="alert">Recipe list loaded successfully</p>').show(1000);

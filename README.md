@@ -1,8 +1,14 @@
 # ChefManagement
 
+Recipe cost calculator
+
 # Description
 
+Make your own recipes. Manage your recipe list and you can calculate production recipe cost for a concret number of people. Make a backup of your recipe list and load it when you need it.
+
 # Link to app
+
+[Heroku](http://chefmanagement.herokuapp.com/)
 
 # Tests
 
@@ -22,7 +28,7 @@ rake r        		# Run the server via rackup
 rake repo			# Open repository
 rake s        		# Run the server via Sinatra
 rake sinatra  		# Run the server via Sinatra
-rake tests    		# Run tests
+rake tests[nav]    	# Run tests: rake test[navigator] || navigator is an optional argument = [firefox(default)|chrome]
 ```
 
 # Resources

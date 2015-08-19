@@ -14,13 +14,26 @@ group :development do
   gem 'dm-sqlite-adapter'
   gem 'sinatra-contrib'
   gem 'sqlite3', :platforms => :ruby
-
+=begin
+  platforms :jruby do
+    gem 'jdbc-sqlite3'
+    gem 'activerecord-jdbcsqlite3-adapter'
+    gem 'jruby-openssl'
+  end
+=end
 end
 
 group :production do
   gem 'pg'
   gem 'do_postgres'
   gem 'dm-postgres-adapter'
+=begin
+  platform :jruby do
+    gem 'activerecord-jdbcpostgresql-adapter'
+    gem 'do_jdbc'
+    gem 'jruby-pgp'
+  end
+=end
 end
 
 group :test do
