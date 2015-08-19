@@ -22,7 +22,7 @@ class MyApp < Sinatra::Base
    	end
 
    	configure :production do
-   		DataMapper.setup(:default, ENV['DATABASE_URL'] || ENV['HEROKU_POSTGRESQL_TEAL'])
+   		DataMapper.setup(:default, ENV['DATABASE_URL'])
    	end
 
 	DataMapper::Logger.new($stdout, :debug)

@@ -6,7 +6,8 @@ module AppHelpers
 	password = config['email_password']
 	options = { :address              => "smtp.gmail.com",
 	            :port                 => 587,
-	            #:domain               => 'gmail.com',#'http://localhost:4567/', #'your.host.name',
+	            #:domain               => localhost,
+	            :domain				  => 'chefmanagement.herokuapp.com',
 	            :user_name            => username,#'<username>',
 	            :password             => password,#'<password>',
 	            :authentication       => 'plain',
