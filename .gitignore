@@ -3,3 +3,4 @@
 bbdd.db
 public/recipe.json
 app/config/config.yml
+.env
