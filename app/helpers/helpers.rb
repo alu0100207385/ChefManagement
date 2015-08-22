@@ -1,5 +1,7 @@
 module AppHelpers
 	require 'mail'
+	require 'open-uri'
+	require 'json'
 
 	config = YAML.load_file 'app/config/config.yml'
 	username = config['email_username']
@@ -61,4 +63,11 @@ module AppHelpers
 		return true if cad == true || cad =~ (/^(true|t|yes|y|1)$/i)
 		return false if cad == false || cad =~ (/^(false|f|no|n|0)$/i)
 	end
+
+=begin
+	def LoadConfigFile(url="https://www.dropbox.com/s/ui3ygp02jumpb9w/config.json?dl=1")
+		file = open(url).read
+		JSON.parse(file)
+	end
+=end
 end

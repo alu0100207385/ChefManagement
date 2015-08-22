@@ -63,6 +63,8 @@ class MyApp < Sinatra::Base
 		if (session[:username] != nil)
 			redirect '/home'
 		else
+  			#puts request.url  #Get current url
+  			#puts "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
 			erb :index, :layout => :'layouts/welcome'
 		end
 	end
