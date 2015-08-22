@@ -18,11 +18,11 @@ class MyApp < Sinatra::Base
 	set :environment, :development
 	
 	configure :development, :test do
-   		DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/bbdd.db" )
+   		DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/bbdd.db" )
    	end
 
    	configure :production do
-   		DataMapper.setup(:default, ENV['DATABASE_URL'])
+   		DataMapper.setup(:default, ENV['OPENSHIFT_POSTGRESQL_DB_URL'])
    	end
 
 	DataMapper::Logger.new($stdout, :debug)
