@@ -1,5 +1,4 @@
 $(document).ready(function(){
-	
 	$('#load-file').click(function(){
         $.getJSON($('#files').val(), function(data){
 			$.ajax({
