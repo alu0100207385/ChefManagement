@@ -684,8 +684,8 @@ class MyApp < Sinatra::Base
 		puts request.url  #Get current url
   			puts "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
 		#Si existe alguna copia de backup en el servidor la borramos
-		if (Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json").size > 0)
-			b = Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json")
+		if (Dir.glob(File.dirname(__FILE__)+"/../../public/*.json").size > 0)
+			b = Dir.glob(File.dirname(__FILE__)+"/../../public/*.json")
 			b.each do |i|
 				File.delete(i)
 			end
@@ -699,7 +699,7 @@ class MyApp < Sinatra::Base
 		end
 		
 		content_type 'application/json'
-		if (file = File.new("public/uploads/"+params[:name]+".json", "w+"))
+		if (file = File.new("public/"+params[:name]+".json", "w+"))
 			if (!recipe.is_a? NilClass)
 				ing = Ingredient.all(:recipe => recipe)
 				rec = Recipe2.all(:recipe => recipe)
@@ -718,9 +718,10 @@ class MyApp < Sinatra::Base
 		puts request.url  #Get current url
   		puts "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
 		user = User.first(:username => session[:username])
-		content_type 'application/json'
+		puts user
 		fich = params[:file]
 		puts fich
+		content_type 'application/json'
 		if ((!user.is_a? NilClass) && (!fich.is_a? NilClass))
 
 			#Borramos las tablas anteriores para cargar la lista backup

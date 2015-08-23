@@ -2,9 +2,10 @@ $(document).ready(function(){
 	$('#load-file').click(function(){
 		alert($('#files').val());
         $.getJSON($('#files').val(), function(data){
-        	alert("2");
+        	alert("		ENTRE");
 			$.ajax({
 	    		type: "GET",
+	    		dataType: "json",
 				url: "/home/import",
 				data: {file: data},
 
@@ -21,11 +22,11 @@ $(document).ready(function(){
 				},
 
 				error: function(xhr){
+					alert("error");
 					console.log(xhr.status);
 		    		console.log(xhr.statusText);
 		    	}
 		    });
         });
-        alert("salgo");
 	});
 });
