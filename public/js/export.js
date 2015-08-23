@@ -20,7 +20,7 @@ $(document).ready(function(){
 						if(data.control == 0){
 							$('#message').html('<p class ="alert alert-success" role="alert">File created successfully</p>').show(1000);
 							window.setTimeout(function(){
-								var url = '/'+$('#file-name').val()+'.json';
+								var url = '/uploads/'+$('#file-name').val()+'.json';
 								var $a = $('<a />', {
 			  						'href': url,
 			  						'download': $('#file-name').val()+'.json',

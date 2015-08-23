@@ -714,13 +714,16 @@ class MyApp < Sinatra::Base
 	end
 
 
-	get '/home/import' do
+	get '/home/import/:name' do
 		user = User.first(:username => session[:username])
 		content_type 'application/json'
 		fich = params[:file]
 		#puts "---->#{params[:file]}"
 		if ((!user.is_a? NilClass) && (!fich.is_a? NilClass))
 
+			file = File.new("public/uploads/"+params[:name], "w+")
+			file.puts(fich)
+			file.close
 			#Borramos las tablas anteriores para cargar la lista backup
 			recipe = Recipe.all(:username => session[:username])
 			if !recipe.is_a? NilClass
