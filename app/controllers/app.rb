@@ -683,13 +683,9 @@ class MyApp < Sinatra::Base
 
 ################################# EXPORT & IMPORT ##################################
 	get '/home/export' do
+		
 		#Si existe alguna copia de backup en el servidor la borramos
-		if (Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json").size > 0)
-			b = Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json")
-			b.each do |i|
-				File.delete(i)
-			end
-		end
+		ClearUpdates()
 
 		special_users = ["admin", "administrator", "administrador", "root", "superadmin"]
 		if special_users.include?(session[:username])
@@ -719,7 +715,7 @@ class MyApp < Sinatra::Base
 		content_type 'application/json'
 		fich = File.read("public/uploads/"+"#{params[:file]}")
 		fich = JSON.parse(fich)
-		puts fich
+		#puts fich
 
 		if ((!user.is_a? NilClass) && (!fich.is_a? NilClass))
 
@@ -756,16 +752,19 @@ class MyApp < Sinatra::Base
 						Recipe2.create(:name => fich["recipes2"][i]["name"], :nration => fich["recipes2"][i]["nration"],:username => fich["recipes2"][i]["username"], :recipe => rec)
 					end
 				end
-				{:control => 0}.to_json
+				#{:control => 0}.to_json
+				redirect '/home'
 			end
-
-		else
-			{:control => 1}.to_json #No user online o no hay fichero
+		#else
+		#	{:control => 1}.to_json #No user online o no hay fichero
 		end
 	end
 
 
 	post '/home/import' do
+		#Si existe alguna copia de backup en el servidor la borramos
+		ClearUpdates()
+
 		File.open("public/uploads/" + params[:loadfile][:filename], "w") do |f|
 			f.write(params[:loadfile][:tempfile].read)
 		end

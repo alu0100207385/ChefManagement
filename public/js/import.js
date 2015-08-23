@@ -1,6 +1,5 @@
 $(document).ready(function(){
 	$('#load-file').click(function(){
-		/*
         var jqxhr = $.getJSON("uploads/"+$('#files').val(), function(data){
 			$.ajax({
 				dataType: "json",
@@ -29,6 +28,5 @@ $(document).ready(function(){
     		$("#message").hide();
     		$("#message").html('<p class ="alert alert-danger" role="alert">Error reading file</p>').show(1000);
   		})
-		*/
 	});
 });
