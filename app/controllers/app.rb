@@ -714,7 +714,7 @@ class MyApp < Sinatra::Base
 	end
 
 
-	get '/home/import/:name' do
+	get '/home/import' do
 		user = User.first(:username => session[:username])
 		content_type 'application/json'
 		fich = params[:file]

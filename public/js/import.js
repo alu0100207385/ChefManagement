@@ -25,7 +25,7 @@ $(document).ready(function(){
 		    	}
 		    });
         });
-        jqxhr.fail(function() {
+        jqxhr.fail(function(){
     		$("#message").hide();
     		$("#message").html('<p class ="alert alert-danger" role="alert">Error reading file</p>').show(1000);
   		})
