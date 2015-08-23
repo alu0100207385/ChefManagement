@@ -684,8 +684,8 @@ class MyApp < Sinatra::Base
 ################################# EXPORT & IMPORT ##################################
 	get '/home/export' do
 		#Si existe alguna copia de backup en el servidor la borramos
-		if (Dir.glob(File.dirname(__FILE__)+"/../../public/*.json").size > 0)
-			b = Dir.glob(File.dirname(__FILE__)+"/../../public/*.json")
+		if (Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json").size > 0)
+			b = Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json")
 			b.each do |i|
 				File.delete(i)
 			end
@@ -699,7 +699,7 @@ class MyApp < Sinatra::Base
 		end
 		
 		content_type 'application/json'
-		if (file = File.new("public/"+params[:name]+".json", "w+"))
+		if (file = File.new("public/uploads/"+params[:name]+".json", "w+"))
 			if (!recipe.is_a? NilClass)
 				ing = Ingredient.all(:recipe => recipe)
 				rec = Recipe2.all(:recipe => recipe)

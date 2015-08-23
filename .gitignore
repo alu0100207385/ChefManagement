@@ -1,6 +1,6 @@
 *~
 *.swp
 bbdd.db
-public/recipe.json
+public/uploads
 app/config/config.yml
 .env
