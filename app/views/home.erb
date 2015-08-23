@@ -324,14 +324,16 @@
 	<!--###########IMPORTAR####################################################-->
 	<div id="import">
 		<div class="row-fluid">
-			<div class="col-md-5">
-				<label>Load your recipe list</label>
-				<input id="files" type="file" accept=".json">
-			</div>
-			<div class="col-md-7">
-				<br>
-				<button id="load-file" class="btn btn-success">Load</button>
-			</div>
+			<form method="post" action="/home/import" enctype='multipart/form-data'>
+				<div class="col-md-5">
+					<label>Load your recipe list</label>
+					<input id="files" name="loadfile" type="file" accept=".json">
+				</div>
+				<div class="col-md-7">
+					<br>
+					<input id="load-file" type='submit' class="btn btn-success" value="Load"></input>
+				</div>
+			</form>
 		</div>
 		<div class="row-fluid">
 			<div id="aux"></div>
@@ -470,7 +472,7 @@
 <!--############################### calculator #########################-->
 <script src="/js/calculate.js"></script>
 <!--############################### import #########################-->
-<script src="/js/import.js"></script>
+<!--<script src="/js/import.js"></script>-->
 <!--############################### export #########################-->
 <script src="/js/export.js"></script>
 <!--############################## INGREDIENTES ##############################-->

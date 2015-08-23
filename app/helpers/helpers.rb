@@ -61,4 +61,22 @@ module AppHelpers
 		return true if cad == true || cad =~ (/^(true|t|yes|y|1)$/i)
 		return false if cad == false || cad =~ (/^(false|f|no|n|0)$/i)
 	end
+
+=begin
+	def LoadConfigFile(url="https://www.dropbox.com/s/ui3ygp02jumpb9w/config.json?dl=1")
+		file = open(url).read
+		JSON.parse(file)
+	end
+=end
+
+	#Si existe alguna copia de backup en el servidor la borramos
+	def ClearUpdates
+		if (Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json").size > 0)
+			b = Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json")
+			b.each do |i|
+				File.delete(i)
+			end
+		end
+	end
+	
 end
