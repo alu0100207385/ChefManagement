@@ -1,7 +1,5 @@
 module AppHelpers
 	require 'mail'
-	require 'open-uri'
-	require 'json'
 
 	config = YAML.load_file 'app/config/config.yml'
 	username = config['email_username']
@@ -70,4 +68,15 @@ module AppHelpers
 		JSON.parse(file)
 	end
 =end
+
+	#Si existe alguna copia de backup en el servidor la borramos
+	def ClearUpdates
+		if (Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json").size > 0)
+			b = Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json")
+			b.each do |i|
+				File.delete(i)
+			end
+		end
+	end
+	
 end

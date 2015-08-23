@@ -683,13 +683,9 @@ class MyApp < Sinatra::Base
 
 ################################# EXPORT & IMPORT ##################################
 	get '/home/export' do
+		
 		#Si existe alguna copia de backup en el servidor la borramos
-		if (Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json").size > 0)
-			b = Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json")
-			b.each do |i|
-				File.delete(i)
-			end
-		end
+		ClearUpdates()
 
 		special_users = ["admin", "administrator", "administrador", "root", "superadmin"]
 		if special_users.include?(session[:username])
@@ -714,16 +710,15 @@ class MyApp < Sinatra::Base
 	end
 
 
-	get '/home/import' do
+	get '/home/import/:file' do
 		user = User.first(:username => session[:username])
 		content_type 'application/json'
-		fich = params[:file]
-		#puts "---->#{params[:file]}"
+		fich = File.read("public/uploads/"+"#{params[:file]}")
+		fich = JSON.parse(fich)
+		#puts fich
+
 		if ((!user.is_a? NilClass) && (!fich.is_a? NilClass))
 
-			file = File.new("public/uploads/"+params[:name], "w+")
-			file.puts(fich)
-			file.close
 			#Borramos las tablas anteriores para cargar la lista backup
 			recipe = Recipe.all(:username => session[:username])
 			if !recipe.is_a? NilClass
@@ -739,30 +734,41 @@ class MyApp < Sinatra::Base
 				n = fich["recipes"].size
 
 				for i in 0...n
-					Recipe.create(:name => fich["recipes"][i.to_s]["name"], :cost => fich["recipes"][i.to_s]["cost"], :ration_cost => fich["recipes"][i.to_s]["ration_cost"], :nration => fich["recipes"][i.to_s]["nration"], :instructions => fich["recipes"][i.to_s]["instructions"], :username => fich["recipes"][i.to_s]["username"], :pos => fich["recipes"][i.to_s]["pos"], :type => fich["recipes"][i.to_s]["type"], :nivel => fich["recipes"][i.to_s]["nivel"], :production_time => fich["recipes"][i.to_s]["production_time"], :vegan => to_bool(fich["recipes"][i.to_s]["vegan"]), :warning => fich["recipes"][i.to_s]["warning"], :origin => fich["recipes"][i.to_s]["origin"])
+					Recipe.create(:name => fich["recipes"][i]["name"], :cost => fich["recipes"][i]["cost"], :ration_cost => fich["recipes"][i]["ration_cost"], :nration => fich["recipes"][i]["nration"], :instructions => fich["recipes"][i]["instructions"], :username => fich["recipes"][i]["username"], :pos => fich["recipes"][i]["pos"], :type => fich["recipes"][i]["type"], :nivel => fich["recipes"][i]["nivel"], :production_time => fich["recipes"][i]["production_time"], :vegan => to_bool(fich["recipes"][i]["vegan"]), :warning => fich["recipes"][i]["warning"], :origin => fich["recipes"][i]["origin"])
 				end
 
 				if (fich["ingredients"] != nil)
 					n = fich["ingredients"].size
 					for i in 0...n
-						rec = Recipe.first(:name => fich["ingredients"][i.to_s]["recipe_name"], :username => fich["ingredients"][i.to_s]["recipe_username"])
-						Ingredient.create(:name => fich["ingredients"][i.to_s]["name"], :cost => fich["ingredients"][i.to_s]["cost"], :unity_cost => fich["ingredients"][i.to_s]["unity_cost"], :quantity => fich["ingredients"][i.to_s]["quantity"], :weight => fich["ingredients"][i.to_s]["weight"], :weight_un => fich["ingredients"][i.to_s]["weight_un"], :volume => fich["ingredients"][i.to_s]["volume"], :volume_un => fich["ingredients"][i.to_s]["volume_un"], :decrease => fich["ingredients"][i.to_s]["decrease"], :recipe => rec)
+						rec = Recipe.first(:name => fich["ingredients"][i]["recipe_name"], :username => fich["ingredients"][i]["recipe_username"])
+						Ingredient.create(:name => fich["ingredients"][i]["name"], :cost => fich["ingredients"][i]["cost"], :unity_cost => fich["ingredients"][i]["unity_cost"], :quantity => fich["ingredients"][i]["quantity"], :weight => fich["ingredients"][i]["weight"], :weight_un => fich["ingredients"][i]["weight_un"], :volume => fich["ingredients"][i]["volume"], :volume_un => fich["ingredients"][i]["volume_un"], :decrease => fich["ingredients"][i]["decrease"], :recipe => rec)
 					end
 				end
 				
 				if (fich["recipes2"] != nil)
 					n = fich["recipes2"].size
 					for i in 0...n
-						rec = Recipe.first(:name => fich["recipes2"][i.to_s]["recipe_name"], :username => fich["recipes2"][i.to_s]["recipe_username"])
-						Recipe2.create(:name => fich["recipes2"][i.to_s]["name"], :nration => fich["recipes2"][i.to_s]["nration"],:username => fich["recipes2"][i.to_s]["username"], :recipe => rec)
+						rec = Recipe.first(:name => fich["recipes2"][i]["recipe_name"], :username => fich["recipes2"][i]["recipe_username"])
+						Recipe2.create(:name => fich["recipes2"][i]["name"], :nration => fich["recipes2"][i]["nration"],:username => fich["recipes2"][i]["username"], :recipe => rec)
 					end
 				end
-				{:control => 0}.to_json
+				#{:control => 0}.to_json
+				redirect '/home'
 			end
-
-		else
-			{:control => 1}.to_json #No user online o no hay fichero
+		#else
+		#	{:control => 1}.to_json #No user online o no hay fichero
 		end
+	end
+
+
+	post '/home/import' do
+		#Si existe alguna copia de backup en el servidor la borramos
+		ClearUpdates()
+
+		File.open("public/uploads/" + params[:loadfile][:filename], "w") do |f|
+			f.write(params[:loadfile][:tempfile].read)
+		end
+		redirect '/home/import/'+"#{params[:loadfile][:filename]}"
 	end
 
 
