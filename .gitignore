@@ -1,6 +1,5 @@
 *~
 *.swp
 bbdd.db
-public/uploads/*.json
 app/config/config.yml
 .env
