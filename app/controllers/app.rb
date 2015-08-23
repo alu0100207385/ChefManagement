@@ -681,6 +681,8 @@ class MyApp < Sinatra::Base
 
 ################################# EXPORT & IMPORT ##################################
 	get '/home/export' do
+		puts request.url  #Get current url
+  			puts "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
 		#Si existe alguna copia de backup en el servidor la borramos
 		if (Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json").size > 0)
 			b = Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json")
@@ -713,10 +715,12 @@ class MyApp < Sinatra::Base
 
 
 	get '/home/import' do
+		puts request.url  #Get current url
+  		puts "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
 		user = User.first(:username => session[:username])
 		content_type 'application/json'
 		fich = params[:file]
-		#puts "---->#{params[:file]}"
+		puts fich
 		if ((!user.is_a? NilClass) && (!fich.is_a? NilClass))
 
 			#Borramos las tablas anteriores para cargar la lista backup

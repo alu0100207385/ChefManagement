@@ -1,13 +1,15 @@
 $(document).ready(function(){
-	
 	$('#load-file').click(function(){
+		alert($('#files').val());
         $.getJSON($('#files').val(), function(data){
+        	alert("2");
 			$.ajax({
 	    		type: "GET",
 				url: "/home/import",
 				data: {file: data},
 
 				success: function(data){
+					alert(data.control);
 					$("#message").hide();
 					if(data.control == 0){
 			        	$("#message").html('<p class ="alert alert-success" role="alert">Recipe list loaded successfully</p>').show(1000);
@@ -24,5 +26,6 @@ $(document).ready(function(){
 		    	}
 		    });
         });
+        alert("salgo");
 	});
 });
