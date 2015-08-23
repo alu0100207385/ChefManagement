@@ -1,7 +1,5 @@
 module AppHelpers
 	require 'mail'
-	require 'open-uri'
-	require 'json'
 
 	config = YAML.load_file 'app/config/config.yml'
 	username = config['email_username']

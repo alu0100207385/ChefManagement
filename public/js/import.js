@@ -1,11 +1,11 @@
 $(document).ready(function(){
 	$('#load-file').click(function(){
-		//url hasta archivo cliente?
+		/*
         var jqxhr = $.getJSON("uploads/"+$('#files').val(), function(data){
 			$.ajax({
 				dataType: "json",
 	    		type: "GET",
-				url: "/home/import/"+$('#files').val(),
+				url: "/home/import",
 				data: {file: data},
 
 				success: function(data){
@@ -29,5 +29,6 @@ $(document).ready(function(){
     		$("#message").hide();
     		$("#message").html('<p class ="alert alert-danger" role="alert">Error reading file</p>').show(1000);
   		})
+		*/
 	});
 });
