@@ -2,5 +2,4 @@
 *.swp
 bbdd.db
 app/config/config.yml
-public/uploads/recipe.json
 .env
