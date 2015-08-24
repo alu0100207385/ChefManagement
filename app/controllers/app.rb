@@ -22,7 +22,7 @@ class MyApp < Sinatra::Base
    	end
 
    	configure :production do
-   		DataMapper.setup(:default, ENV['OPENSHIFT_POSTGRESQL_DB_URL'])
+   		DataMapper.setup(:default, ENV['OPENSHIFT_POSTGRESQL_DB_URL'] || "postgresql://adminpbi1tzc:R-F4n-gA788I@127.6.184.130:5432")
    	end
 
 	DataMapper::Logger.new($stdout, :debug)
