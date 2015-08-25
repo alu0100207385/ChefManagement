@@ -65,7 +65,6 @@ class MyApp < Sinatra::Base
 		else
   			#puts request.url  #Get current url
   			#puts "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
-  			puts "################################WELCOME######################"
 			erb :index, :layout => :'layouts/welcome'
 		end
 	end
