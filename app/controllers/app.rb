@@ -712,7 +712,7 @@ class MyApp < Sinatra::Base
 
 	get '/home/import/:file' do
 		user = User.first(:username => session[:username])
-		content_type 'application/json'
+		#content_type 'application/json'
 		fich = File.read("public/uploads/"+"#{params[:file]}")
 		fich = JSON.parse(fich)
 		#puts fich
