@@ -1,10 +1,32 @@
+\documentclass[a4paper,14pt]{book}
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Chapter 2: Aplicación ChefManagement
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\chapter{Introducción}\label{dos}
+\pagenumbering{arabic}
 
-%++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+En el capítulo anterior~\ref{chapter:intro} se han introducido tanto los antecedentes como se describió brevemente la aplicación. En este capítulo explicaremos toda las funcionalidades y requisitos.
 
-En el capítulo anterior se han introducido tanto los antecedentes
+Partimos de qué tipo de \textbf{aplicación} queremos crear. Se trata de desarrollar un software que ayude a las personas a gestionar el costo de producción de las recetas, dependiendo del precio de sus ingredientes y el número de raciones. Las características iniciales son:
+\begin{itemize}
+	\item Crear, ver, editar y eliminar recetas.
+	\item Listar todas las recetas.
+	\item Crear backup de las recetas y cargarlo si es necesario.
+	\item Calcular el precio de una determinada receta para un determinado número de comensales.
+\end{itemize}
 
-%++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-En el capítulo~\ref{chapter:intro} se describió brevemente la aplicación. En este capítulo explicaremos toda la funcionalidad 
+Además para esta primera versión, debe ser capaz de realizar una serie de tareas mínimas, que cumplan con las necesidades del usuario y faciliten su interacción con la aplicación. Éstos son sus requisitos iniciales:
+\begin{itemize}
+	\item Dos entornos de producción: la aplicación puede ser usada desde dos nubes diferentes.
+	\item Tener en cuenta aspectos de usablidad: adaptación, entendimiento y facilidad de uso.
+	\item Importar y exportar archivos en formato json: almacenar copias de las recetas en el equipo cliente y restaurarlas si es necesario.
+	\item Accesso mediante registro o haciendo uso de APIs de distintas redes sociales como Google+ o Facebook. Hay que facilitar el acceso a los usuarios.
+\end{itemize}
+
+Tanto las características comos los requisitos de la aplicación serán aplicadas a la versión 1.0, pudiendo ser mejorados o añadidos más en futuras versiones~\ref{chapter:cinco}.
+
+\end{document}

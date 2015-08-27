@@ -3,14 +3,15 @@
 bbdd.db
 app/config/config.yml
 .env
-doc/*.pdf
+
 
 #
 # .gitignore for LaTeX projects 
 #
 # HTML, PDF or PS output removed from Control Version
-doc/memtfg.pdf
+doc/memtfg.pd
 doc/html
+doc/*.pdf
 
 # Distribution
 *_ver*.tar.gz
