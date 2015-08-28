@@ -1,18 +1,19 @@
-\documentclass[a4paper,openright,14pt]{book}
-\usepackage[spanish]{babel}
-\selectlanguage{spanish}
-\usepackage[utf8]{inputenc}
-\usepackage{hyperref} %Para los enlaces
-\usepackage{multirow, array} % Para las tablas
+%\documentclass[a4paper,openright,14pt]{report}
+%\usepackage[spanish]{babel}
+%\selectlanguage{spanish}
+%\usepackage[utf8]{inputenc}
+%\usepackage{hyperref} %Para los enlaces
+%\usepackage{multirow, array} % Para las tablas
+%\usepackage{float}
+%\usepackage{graphicx}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Chapter 1: Introducción 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %---------------------------------------------------------------------------------
-\begin{document}
+%\begin{document}
 \chapter{Introducción}\label{intro}
-\pagenumbering{arabic}
 
 \section{Objetivos}\label{cap.1.1}
 El objetivo de este trabajo de fin de grado (en adelante, TFG) es el desarrollo de una aplicación web para la gestión del escandallo, es decir, controlar el precio de producción de una receta. Para ello usaremos Cloud Servers, concretamente Google Cloud Platform, sin embargo, por algunas de las restricciones que mostraba, las cuales se describirán más adelante, se reorientó el TFG hacia otras plataformas como servicio (SaaS). Para su desarrollo usé la metodología de software ágil basada en el desarrollo dirigido por pruebas (TDD). Como framework, Sinatra (ruby) para desarrollar la aplicación, integrar APIs de terceros, y hacer uso de varias nubes de producción a la vez y también herramientas de soporte para el desarrollo de software como son Github y Travis, entre otras.
@@ -50,7 +51,7 @@ La finalidad de esta aplicación nace de la necesidad de optimizar los gastos, t
 	\item \href{http://developer.pearson.com/apis/pearson-kitchen-manager}{Pearson Kitchen Manager}: Se trata de una API, un banco de información que contiene más de 3000 mil recetas etiquetadas y con otra información como sus valores nutricionales.
 	\item \href{https://itunes.apple.com/es/app/recipe-costing-calculator/id646877156?mt=8}{Recipe Costing Calculator}: Es más sencilla que las anteriores pero se trata de App disponible en iTunes. Las cosas más sencillas puden ser las más útiles, hay que tener en cuenta que un cocinero/a prefiere una tablet a un ordenador en la cocina.
 \end{itemize}
-La segmentación del mercado está orientado especialmente a negocios de restauración: comedores, restaurantes, bares, pastelerías, panaderías, etc. Por otro lado, existe otro sector que no se tiene tan en cuenta debido a que no genera tantos beneficios, se trata de los hogares. Las personas también pueden hacer uso de esta herramienta pues sus necesidades son las mismas pero a menor escala. En el próximo capítulo~\ref{chapter:dos}, veremos las diferencias en la aplicación en función de a qué mercado está dirigido.\\
+La segmentación del mercado está orientado especialmente a negocios de restauración: comedores, restaurantes, bares, pastelerías, panaderías, etc. Por otro lado, existe otro sector que no se tiene tan en cuenta debido a que no genera tantos beneficios, se trata de los hogares. Las personas también pueden hacer uso de esta herramienta pues sus necesidades son las mismas pero a menor escala. En el próximo capítulo~\ref{chapter:dos}, se describe toda la funcionalidad de la aplicación, al igual que nos enseña como usarla y veremos las diferencias en la aplicación en función de a qué mercado está dirigido.\\
 
 Por último, hay que tener en cuenta el soporte para la aplicación. Aprovechando la infraestructura y poder de Internet, la mejor opción es crear una aplicación web, que aunque en esta primera versión se diseñará de forma adaptativa, la idea es poder utilizarla en el futuro en dispositivos móviles y tablets. Además, se ha tenido en cuenta los aspectos de usabilidad durante su diseño.
 
@@ -78,7 +79,7 @@ De esta forma se modifica el requisito inicial del TFG de usar los servicios de 
 
 \begin{table}
 	\centering
-	\begin{tabular}{p{3cm} p{9cm}}
+	\begin{tabular}{p{3cm} p{8cm}}
 	\hline
 	\textbf{Nube} & \textbf{Comentario} \\
 	\hline \hline
@@ -109,47 +110,40 @@ De esta forma se modifica el requisito inicial del TFG de usar los servicios de 
 	\label{tabla:clouds}
 \end{table}
 
-Una vez analizadas se proponen como entornos de producción para la aplicación a desarrollar las nubes Heroku y Openshift, de las cuales se entrará en detalle en el capítulo 3~\ref{chapter:tres}.
+Una vez analizadas se proponen como entornos de producción para la aplicación a desarrollar las nubes Heroku y Openshift, de las cuales se entrará en detalle en el {capítulo 3}~\ref{chapter:tres}.
 
 
 
 \vspace*{0.2in}
 \section{Metodología de trabajo}\label{cap.1.3}
 
+\vspace*{0.1in}
+Durante la investigación y desarrollo de este proyecto se ha apostado por las metodologías ágiles, si bien no ha sido en un grupo de trabajo, se puede aplicar en lo que se refiere al análisis, al desarrollo y diseño de la aplicación y a las reuniones con el \emph{cliente}, cuyo rol lo asume el tutor junto con el de \emph{jefe de proyecto}. \\
 
-\end{document}
+Estos métodos están basados en el desarrollo iterativo e incremental, donde los requisitos y soluciones evolucionan mediante la colaboración de grupos. La idea es minimizar riesgos desarrollando software en períodos cortos. Este período se llama \textbf{iteración} cuya duración se define en función de los requisitos del proyecto, especialmente recursos de tiempo y humano. \\
 
+\begin{center}
+	\includegraphics[width=14cm]{./images/metodologia-agil.png}
+	\label{fig:metodologia}
+\end{center}
 
+\vspace*{0.1in}
+Cada iteración del ciclo de vida incluye:
+\begin{itemize}
+	\item Planificación: organización del trabajo durante una iteración. En este caso, la planificación corresponde con las tutorías y seguimiento semanal con el tutor.
+	\item Análisis de requisitos: cada nueva funcionalidad o idea para la aplicación debe ser estudiada. Así, si por ejemplo, si quiero integrar una API debo considerar si es útil o no, si es compatible con los entornos de producción y con el lenguaje, documentarme para su integración en la aplicación, etc.
+	\item Diseño: interfaz de la aplicación, características y aspectos de usabilidad.
+	\item Codificación: corresponde por lo general a escribir código, aunque esto no se limita solo a realizar la propia aplicación, además se incluyen los tests y todos aquellos prototipos y pruebas durante la etapa de estudio de campo.
+	\item Revisión: incluye superar los tests con éxito y la aceptación por parte del cliente.
+	\item Documentación: para este trabajo en concreto, se realizó un diario semanal, cuya síntesis se engloba en este documento.
+\end{itemize}
 
-%---------------------------------------------------------------------------------
-\begin{comment}
+Durante este proyecto se ha seguido dicho ciclo de vida con especial importacia. He intentado adaptar la metodología Scrum a este trabajo, aunque no se ha tenido en cuenta  el aspecto de los roles. En Scrum se realizan entregas parciales y regulares del producto final. Scrum está especialmente indicado para proyectos en entornos complejos, donde se necesita obtener resultados pronto, donde los requisitos son cambiantes o poco definidos, donde la innovación, la competitividad, la flexibilidad y la productividad son fundamentales. \\
 
-\label{1:sec:1}
+%\end{document}
 
-
-Citando una entrada de memtfg.bib \cite{URL:GitHub}
-
-Incluyento una gráfica y referenciandola como Figura \ref{fig:prueba} y tambien un poco de código como Listado \ref{code:prueba}
-
-\begin{figure}[t]
-  \begin{center}
-    \includegraphics[width=0.4\textwidth]{logotipo-secundario-ULL}
-  \end{center}
-  \caption{Este es un ejemplo de figura. Mira config de graphicx y  graphicspath}
-  \label{fig:prueba}
-\end{figure}
-
-\lstinputlisting[float=t,
-                 caption={Listado de codigos blabla},
-                 label={code:prueba}]
-                 {codes/model.rb}
-\end{comment}
 
 %---------------------------------------------------------------------------------
-\begin{comment}
-\section{XXXX}
-\label{1:sec:2}
+%Citando una entrada de memtfg.bib \cite{URL:GitHub}
 
-En el Capítulo \ref{chapter:tres}
-se describe toda la funcionalidad de la aplicación, al igual que nos enseña como usarla.\\
-\end{comment}
+%Incluyento una gráfica y referenciandola como Figura \ref{fig:prueba} y tambien un poco de código como Listado \ref{code:prueba}
