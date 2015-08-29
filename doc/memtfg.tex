@@ -9,7 +9,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \selectlanguage{spanish}
-\usepackage{multirow}
+\usepackage{multirow} %tablas
+\usepackage{float} % para usar [H]
 
 \usepackage{hyperref}
 %
@@ -145,6 +146,7 @@
 %\cleardoublepage
 %\thispagestyle{empty}
 \newpage{\pagestyle{empty}\cleardoublepage}
+\pagenumbering{Roman} % para comenzar la numeracion de paginas en numeros romanos
 
 D. \textbf{Vicente Jose Blanco Perez}, con N.I.F. 42.171.808-C profesor Titular de Universidad adscrito al Departamento de Ingeniería Informática y de Sistemas del Departamento de la Universidad de La Laguna, como tutor \\
 \vspace*{0.6in}
@@ -155,7 +157,7 @@ D. \textbf{Vicente Jose Blanco Perez}, con N.I.F. 42.171.808-C profesor Titular 
 Que la presente memoria titulada: \emph{Desarrollo en la nube: ChefManagement}. \\
 
 \vspace*{0.1in}
-ha sido realizada bajo su direccion por D. \textbf{Autor}, con N.I.F. 78.702.938-C. \\
+ha sido realizada bajo su dirección por D. \textbf{Aarón Socas Gaspar}, con N.I.F. 78.702.938-C. \\
 
 \vspace*{0.1in}
 Y para que así conste, en cumplimiento de la legislación vigente y a los efectos portunos firman la presente en La Laguna a \today.   
@@ -187,7 +189,7 @@ a mi novia Pilar, por quererme, aguantarme y tener paciencia conmigo,
 a mi hermano Josué, porque siempre está ahí y se preocupa por mí,
 
 \vspace*{0.1in}
-a mis tios y abuelos, por ayudarme en todo y más,
+a mis tíos y abuelos, por ayudarme en todo y más,
 
 \vspace*{0.1in}
 a mi amigo Pablo, porque sé que puedo contar contigo para lo que sea.
@@ -206,6 +208,9 @@ También a mis profesores, que han sido muchas las horas en tutorías aguantando
 \newpage
 {
 \begin{center}
+  \textbf{{\huge Licencia}}
+
+  \vspace*{0.2in}
   \begin{figure}[htb]
     \begin{center}
       \includegraphics[width=6cm]{./images/logotipo-licencia.png}
@@ -221,7 +226,8 @@ También a mis profesores, que han sido muchas las horas en tutorías aguantando
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\cleardoublepage
+%\cleardoublepage
+\newpage
 \begin{abstract}
 {\em 
 En este proyecto se abordarán aspectos del desarrollo de aplicaciones web y entornos de trabajo Cloud (SaaS). También el uso de la metodología ágil y el desarrollo dirigido por pruebas (TDD). La aplicación a desarrollar tiene como objetivo gestionar el escandallo de recetas haciendo uso de aplicaciones de terceros (APIs). Para hacer esto me ayudaré de herramientas orientadas al desarrollo de software, uso de repositorios (Github) y servidores de pruebas (Travis).
@@ -236,7 +242,8 @@ En este proyecto se abordarán aspectos del desarrollo de aplicaciones web y ent
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\cleardoublepage
+%\cleardoublepage
+\newpage
 \begin{summary}
 {\em 
 This project will approach issues web application development and Cloud working environment (SaaS). In addition to use of agile methodology and Test-driven development (TDD). The purpose of the application manage recipe cost production using third application (APIs). To do this, I will use tools oriented to software development, repository (Github) and test cloud (Travis).
@@ -265,8 +272,10 @@ This project will approach issues web application development and Cloud working 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Numeracion en romanos
-\renewcommand{\thepage}{\roman{page}}
+%\renewcommand{\thepage}{\roman{page}}
+\renewcommand{\thepage}{\arabic{page}}
 \setcounter{page}{1}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \tableofcontents
@@ -286,9 +295,8 @@ This project will approach issues web application development and Cloud working 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Numeracion a partir del capitulo I
-\renewcommand{\thepage}{\arabic{page}}
-\setcounter{page}{1}
-
+%\renewcommand{\thepage}{\arabic{page}}
+%\setcounter{page}{1}
 
 \chapter{Introducción}
 \label{chapter:intro}
@@ -302,7 +310,7 @@ This project will approach issues web application development and Cloud working 
 \chapter{Descripción de la aplicaci\'on}
 \label{chapter:dos}
 
-\input{cap2.tex}
+%\input{cap2.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage{\pagestyle{empty}\cleardoublepage}
@@ -311,7 +319,7 @@ This project will approach issues web application development and Cloud working 
 \chapter{Gestión de la configuración}
 \label{chapter:tres}
 
-\input{cap3.tex}
+%\input{cap3.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage{\pagestyle{empty}\cleardoublepage}
@@ -321,25 +329,25 @@ This project will approach issues web application development and Cloud working 
 \chapter{Metodología de desarrollo}
 \label{chapter:cuatro}
 
-\input{cap4.tex}
+%\input{cap4.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage{\pagestyle{empty}\cleardoublepage}
 \thispagestyle{empty}
 
 \chapter{Conclusiones y trabajos futuros}
-\label{chapter:conclusiones}
+%\label{chapter:conclusiones}
 
-\input{cap5.tex}
+%\input{cap5.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage{\pagestyle{empty}\cleardoublepage}
 \thispagestyle{empty}
  
 \chapter{Summary and Conclusions} 
-\label{chapter:summary}
+%\label{chapter:summary}
 
-\input{cap6.tex}
+%\input{cap6.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage{\pagestyle{empty}\cleardoublepage}
@@ -348,7 +356,7 @@ This project will approach issues web application development and Cloud working 
 \chapter{Presupuesto}
 \label{chapter:presupuesto}
 
-\input{cap7.tex}
+%\input{cap7.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -371,7 +379,7 @@ This project will approach issues web application development and Cloud working 
 \newpage{\pagestyle{empty}\cleardoublepage}
 \thispagestyle{empty}
 
-\chapter{Glosario}
+\chapter*{Glosario}
 \label{chapter:glossary}
 
 \input{glossary.tex}

@@ -13,7 +13,7 @@
 
 %---------------------------------------------------------------------------------
 %\begin{document}
-\chapter{Introducción}\label{intro}
+%\chapter{Introducción}\label{intro}
 
 \section{Objetivos}\label{cap.1.1}
 El objetivo de este trabajo de fin de grado (en adelante, TFG) es el desarrollo de una aplicación web para la gestión del escandallo, es decir, controlar el precio de producción de una receta. Para ello usaremos Cloud Servers, concretamente Google Cloud Platform, sin embargo, por algunas de las restricciones que mostraba, las cuales se describirán más adelante, se reorientó el TFG hacia otras plataformas como servicio (SaaS). Para su desarrollo usé la metodología de software ágil basada en el desarrollo dirigido por pruebas (TDD). Como framework, Sinatra (ruby) para desarrollar la aplicación, integrar APIs de terceros, y hacer uso de varias nubes de producción a la vez y también herramientas de soporte para el desarrollo de software como son Github y Travis, entre otras.
@@ -63,13 +63,22 @@ Por último, hay que tener en cuenta el soporte para la aplicación. Aprovechand
 \vspace*{0.1in}
 Inicialmente la idea es trabajar en la \href{https://cloud.google.com/appengine/docs}{nube de Google}. Se trata de una plataforma como servicio (PaaS), la cual permite crear y mantener de forma sencilla una aplicación en la infraestructura de Google. Además permite una fácil escalabilidad de transeferencia de datos y almacenamiento gracias a sus módulos.\\
 
-Aprovechando los conocimientos adquiridos durante los últimos cursos en ruby y sus variedad de frameworks (Ruby on Rails, Padrino, Sinatra) lo usaré para crear la aplicación. Tras investigar y ver los servicios que ofrece Google App Engine (GAE) parece viable la puesta en marcha de la aplicación. GAE soporta cuatro lenguajes y con correspondientes frameworks:
+De forma general, entendemos PaaS como una encapsulación del entorno de desarrollo y un conjunto de módulos con el fin de proporcionar una funcionalidad que se traduce como servicio. En este modelo de servicio al usuario se le ofrece la plataforma de desarrollo y las herramientas de programación por lo que puede desarrollar aplicaciones propias y controlar la aplicación, pero no controla la infraestructura. \\
+
+Aprovechando los conocimientos adquiridos durante los últimos cursos en ruby y sus variedad de frameworks (Ruby on Rails, Padrino, Sinatra) lo usaré para crear la aplicación. Tras investigar y ver los servicios que ofrece Google App Engine (GAE) parece viable la puesta en marcha de la aplicación. GAE soporta cuatro lenguajes y sus correspondientes frameworks:
 \begin{itemize}
-	\item Python con webapp2 y Jinja2.
-	\item Java con maven.
-	\item PHP con Cloud SQL.
-	\item Go con el paquete html/plantilla. 
+	\item \href{https://cloud.google.com/appengine/docs/python/gettingstartedpython27/introduction}{Python} con webapp2 y Jinja2.
+	\item \href{https://cloud.google.com/appengine/docs/java/gettingstarted/introduction}{Java} con maven.
+	\item \href{https://cloud.google.com/appengine/docs/php/gettingstarted/introduction}{PHP} con Cloud SQL.
+	\item \href{https://cloud.google.com/appengine/docs/go/gettingstarted/introduction}{Go} con el paquete html/plantilla. 
 \end{itemize}
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=10cm]{./images/lenguajes-GAE.png}
+		\caption{Lenguajes soportados en GAE} \label{fig:lenguajes-GAE}
+\end{figure}
+
 Sin embargo, también es posible hacerlo funcionar en ruby con la ayuda de java, juntos forman \href{http://jruby.org/}{Jruby}, el cual es una implementación 100\% del lenguaje ruby. Además funciona como lenguaje embebido dentro de la máquina virtual de Java. Gracias a esta capa, podré programar en ruby y Jruby establecerá una capa intermedia entre el código fuente en ruby y el servidor en java. Para interactuar con la aplicación en la nube provee de una herramienta o kit, en este caso se trata de una gema llamada \href{https://rubygems.org/gems/google-appengine}{google-appengine}, sin embargo, la gema
 dedicada a tal fin esta desfasada y el proyecto ha sido \href{https://code.google.com/p/appengine-jruby/}{archivado}.\\
 
@@ -77,9 +86,9 @@ Tras la incompatibilidad del proyecto de Jruby en GAE busco la opción más pare
 
 De esta forma se modifica el requisito inicial del TFG de usar los servicios de la nube de Google para encontrar y usar otros entornos de producción. La idea es intentar usar más de uno, demostrando la modularidad de la aplicación, esto significa que el código fuente de la aplicación debe ser único para las distintas nubes de producción. El siguiente paso es investigar las nubes que se ofertan. La siguiente tabla muestra un resumen:
 
-\begin{table}
+\begin{table}[H]
 	\centering
-	\begin{tabular}{p{3cm} p{8cm}}
+	\begin{tabular}{p{2cm} p{8cm}}
 	\hline
 	\textbf{Nube} & \textbf{Comentario} \\
 	\hline \hline
@@ -110,9 +119,9 @@ De esta forma se modifica el requisito inicial del TFG de usar los servicios de 
 	\label{tabla:clouds}
 \end{table}
 
-Una vez analizadas se proponen como entornos de producción para la aplicación a desarrollar las nubes Heroku y Openshift, de las cuales se entrará en detalle en el {capítulo 3}~\ref{chapter:tres}.
+Una vez analizadas se proponen como entornos de producción para la aplicación a desarrollar las nubes Heroku y Openshift, de las cuales se entrará en detalle en el capítulo~\ref{chapter:tres}.
 
-
+%----------------------------------------------------------------------------------
 
 \vspace*{0.2in}
 \section{Metodología de trabajo}\label{cap.1.3}
@@ -122,10 +131,11 @@ Durante la investigación y desarrollo de este proyecto se ha apostado por las m
 
 Estos métodos están basados en el desarrollo iterativo e incremental, donde los requisitos y soluciones evolucionan mediante la colaboración de grupos. La idea es minimizar riesgos desarrollando software en períodos cortos. Este período se llama \textbf{iteración} cuya duración se define en función de los requisitos del proyecto, especialmente recursos de tiempo y humano. \\
 
-\begin{center}
+\begin{figure}[H]
+	\centering
 	\includegraphics[width=14cm]{./images/metodologia-agil.png}
-	\label{fig:metodologia}
-\end{center}
+	\caption{Esquema de metodología ágil} \label{fig:metodologia}
+\end{figure}
 
 \vspace*{0.1in}
 Cada iteración del ciclo de vida incluye:
