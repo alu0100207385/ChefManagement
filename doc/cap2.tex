@@ -1,16 +1,16 @@
-\documentclass[a4paper,14pt]{report}
-\usepackage[spanish]{babel}
-\selectlanguage{spanish}
-\usepackage[utf8]{inputenc} 
-\usepackage[dvips]{graphicx}
-\graphicspath{{images/}}
-\usepackage{float} % para usar [H]
-\usepackage{hyperref}
+%\documentclass[a4paper,14pt]{report}
+%\usepackage[spanish]{babel}
+%\selectlanguage{spanish}
+%\usepackage[utf8]{inputenc} 
+%\usepackage[dvips]{graphicx}
+%\graphicspath{{images/}}
+%\usepackage{float} % para usar [H]
+%\usepackage{hyperref}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Chapter 2: Descripción de la aplicación: ChefManagement
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{document}
-\chapter{Descripción de la aplicaci\'on}\label{dos}
+%\begin{document}
+%\chapter{Descripción de la aplicaci\'on}\label{dos}
 
 En el capítulo anterior~\ref{chapter:intro} se ha introducido tanto los antecedentes como se describió brevemente la aplicación. En este capítulo explicaremos toda las funcionalidades y sus características con detalle. \\
 
@@ -56,7 +56,7 @@ Además existe la opción de validarnos en la aplicación, una vez que se haya c
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=8cm]{./images/chefmanagement-recovery.png}
-	\caption{Registro} \label{fig:chefmanagement-recovery}
+	\caption{Recuperar contraseña} \label{fig:chefmanagement-recovery}
 \end{figure}
 
 Para registarse accedemos a través del enlace \emph{New account}. En caso de cualquier problema durante el proceso de registro, como que el correo o nombre de usuario estén en uso, la aplicación lo notificará al usuario.
@@ -109,7 +109,7 @@ Una vez completado podemos guardar la receta con el botón \textbf{Save recipe} 
 					\item Nombre del ingrediente
 					\item Cantidad: puede ser: peso, volumen o una determinada unidad.
 					\item Precio en relación con su cantidad
-					\item El \% de merma o pérdida del ingrediente durante su preparación.
+					\item El porcentaje de merma o pérdida del ingrediente durante su preparación.
 				\end{itemize}
 			\item \textbf{Una receta} ya creada por el usuario. De forma que las recetas puedan servir de base para crear otras, por ejemplo, la salsa de tomate es una receta que se puede usar en otras. Si una receta usa otra, la primera no puede ser usada para crear otra y no aparecerá como opción en este apartado.
 		\end{itemize}
@@ -121,25 +121,39 @@ A medida que vayamos incluyendo ingredientes a la receta, en el margen lateral d
 \section{Editar y eliminar recetas}\label{cap.2.3}
 
 \vspace*{0.1in}
+Desde el listado de recetas podemos editar o eliminar según nuestras necesidades. Para ello pinchamos en una determinada receta y accederemos a toda la información de la receta. Esta opción es de sólo lectura. En la parte superior derecha encontramos los iconos para eliminar y editar la receta. \\
+
+Para eliminar la receta pulsamos el botón de eliminar. El programa pedirá la confirmación para eliminarla. Una vez eliminada no se puede recuperar. Las recetas que sirven de base a otras no pueden ser eliminadas hasta que no se rompa este vínculo, para ello debemos entrar en el modo edición. \\
+
+Si pulsamos en edición, nos llevará a una nueva pantalla donde podemos editar todos los campos de la receta (excepto el nombre y los costos que se calculan automáticamente). Podemos añadir nuevos ingredientes, editar o borrar los actuales o bien borrar \emph{recetas base} (en futuras aplicaciones se recomienda poder añadir \emph{recetas bases}). Así mismo podemos editar las instrucciones de la receta. \\
 
 \vspace*{0.2in}
 \section{Calculadora}\label{cap.2.4}
 
 \vspace*{0.1in}
+Esta opción nos permite elegir entre el listado de recetas del usuario. Una vez hecho esto seleccionamos el número de raciones que queremos producir y pulsamos en calcular. Se mostrará una tabla resultante con el listado de ingredientes, sus cantidades para las raciones seleccionadas y su precio. De la misma forma se mostrarán las \emph{recetas bases} si contiene alguna y por último el precio de producción final. \\
+
+A modo de información adicional se muestra las instrucciones de la \textbf{receta original}.
 
 \vspace*{0.2in}
 \section{Importar y exportar}\label{cap.2.5}
 
 \vspace*{0.1in}
+Estas opciones nos permiten crear y cargar una copia de seguridad de las recetas y sus ingredientes del usuario. Para crear una copia, seleccionamos la opción \textbf{Export} del menú lateral. Se mostrará un campo de texto para elegir el nombre del archivo, (por defecto \emph{recipe}) el cual podemos editar y pulsamos en crear. Se comprueba si la cadena introducida contiene caracteres inválidos, en caso contrario se notifica al usuario la operación exitosa y se descarga el archivo al equipo local en formato \textbf{json}. \\
+
+Por otro lado, está la opción de cargar la copia de seguridad. Para ello pulsamos en la opción \textbf{Import}, nos permitirá seleccionar un archivo solo válido en formato json. Una vez seleccionado pulsamos en cargar, en caso de error, la aplicación lo notificará con un mensaje, y si el archivo se ha cargado correctamente nos redirige a \emph{home} con el listado de recetas. Hay que tener en cuenta que si cargamos una copia de seguridad borrará el contenido actual de recetas para cargar ésta.
 
 \vspace*{0.2in}
 \section{Opciones}\label{cap.2.5}
 
 \vspace*{0.1in}
+Las opciones se encuentran en la parte derecha de la barra superior de la aplicación. Si pulsamos nos lleva a una nueva pantalla que nos muestra el perfil del usuario. Éste se podrá editar en caso de que el usuario haya accedido mediante registro en la propia aplicación, si accedió vía redes sociales debe acceder a las mismas para editar su perfil. \\
+
+También permite la opción, siguiendo el CRUD del MVC para el modelo usuario, de darse de baja de la aplicación. Ello conlleva el borrado de todas sus recetas de la bbdd.
 
 \vspace*{0.2in}
 \section{Diseño de la base de datos}\label{cap.2.6}
 
 \vspace*{0.1in}
 
-\end{document}
+%\end{document}
