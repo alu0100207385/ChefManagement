@@ -1,6 +1,5 @@
 %\documentclass[a4paper,14pt]{report}
 %\usepackage[spanish]{babel}
-%\selectlanguage{spanish}
 %\usepackage[utf8]{inputenc} 
 %\usepackage[dvips]{graphicx}
 %\graphicspath{{images/}}
@@ -149,11 +148,48 @@ Por otro lado, está la opción de cargar la copia de seguridad. Para ello pulsa
 \vspace*{0.1in}
 Las opciones se encuentran en la parte derecha de la barra superior de la aplicación. Si pulsamos nos lleva a una nueva pantalla que nos muestra el perfil del usuario. Éste se podrá editar en caso de que el usuario haya accedido mediante registro en la propia aplicación, si accedió vía redes sociales debe acceder a las mismas para editar su perfil. \\
 
-También permite la opción, siguiendo el CRUD del MVC para el modelo usuario, de darse de baja de la aplicación. Ello conlleva el borrado de todas sus recetas de la bbdd.
+También permite la opción de darse de baja de la aplicación. Ello conlleva el borrado de todas sus recetas de la bbdd.
 
 \vspace*{0.2in}
 \section{Diseño de la base de datos}\label{cap.2.6}
 
 \vspace*{0.1in}
+El modelo propuesto para esta primera versión atendiendo a los requisitos de la aplicación, es el siguiente:
+\begin{itemize}
+	\item \textbf{Usuarios (User):} Se trata del modelo base y del que depende la gestión del resto. Sus campos son: \emph{username}, \emph{email}, \emph{password} y \emph{network}. Siendo \emph{username} y \emph{email} sus claves primarias. Además debe realizar todas las acciones del CRUD, acrónimo de \textbf{C}rear, \textbf{O}btener, \textbf{A}ctualizar y \textbf{B}orrar (Create, Read, Update and Delete), lo que puede implicar un cambio con las clases de otros los modelos, si se eliminar un usuario, se deben eliminar sus recetas.
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=7cm]{./images/chefmanagement-model-user.png}
+		\caption{Modelo usuario} \label{fig:chefmanagement-model-user}
+	\end{figure}
+
+	\item \textbf{Recetas (Recipe):} Este modelo contiene información sobre la receta creada por un determinado usuario. Establece la relación con la clase Usuario, del que depende de uno a muchos (1:M) y con las clases ingredientes y recetas base, cuya relación es en ambos casos de 1:M. Tiene muchos campos, de los que cabe destacar: \emph{name}, nombre de la receta y clave primaria; \emph{nration}, campo requerido y que indica el número de platos, y \emph{username} que es el autor de la receta. 	Sus relaciones son: una receta puede tener varios ingredientes (clase Ingredients) o varias recetas base (clase Recipe2).
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=10cm]{./images/chefmanagement-model-recipe.png}
+		\caption{Modelo receta} \label{fig:chefmanagement-model-recipe}
+	\end{figure}
+
+	\item \textbf{Ingredientes (Ingredient):} Se trata de los ingredientes para cada receta. Por lo tanto depende de la clase receta con una relación de 1:M. Sus campos más importantes son su \emph{id} (clave primaria), \emph{name} que es el nombre del ingrediente y \emph{cost} que corresponde a su coste, siendo estos dos último campos requeridos.
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=7cm]{./images/chefmanagement-model-ingredient.png}
+		\caption{Modelo ingrediente} \label{fig:chefmanagement-model-inredient}
+	\end{figure}
+
+	\item \textbf{Recetas base (Recipe2):} Esta clase es una extensión de recipe, que sirve para identificar las recetas usadas como ingredientes en otras, esto es una receta base. Su relación con la clase receta se presenta de 1:M.
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=7cm]{./images/chefmanagement-model-recipe2.png}
+		\caption{Recetas base} \label{fig:chefmanagement-model-recipe2}
+	\end{figure}
+
+\end{itemize}
+
+Puede ver con detalle el código fuente del modelo de la aplicación en \href{https://github.com/alu0100207385/ChefManagement/blob/master/app/models/model.rb}{model.rb}.
 
 %\end{document}
