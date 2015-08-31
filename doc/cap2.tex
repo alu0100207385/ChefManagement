@@ -29,7 +29,7 @@ Para esta primera versión, además de ser capaz de realizar esta serie de tarea
 	\item Accesso mediante registro o haciendo uso de APIs de distintas redes sociales como Google+ o Facebook. Hay que facilitar el acceso a los usuarios.
 \end{itemize}
 
-Tanto las características comos los requisitos de la aplicación serán aplicadas a la versión 1.0, pudiendo ser mejorados o añadidos más en futuras versiones~\ref{chapter:cinco}.
+Tanto las características comos los requisitos de la aplicación serán aplicadas a la versión 1.0, pudiendo ser mejorados o añadidos más en futuras versiones~\ref{chapter:conclusiones}.
 
 \vspace*{0.2in}
 \section{Acceso a la aplicación}\label{cap.2.1}
@@ -80,7 +80,6 @@ Una vez dentro de la aplicación accederemos al \emph{home} del usuario. Existe 
 \vspace*{0.2in}
 \section{Crear recetas}\label{cap.2.2}
 
-\vspace*{0.1in}
 Para acceder a crear receta, nos situamos en el menú lateral y pinchamos en \textbf{New recipe}. Esto nos llevará a una nueva ventana, la cual presentará un formulario con una serie de campos que se detallan a continuación:
 
 \begin{itemize}
@@ -119,7 +118,6 @@ A medida que vayamos incluyendo ingredientes a la receta, en el margen lateral d
 \vspace*{0.2in}
 \section{Editar y eliminar recetas}\label{cap.2.3}
 
-\vspace*{0.1in}
 Desde el listado de recetas podemos editar o eliminar según nuestras necesidades. Para ello pinchamos en una determinada receta y accederemos a toda la información de la receta. Esta opción es de sólo lectura. En la parte superior derecha encontramos los iconos para eliminar y editar la receta. \\
 
 Para eliminar la receta pulsamos el botón de eliminar. El programa pedirá la confirmación para eliminarla. Una vez eliminada no se puede recuperar. Las recetas que sirven de base a otras no pueden ser eliminadas hasta que no se rompa este vínculo, para ello debemos entrar en el modo edición. \\
@@ -129,7 +127,6 @@ Si pulsamos en edición, nos llevará a una nueva pantalla donde podemos editar 
 \vspace*{0.2in}
 \section{Calculadora}\label{cap.2.4}
 
-\vspace*{0.1in}
 Esta opción nos permite elegir entre el listado de recetas del usuario. Una vez hecho esto seleccionamos el número de raciones que queremos producir y pulsamos en calcular. Se mostrará una tabla resultante con el listado de ingredientes, sus cantidades para las raciones seleccionadas y su precio. De la misma forma se mostrarán las \emph{recetas bases} si contiene alguna y por último el precio de producción final. \\
 
 A modo de información adicional se muestra las instrucciones de la \textbf{receta original}.
@@ -137,7 +134,6 @@ A modo de información adicional se muestra las instrucciones de la \textbf{rece
 \vspace*{0.2in}
 \section{Importar y exportar}\label{cap.2.5}
 
-\vspace*{0.1in}
 Estas opciones nos permiten crear y cargar una copia de seguridad de las recetas y sus ingredientes del usuario. Para crear una copia, seleccionamos la opción \textbf{Export} del menú lateral. Se mostrará un campo de texto para elegir el nombre del archivo, (por defecto \emph{recipe}) el cual podemos editar y pulsamos en crear. Se comprueba si la cadena introducida contiene caracteres inválidos, en caso contrario se notifica al usuario la operación exitosa y se descarga el archivo al equipo local en formato \textbf{json}. \\
 
 Por otro lado, está la opción de cargar la copia de seguridad. Para ello pulsamos en la opción \textbf{Import}, nos permitirá seleccionar un archivo solo válido en formato json. Una vez seleccionado pulsamos en cargar, en caso de error, la aplicación lo notificará con un mensaje, y si el archivo se ha cargado correctamente nos redirige a \emph{home} con el listado de recetas. Hay que tener en cuenta que si cargamos una copia de seguridad borrará el contenido actual de recetas para cargar ésta.
@@ -145,7 +141,6 @@ Por otro lado, está la opción de cargar la copia de seguridad. Para ello pulsa
 \vspace*{0.2in}
 \section{Opciones}\label{cap.2.5}
 
-\vspace*{0.1in}
 Las opciones se encuentran en la parte derecha de la barra superior de la aplicación. Si pulsamos nos lleva a una nueva pantalla que nos muestra el perfil del usuario. Éste se podrá editar en caso de que el usuario haya accedido mediante registro en la propia aplicación, si accedió vía redes sociales debe acceder a las mismas para editar su perfil. \\
 
 También permite la opción de darse de baja de la aplicación. Ello conlleva el borrado de todas sus recetas de la bbdd.
@@ -153,7 +148,6 @@ También permite la opción de darse de baja de la aplicación. Ello conlleva el
 \vspace*{0.2in}
 \section{Diseño de la base de datos}\label{cap.2.6}
 
-\vspace*{0.1in}
 El modelo propuesto para esta primera versión atendiendo a los requisitos de la aplicación, es el siguiente:
 \begin{itemize}
 	\item \textbf{Usuarios (User):} Se trata del modelo base y del que depende la gestión del resto. Sus campos son: \emph{username}, \emph{email}, \emph{password} y \emph{network}. Siendo \emph{username} y \emph{email} sus claves primarias. Además debe realizar todas las acciones del CRUD, acrónimo de \textbf{C}rear, \textbf{O}btener, \textbf{A}ctualizar y \textbf{B}orrar (Create, Read, Update and Delete), lo que puede implicar un cambio con las clases de otros los modelos, si se eliminar un usuario, se deben eliminar sus recetas.
@@ -168,7 +162,7 @@ El modelo propuesto para esta primera versión atendiendo a los requisitos de la
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=10cm]{./images/chefmanagement-model-recipe.png}
+		\includegraphics[width=12cm]{./images/chefmanagement-model-recipe.png}
 		\caption{Modelo receta} \label{fig:chefmanagement-model-recipe}
 	\end{figure}
 
@@ -176,7 +170,7 @@ El modelo propuesto para esta primera versión atendiendo a los requisitos de la
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=7cm]{./images/chefmanagement-model-ingredient.png}
+		\includegraphics[width=8cm]{./images/chefmanagement-model-ingredient.png}
 		\caption{Modelo ingrediente} \label{fig:chefmanagement-model-inredient}
 	\end{figure}
 
@@ -184,7 +178,7 @@ El modelo propuesto para esta primera versión atendiendo a los requisitos de la
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=7cm]{./images/chefmanagement-model-recipe2.png}
+		\includegraphics[width=9cm]{./images/chefmanagement-model-recipe2.png}
 		\caption{Recetas base} \label{fig:chefmanagement-model-recipe2}
 	\end{figure}
 
