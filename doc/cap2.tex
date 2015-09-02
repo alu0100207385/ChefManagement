@@ -141,7 +141,7 @@ También permite la opción de darse de baja de la aplicación. Ello conlleva el
 
 El modelo propuesto para esta primera versión atendiendo a los requisitos de la aplicación, es el siguiente:
 \begin{itemize}
-	\item \textbf{Usuarios (User):} Se trata del modelo base y del que depende la gestión del resto. Sus campos son: \emph{username}, \emph{email}, \emph{password} y \emph{network}. Siendo \emph{username} y \emph{email} sus claves primarias. Además debe realizar todas las acciones del CRUD, acrónimo de \textbf{C}rear, \textbf{O}btener, \textbf{A}ctualizar y \textbf{B}orrar (Create, Read, Update and Delete), lo que puede implicar un cambio con las clases de otros los modelos, si se eliminar un usuario, se deben eliminar sus recetas.
+	\item \textbf{Usuarios (User):} Se trata del modelo base y del que depende la gestión del resto. Sus campos son: \emph{username}, \emph{email}, \emph{password} y \emph{network}. Siendo \emph{username} y \emph{email} sus claves primarias. La contraseña y correo del usuario pueden ser editados siempre y cuando no se haya accedido a la aplicación vía Google+ o Facebook.
 
 	\begin{figure}[H]
 		\centering
@@ -153,7 +153,7 @@ El modelo propuesto para esta primera versión atendiendo a los requisitos de la
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm]{./images/chefmanagement-model-recipe.png}
+		\includegraphics[width=13cm]{./images/chefmanagement-model-recipe.png}
 		\caption{Modelo receta} \label{fig:chefmanagement-model-recipe}
 	\end{figure}
 
@@ -174,5 +174,7 @@ El modelo propuesto para esta primera versión atendiendo a los requisitos de la
 	\end{figure}
 
 \end{itemize}
+
+Los cambios producidos en una clase puede implicar la modificación de las clases con las que está relacionada. Por ejemplo, si se elimina un usuario, se debe eliminar sus recetas y en consecuencia los ingredientes de esa receta. El modelo propuesto se ha diseñado de tal forma que sea capaz de realizar todas las acciones del CRUD, acrónimo de \textbf{C}rear, \textbf{O}btener, \textbf{A}ctualizar y \textbf{B}orrar (Create, Read, Update and Delete) para cada clase. \\
 
 Puede ver con detalle el código fuente del modelo de la aplicación en \href{https://github.com/alu0100207385/ChefManagement/blob/master/app/models/model.rb}{model.rb}.

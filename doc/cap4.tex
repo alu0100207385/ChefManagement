@@ -22,7 +22,15 @@ Hay que tener en cuenta, que debido a las circunstancias de este proyecto (no ha
 
 \vspace*{0.2in}
 \section{Estructura de la app}\label{cap.4.2}
-La aplicación ha sido diseñada y desarrollada de acuerdo con el framework MVC de \href{http://www.sinatrarb.com/}{Sinatra}. Durante la etapa de análisis y estudio de campo se empezó diseñando en \href{http://rubyonrails.org/}{Ruby on Rails}, otro framework en lenguaje ruby, sin embargo, uno de los requisitos era que la aplicación sea soportada bajo Jruby. Durante las pruebas muchas de gemas utilizadas en Rails presentaban problemas de incompatibilidad por lo que había que bajarlas de versión, y esto a su vez con otras y la aplicación. Es el caso de la \emph{gema ActiveRecord}. 
+La aplicación ha sido diseñada y desarrollada de acuerdo con el framework de \href{http://www.sinatrarb.com/}{Sinatra} cuya arquitectura software se base en el MVC. Por un lado define componentes para la representación de la información, y por otro la interacción del usuario. La filosofía de este modelo es la reutilización de código y la separación de conceptos, características que buscan facilitar la tarea de desarrollo de aplicaciones y su posterior mantenimiento. \\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{./images/mvc.png}
+	\caption{Modelo-Vista-Controlador} \label{fig:MVC}
+\end{figure}
+
+Durante la etapa de análisis y estudio de campo se empezó diseñando en \href{http://rubyonrails.org/}{Ruby on Rails}, otro framework en lenguaje Ruby, sin embargo, uno de los requisitos era que la aplicación sea soportada bajo JRuby. Durante las pruebas muchas de gemas utilizadas en Rails presentaban problemas de incompatibilidad por lo que había que bajarlas de versión, y esto a su vez con otras y la aplicación. Es el caso de la \emph{gema ActiveRecord}. 
 
 \begin{figure}[H]
 	\centering
@@ -30,9 +38,9 @@ La aplicación ha sido diseñada y desarrollada de acuerdo con el framework MVC 
 	\caption{ActiveRecord 4.2 no está soportado completamente por JRuby} \label{fig:AvtiveRecord-no-supported}
 \end{figure}
 
-La idea de la compatibilidad con Jruby se considera importante para este proyecto no solo para ampliar el soporte de la aplicación, también en futuros módulos como el desarrollo en plataformas móviles o tablets con \href{http://ruboto.org/}{Ruboto}, cuyas apps pueden ser desarrolladas usando JRuby, MRI or Rubinius. \\
+La idea de la compatibilidad con JRuby se considera importante para este proyecto no solo para ampliar el soporte de la aplicación, también en futuros módulos como el desarrollo en plataformas móviles o tablets con \href{http://ruboto.org/}{Ruboto}, cuyas apps pueden ser desarrolladas usando JRuby, MRI o Rubinius. \\
 
-Por esta razón, y la libertad en diseño de la aplicación que proporciona de Sinatra frente a Rails, así como su sencilla puesta en marcha, se optó finalmente por este framwork para el desarrollo de Chefmanagament. La estructura que se diseñó es la siguiente (también puede verse en el \href{https://github.com/alu0100207385/ChefManagement}{repositorio}):
+Por esta razón, y la libertad en diseño de la aplicación que proporciona Sinatra frente a Rails, así como su sencilla puesta en marcha, se optó finalmente por este framwork para el desarrollo de Chefmanagament. La estructura que se diseñó es la siguiente (también puede verse en el \href{https://github.com/alu0100207385/ChefManagement}{repositorio}):
 
 \begin{itemize}
 	\item \textbf{app}: la codificación modelo-vista-controlador se encuentra aquí. Contiene el modelo, el contolador y las vistas de la aplicación, así como funciones auxiliares (helpers) y los tests.
@@ -58,13 +66,3 @@ Por esta razón, y la libertad en diseño de la aplicación que proporciona de S
 	\item Rakefile: contiene las distintas tareas y opciones que se pueden realizar. 
 	\item config.ru: inicia la aplicación bajo \emph{rackup}.
 \end{itemize}
-
-\vspace*{0.2in}
-\section{MVC}\label{cap.4.1}
-			\begin{figure}[H]
-				\centering
-				\includegraphics[width=10cm]{./images/mvc.png}
-				\caption{Modelo-Vista-Controlador} \label{fig:MVC}
-			\end{figure}
-
-CRUD
