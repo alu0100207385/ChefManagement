@@ -31,6 +31,38 @@ Se trata de una plataforma de aplicaciones cloud que permite construir y despleg
 	\item A través de \textbf{archivos de configración}: Esta opción afecta más a la configuración de la propia aplicación. Aquí podemos crear variables, base de datos y otros, sin embargo, no se gestionan los dynos o add-ons pero sí usarlos o interactuar con ellos si están creados.
 \end{itemize}
 
+Para integrar la base de datos en producción podemos hacerlo de dos formas:
+\begin{itemize}
+	\item Utilizar la herramienta con el comando: \$ heroku addons:create heroku-postgresql.
+	\item O bien, desde el \emph{Dashboard} \rightarrow Settings \rightarrow Config Variables.
+\end{itemize}
+
+Para visualizar la configuración general usaremos el comando \$ heroku config. Con esta varible ya podemos crear el adaptador para la aplicación. En este proyecto se trabaja con \href{http://datamapper.org/}{DataMapper} para el manejo y creación de la bbdd. De forma general, su configuración es: \\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=8cm]{./images/env01.png}
+	\caption{Configuración de la BBDD con DataMapper} \label{fig:env01}
+\end{figure}
+ 
+ donde:
+ \begin{itemize}
+	 \item \emph{ENTORNO}: es el entorno para el que se está configurando: desarrollo, test o producción.
+	\item default: la configuración por defecto. Podemos establecer un archivo de configuración por defecto. Las nubes de producción tienen el suyo, aunque a veces hay que adaptarlo a nuestras necesidades o crear nuestra propia configuración.
+	\item ENV['VARIABLE']: corresponde a una variable que guarda la ruta a la base de datos. También puede ponerse la ruta directamente pero no es recomendable.
+\end{itemize}
+
+En nuestro caso sería: \\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=9cm]{./images/env02.png}
+	\caption{Configuración de la BBDD para Chefmanagement} \label{fig:env02}
+\end{figure}
+
+Debido a que en OpenShift no puede modificarse el nombre de las variables, la renombramos en Heroku de igual forma para utilizar una única varible de configuración que es válida para ambos entornos de producción a la vez. Cada servidor contendrá este nombre de variable con un adaptador distinto.
+
+
 \vspace*{0.2in}
 \section{OpenShift}\label{cap.3.3}
 Es otra PaaS similar a la anterior montada en Linux Red Hat. Permite desarrollar rápidamente, hosting y la escalabilidad de aplicaciones en entornos de la nube. Al contrario que Heroku, en la versión \emph{free} permite crear hasta tres aplicaciones (y la primera cinco), sin embargo, aunque Heroku solo permite postgresql en esta versión, OpenShift permite escoger entre MongoDB, MySQL y PostgreSQL. Para \textbf{ChefManagement}, hemos tenido que adaptarnos al cuello de botella de Heroku en cuanto bbdd y trabajaremos con postgres en ambas plataformas. \\
@@ -39,4 +71,16 @@ Aunque OpenShift no dispone de tantas opciones de configuración en su \emph{das
 
 En cuanto a la \href{https://developers.openshift.com/en/managing-client-tools.html}{herramienta del cliente} permite la gestión con la nube de igual forma que con la herramienta de Heroku. Sin embargo, en esta nube, no se puede añadir ni modificar variables. La nube almacena la configuración por defecto en caso de que la proporcionada no sea válida. En todo caso habría que usar su herramienta o archivos de configuración. \\
 
-Los archivos de configuración son muy útles si no queremos usar las variables por defecto que proporciona la nube. Hay dos formas de editar estos archivos, mediante la herramienta cliente o bien editando manualmente estos \href{https://blog.openshift.com/netsource-partners-shows-the-benefits-of-custom-environment-variables-on-openshift/}{archivos de configuración}.
+Los archivos de configuración son muy útles si no queremos usar las variables por defecto que proporciona la nube. Hay dos formas de editar estos archivos, mediante la herramienta cliente o bien editando manualmente estos \href{https://blog.openshift.com/netsource-partners-shows-the-benefits-of-custom-environment-variables-on-openshift/}{archivos de configuración}. \\
+
+Para configurar el adaptador de la base de datos en OpenShift podemos \href{https://developers.openshift.com/en/managing-environment-variables.html}{crear la variable} de la siguiente forma:
+\begin{center}
+	\$ rhc env set VARIABLE=VALUE --a App\_Name
+\end{center}
+
+Por defecto en esta nube esta información esta almacenada en la variable OPENSHIFT\_POSTGRESQL\_DB\_URL. Podemos acceder a la nube y consultar todas las variables mediante ssh:
+\begin{center}
+\$ rhc ssh APLICACION
+\end{center}
+
+Para ver la lista de variables creadas escribimos en consola \$ rhc env-list --a chefmanagement, y para ver todas las variables de entorno nos conectamos por ssh y usamos el comando \emph{env}.
