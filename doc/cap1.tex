@@ -78,12 +78,11 @@ Empleando los conocimientos adquiridos durante los últimos cursos en Ruby y sus
 		\caption{Lenguajes soportados en GAE} \label{fig:lenguajes-GAE}
 \end{figure}
 
-Sin embargo, también es posible hacerlo funcionar en Ruby con la ayuda de java, juntos forman \href{http://jruby.org/}{Jruby}, el cual es una implementación 100\% del lenguaje Ruby. Además funciona como lenguaje embebido dentro de la máquina virtual de Java. Gracias a esta capa, podré programar en Ruby y Jruby establecerá una capa intermedia entre el código fuente en Ruby y el servidor en java. Para interactuar con la aplicación en la nube provee de una herramienta o kit, en este caso se trata de una gema llamada \href{https://rubygems.org/gems/google-appengine}{google-appengine}, sin embargo, la gema
+Sin embargo, también es posible hacerlo funcionar en Ruby con la ayuda de java, juntos forman \href{http://jruby.org/}{JRuby}, el cual es una implementación 100\% del lenguaje Ruby. Además funciona como lenguaje embebido dentro de la máquina virtual de Java. Gracias a esta capa, podré programar en Ruby y Jruby establecerá una capa intermedia entre el código fuente en Ruby y el servidor en java. Para interactuar con la aplicación en la nube provee de una herramienta o kit, en este caso se trata de una gema llamada \href{https://rubygems.org/gems/google-appengine}{google-appengine}, sin embargo, la gema
 dedicada a tal fin esta desfasada y el proyecto ha sido \href{https://code.google.com/p/appengine-jruby/}{archivado}.\\
 \todo{Enlaces como citas en la bibliografía}
 
-
-Tras la incompatibilidad del proyecto de Jruby en GAE busco la opción más parecida posible que me ofrezca soporte, en este caso Google Cloud Platform. Tras investigar encuentro multitud de \href{https://cloud.google.com/launcher/explore}{lenguajes compatibles}, entre ellos Ruby, sin embargo, los servicios de esta nube son de pago, aunque existe una versión demo durante 60 días. Debido al tiempo que emplearía en el estudio, desarrollo y pruebas, este período puede resultar corto. Me pongo en contacto con el servicio de clientes y soporte de Google para bajar otras opciones, pero no ofrecen nada que me sea viable para desarrollar mi proyecto.\\
+Tras la incompatibilidad del proyecto de JRuby en GAE busco la opción más parecida posible que me ofrezca soporte, en este caso Google Cloud Platform. Tras investigar encuentro multitud de \href{https://cloud.google.com/launcher/explore}{lenguajes compatibles}, entre ellos Ruby, sin embargo, los servicios de esta nube son de pago y aunque existe una versión demo durante 60 días. Debido al tiempo que emplearía en el estudio, desarrollo y pruebas, este período puede resultar corto. Me pongo en contacto con el servicio de clientes y soporte de Google para bajar otras opciones, pero no ofrecen nada que me sea viable para desarrollar mi proyecto.\\
 
 De esta forma se modifica el requisito inicial del TFG de usar los servicios de la nube de Google para encontrar y usar otros entornos de producción. La idea es intentar usar más de uno, demostrando la modularidad de la aplicación, esto significa que el código fuente de la aplicación debe ser único para las distintas nubes de producción. El siguiente paso es investigar las nubes que se ofertan. La siguiente tabla muestra un resumen:
 
@@ -97,7 +96,7 @@ De esta forma se modifica el requisito inicial del TFG de usar los servicios de 
 	\hline \hline
 	\href{https://cloud.google.com/free-trial/?hl=es&_ga=1.261030148.846668794.1427305506}{Google} & De pago. Prueba gratuita de 60 días. Multitud de servicios, distintos tipos de bbdd y soporta muchos \href{https://cloud.google.com/launcher/?hl=es}{lenguajes} y frameworks. \\
 	\hline
-	\href{http://azure.microsoft.com/en-us/}{Azure} & De pago. Prueba de 30 días. Soporta varios \href{https://tryappservice.azure.com/}{lenguajes}. \\
+	\cite{URL:Azure} & De pago. Prueba de 30 días. Soporta varios \href{https://tryappservice.azure.com/}{lenguajes}. \\
 	\hline
 	\href{https://c9.io/}{cloud9} & Se trata de un entorno de trabajo, una nube orientada al desarrollo, no es lo que buscamos. \\
 	\hline

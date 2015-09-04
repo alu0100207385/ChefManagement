@@ -20,17 +20,19 @@ Hay que tener en cuenta, que debido a las circunstancias de este proyecto (no ha
 	\item \textbf{Documentación:} Durante el tiempo de vida del proyecto se ha ido elaborando un diario, en él se guarda la información de los resultados obtenidos semanalmente y expuestos durante las reuniones: lo qué se ha averiguado, lo qué se ha conseguido, los problemas encontrados y las soluciones propuestas.
 \end{itemize}
 
+Una de las ventajas más importantes del uso de esta metodología es que volver atrás o realizar cambios en la aplicación, conlleva consecuencias gracias a las iteraciones cortas. \\
+
 \vspace*{0.2in}
 \section{Estructura de la app}\label{cap.4.2}
 La aplicación ha sido diseñada y desarrollada de acuerdo con el framework de \href{http://www.sinatrarb.com/}{Sinatra} cuya arquitectura software se base en el MVC. Por un lado define componentes para la representación de la información, y por otro la interacción del usuario. La filosofía de este modelo es la reutilización de código y la separación de conceptos, características que buscan facilitar la tarea de desarrollo de aplicaciones y su posterior mantenimiento. \\
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=10cm]{./images/mvc.png}
+	\includegraphics[width=8cm]{./images/mvc.png}
 	\caption{Modelo-Vista-Controlador} \label{fig:MVC}
 \end{figure}
 
-Durante la etapa de análisis y estudio de campo se empezó diseñando en \href{http://rubyonrails.org/}{Ruby on Rails}, otro framework en lenguaje Ruby, sin embargo, uno de los requisitos era que la aplicación sea soportada bajo JRuby. Durante las pruebas muchas de gemas utilizadas en Rails presentaban problemas de incompatibilidad por lo que había que bajarlas de versión, y esto a su vez con otras y la aplicación. Es el caso de la \emph{gema ActiveRecord}. 
+Durante la etapa de análisis y estudio de campo se empezó diseñando en Ruby on Rails \cite{URL:Rails}, otro framework en lenguaje Ruby, sin embargo, uno de los requisitos era que la aplicación sea soportada bajo JRuby. Durante las pruebas muchas de gemas utilizadas en Rails presentaban problemas de incompatibilidad por lo que había que bajarlas de versión, y esto a su vez con otras y la aplicación. Es el caso de la \emph{gema ActiveRecord}. 
 
 \begin{figure}[H]
 	\centering
@@ -40,7 +42,7 @@ Durante la etapa de análisis y estudio de campo se empezó diseñando en \href{
 
 La idea de la compatibilidad con JRuby se considera importante para este proyecto no solo para ampliar el soporte de la aplicación, también en futuros módulos como el desarrollo en plataformas móviles o tablets con \href{http://ruboto.org/}{Ruboto}, cuyas apps pueden ser desarrolladas usando JRuby, MRI o Rubinius. \\
 
-Por esta razón, y la libertad en diseño de la aplicación que proporciona Sinatra frente a Rails, así como su sencilla puesta en marcha, se optó finalmente por este framwork para el desarrollo de Chefmanagament. La estructura que se diseñó es la siguiente (también puede verse en el \href{https://github.com/alu0100207385/ChefManagement}{repositorio}):
+Por esta razón, y la libertad en diseño de la aplicación que proporciona Sinatra frente a Rails, así como su sencilla puesta en marcha, se optó finalmente por este framwork para el desarrollo de Chefmanagament. La estructura que se diseñó es la siguiente (también puede verse en \cite{URL:GitHub}):
 
 \begin{itemize}
 	\item \textbf{app}: la codificación modelo-vista-controlador se encuentra aquí. Contiene el modelo, el contolador y las vistas de la aplicación, así como funciones auxiliares (helpers) y los tests.
