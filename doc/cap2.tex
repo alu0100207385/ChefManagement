@@ -31,6 +31,8 @@ Para usar esta aplicación podemos acceder directamente a sus entornos de produc
 	\item \href{http://chefmanagement-esit.rhcloud.com/}{Despliegue en OpenShift}
 \end{itemize}
 
+\todo{Pon las URLs en el texto directamente (enlazadas con href)}
+
 O bien acceder al \href{https://github.com/alu0100207385/ChefManagement}{repositorio} de la aplicación (se trata de licencia libre y código abierto) y seguir las instrucciones de instalación. \\
 
 Una vez en la aplicación encontraremos una pantalla inicial de acceso, que nos permite acceder usando redes sociales, en este caso Google+ y Facebook. Esto es posible gracias al uso de su API (o interfaz de programación de aplicaciones) correspondiente, la cual es un conjunto de funciones o métodos que ofrece una librería para ser utilizado por otro software. En otras palabras, el equipo de desarrollo de Facebook crea esta herramienta para que otras aplicaciones, como Chefmanagement puedan hacer uso de ella. Esto tiene ventajas importantes como la seguridad, desde el punto de vista de desarrollo de software y la comodidad para los usuarios finales. \\
@@ -57,7 +59,7 @@ Para registarse accedemos a través del enlace \emph{New account}. En caso de cu
 	\caption{Registro} \label{fig:chefmanagement-register}
 \end{figure}
 
-Una vez dentro de la aplicación accederemos al \emph{home} del usuario. Existe un barra superior donde podemos acceder a la configuración y salir de la aplicación (Log out). También encontramos un menú lateral el cual facilita la interacción del usuario con la aplicación y ayudar a moverse y gestionar las distintas tareas. Por defecto, cuando accedemos a la aplicación, en \emph{home} se nos despliega la lista de recetas creadas por ese usuario. Las opciones del menú son las siguientes:
+Una vez dentro de la aplicación accederemos al \emph{home} del usuario. Existe una barra superior donde podemos acceder a la configuración y salir de la aplicación (Log out). También encontramos un menú lateral el cual facilita la interacción del usuario con la aplicación y ayudar a moverse y gestionar las distintas tareas. Por defecto, cuando accedemos a la aplicación, en \emph{home} se nos despliega la lista de recetas creadas por ese usuario. Las opciones del menú son las siguientes:
 
 \begin{itemize}
 	\item Recipe list: muestra el listado de recetas del usuario. Podemos acceder, editar y borrar recetas a través de esta lista.
@@ -75,7 +77,7 @@ Para acceder a crear receta, nos situamos en el menú lateral y pinchamos en \te
 
 \begin{itemize}
 	\item Name: es un campo obligatorio y clave primaria en la bbdd. Nombre de la receta.
-	\item Rations: Numero de raciones para crear esa receta. Este campo es muy importante ya que se tomará como referencia para el cálculo de recetas dado un determinado número de platos.
+	\item Rations: Numero de raciones para crear esa receta. Este campo es muy importante ya que se tomará como referencia para el cálculo de recetas dado un determinado número de platos. \todo{Mejor servings o portions para traducir ración}
 	\item Cost: es un campo de lectura, se calcula acutomáticamente con cada ingrediente.
 	\item Ration cost: relación entre el coste de la receta y el número de raciones.
 	\item Order: campo que sirve como etiqueta. Indica si se trata de un primer o segundo plato, un postre, etc.
@@ -138,6 +140,8 @@ También permite la opción de darse de baja de la aplicación. Ello conlleva el
 
 \vspace*{0.2in}
 \section{Diseño de la base de datos}\label{cap.2.6}
+
+\todo{utiliza un modelo Entidad-Relacion para expresar el modelo de datos. Mejor que pantallazos de las tablas}
 
 El modelo propuesto para esta primera versión atendiendo a los requisitos de la aplicación, es el siguiente:
 \begin{itemize}
