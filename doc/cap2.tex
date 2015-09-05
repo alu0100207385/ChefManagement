@@ -27,15 +27,15 @@ Tanto las características comos los requisitos de la aplicación serán aplicad
 
 Para usar esta aplicación podemos acceder directamente a sus entornos de producción:
 \begin{itemize}
-	\item \href{http://chefmanagement.herokuapp.com/}{Despliegue en Heroku}
-	\item \href{http://chefmanagement-esit.rhcloud.com/}{Despliegue en OpenShift}
+	\item \textbf{Heroku:} \href{http://chefmanagement.herokuapp.com/}{http://chefmanagement.herokuapp.com/}
+	\item \textbf{OpenShift:} \href{http://chefmanagement-esit.rhcloud.com/}{http://chefmanagement-esit.rhcloud.com/}
 \end{itemize}
 
-\todo{Pon las URLs en el texto directamente (enlazadas con href)}
+%\todo{Pon las URLs en el texto directamente (enlazadas con href)}
 
 O bien acceder al \href{https://github.com/alu0100207385/ChefManagement}{repositorio} de la aplicación (se trata de licencia libre y código abierto) y seguir las instrucciones de instalación. \\
 
-Una vez en la aplicación encontraremos una pantalla inicial de acceso, que nos permite acceder usando redes sociales, en este caso Google+ y Facebook. Esto es posible gracias al uso de su API (o interfaz de programación de aplicaciones) correspondiente, la cual es un conjunto de funciones o métodos que ofrece una librería para ser utilizado por otro software. En otras palabras, el equipo de desarrollo de Facebook crea esta herramienta para que otras aplicaciones, como Chefmanagement puedan hacer uso de ella. Esto tiene ventajas importantes como la seguridad, desde el punto de vista de desarrollo de software y la comodidad para los usuarios finales. \\
+Una vez en la aplicación encontraremos una pantalla inicial de acceso, que nos permite acceder usando redes sociales, en este caso Google+ y Facebook. Esto es posible gracias al uso de su API (o interfaz de programación de aplicaciones) correspondiente, la cual es un conjunto de funciones o métodos que ofrece una librería para ser utilizado por otro software. En otras palabras, el equipo de desarrollo de Facebook crea esta herramienta para que otras aplicaciones, como Chefmanagement puedan hacer uso de ella. Esto tiene ventajas importantes como la seguridad, desde el punto de vista de desarrollo de software y la comodidad para los usuarios finales.
 
 \begin{figure}[H]
 	\centering
@@ -43,7 +43,7 @@ Una vez en la aplicación encontraremos una pantalla inicial de acceso, que nos 
 	\caption{Acceso a la aplicación} \label{fig:chefmanagement-root}
 \end{figure}
 
-Además existe la opción de validarnos en la aplicación, una vez que se haya completado el registro. Si el usuario de entrada o contraseña fueran incorrectos la aplicación lo notificaría. En caso de pérdida de contraseña podemos solicitar una nueva accediendo al enlace \emph{Forgot your password?} y proporcionar nuestro nombre de usuario. Posteriormente puede modificarse la nueva contraseña en opciones~\ref{sec:cap.2.5}.
+Además existe la opción de validarnos en la aplicación, una vez que se haya completado el registro. Si el usuario de entrada o contraseña fueran incorrectos la aplicación lo notificaría. En caso de pérdida de contraseña podemos solicitar una nueva accediendo al enlace \emph{Forgot your password?} y proporcionar nuestro nombre de usuario. Posteriormente puede modificarse la nueva contraseña en opciones~\ref{cap.2.5}.
 
 \begin{figure}[H]
 	\centering
@@ -77,7 +77,7 @@ Para acceder a crear receta, nos situamos en el menú lateral y pinchamos en \te
 
 \begin{itemize}
 	\item Name: es un campo obligatorio y clave primaria en la bbdd. Nombre de la receta.
-	\item Rations: Numero de raciones para crear esa receta. Este campo es muy importante ya que se tomará como referencia para el cálculo de recetas dado un determinado número de platos. \todo{Mejor servings o portions para traducir ración}
+	\item Portions: Numero de raciones para crear esa receta. Este campo es muy importante ya que se tomará como referencia para el cálculo de recetas dado un determinado número de platos. %\todo{Mejor servings o portions para traducir ración}
 	\item Cost: es un campo de lectura, se calcula acutomáticamente con cada ingrediente.
 	\item Ration cost: relación entre el coste de la receta y el número de raciones.
 	\item Order: campo que sirve como etiqueta. Indica si se trata de un primer o segundo plato, un postre, etc.
@@ -92,7 +92,7 @@ Para acceder a crear receta, nos situamos en el menú lateral y pinchamos en \te
 Una vez completado podemos guardar la receta con el botón \textbf{Save recipe} o cancelar el proceso y volver a \emph{home}. Si guardamos la receta el sistema notificará de su registro en la bbdd y abrirá nuevos campos: 
 
 \begin{itemize}
-	\item Un área de texto desplegable que se utiliza para escribir las instrucciones de la receta. He utilizado la herramienta \href{http://ckeditor.com/}{ckeditor} para integrarla en la aplicación-
+	\item Un área de texto desplegable que se utiliza para escribir las instrucciones de la receta. He utilizado la herramienta CKeditor (\cite{URL:CKeditor}) para integrarla en la aplicación.
 	\item Ingredientes, que puede ser:
 		\begin{itemize}
 			\item Un \textbf{nuevo ingrediente} creador por el usuario. Campos:
@@ -115,7 +115,7 @@ Desde el listado de recetas podemos editar o eliminar según nuestras necesidade
 
 Para eliminar la receta pulsamos el botón de eliminar. El programa pedirá la confirmación para eliminarla. Una vez eliminada no se puede recuperar. Las recetas que sirven de base a otras no pueden ser eliminadas hasta que no se rompa este vínculo, para ello debemos entrar en el modo edición. \\
 
-Si pulsamos en edición, nos llevará a una nueva pantalla donde podemos editar todos los campos de la receta (excepto el nombre y los costos que se calculan automáticamente). Podemos añadir nuevos ingredientes, editar o borrar los actuales o bien borrar \emph{recetas base} (en futuras aplicaciones se recomienda poder añadir \emph{recetas bases}). Así mismo podemos editar las instrucciones de la receta. \\
+Si pulsamos en edición, nos llevará a una nueva pantalla donde podemos editar todos los campos de la receta (excepto el nombre y los costos que se calculan automáticamente). Podemos añadir nuevos ingredientes, editar o borrar los actuales o bien borrar \emph{recetas base} (en futuras aplicaciones se recomienda poder añadir \emph{recetas bases}). Así mismo podemos editar las instrucciones de la receta.
 
 \vspace*{0.2in}
 \section{Calculadora}\label{cap.2.4}
@@ -132,52 +132,34 @@ Estas opciones nos permiten crear y cargar una copia de seguridad de las recetas
 Por otro lado, está la opción de cargar la copia de seguridad. Para ello pulsamos en la opción \textbf{Import}, nos permitirá seleccionar un archivo solo válido en formato json. Una vez seleccionado pulsamos en cargar, en caso de error, la aplicación lo notificará con un mensaje, y si el archivo se ha cargado correctamente nos redirige a \emph{home} con el listado de recetas. Hay que tener en cuenta que si cargamos una copia de seguridad borrará el contenido actual de recetas para cargar ésta.
 
 \vspace*{0.2in}
-\section{Opciones}\label{cap.2.5}
+\section{Opciones}\label{cap.2.6}
 
 Las opciones se encuentran en la parte derecha de la barra superior de la aplicación. Si pulsamos nos lleva a una nueva pantalla que nos muestra el perfil del usuario. Éste se podrá editar en caso de que el usuario haya accedido mediante registro en la propia aplicación, si accedió vía redes sociales debe acceder a las mismas para editar su perfil. \\
 
 También permite la opción de darse de baja de la aplicación. Ello conlleva el borrado de todas sus recetas de la bbdd.
 
 \vspace*{0.2in}
-\section{Diseño de la base de datos}\label{cap.2.6}
+\section{Diseño de la base de datos}\label{cap.2.7}
 
-\todo{utiliza un modelo Entidad-Relacion para expresar el modelo de datos. Mejor que pantallazos de las tablas}
+%\todo{utiliza un modelo Entidad-Relacion para expresar el modelo de datos. Mejor que pantallazos de las tablas}
 
 El modelo propuesto para esta primera versión atendiendo a los requisitos de la aplicación, es el siguiente:
 \begin{itemize}
 	\item \textbf{Usuarios (User):} Se trata del modelo base y del que depende la gestión del resto. Sus campos son: \emph{username}, \emph{email}, \emph{password} y \emph{network}. Siendo \emph{username} y \emph{email} sus claves primarias. La contraseña y correo del usuario pueden ser editados siempre y cuando no se haya accedido a la aplicación vía Google+ o Facebook.
 
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=7cm]{./images/chefmanagement-model-user.png}
-		\caption{Modelo usuario} \label{fig:chefmanagement-model-user}
-	\end{figure}
-
 	\item \textbf{Recetas (Recipe):} Este modelo contiene información sobre la receta creada por un determinado usuario. Establece la relación con la clase Usuario, del que depende de uno a muchos (1:M) y con las clases ingredientes y recetas base, cuya relación es en ambos casos de 1:M. Tiene muchos campos, de los que cabe destacar: \emph{name}, nombre de la receta y clave primaria; \emph{nration}, campo requerido y que indica el número de platos, y \emph{username} que es el autor de la receta. 	Sus relaciones son: una receta puede tener varios ingredientes (clase Ingredients) o varias recetas base (clase Recipe2).
-
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=13cm]{./images/chefmanagement-model-recipe.png}
-		\caption{Modelo receta} \label{fig:chefmanagement-model-recipe}
-	\end{figure}
 
 	\item \textbf{Ingredientes (Ingredient):} Se trata de los ingredientes para cada receta. Por lo tanto depende de la clase receta con una relación de 1:M. Sus campos más importantes son su \emph{id} (clave primaria), \emph{name} que es el nombre del ingrediente y \emph{cost} que corresponde a su coste, siendo estos dos último campos requeridos.
 
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=8cm]{./images/chefmanagement-model-ingredient.png}
-		\caption{Modelo ingrediente} \label{fig:chefmanagement-model-inredient}
-	\end{figure}
-
 	\item \textbf{Recetas base (Recipe2):} Esta clase es una extensión de recipe, que sirve para identificar las recetas usadas como ingredientes en otras, esto es una receta base. Su relación con la clase receta se presenta de 1:M.
 
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=9cm]{./images/chefmanagement-model-recipe2.png}
-		\caption{Recetas base} \label{fig:chefmanagement-model-recipe2}
-	\end{figure}
-
 \end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=12cm]{./images/modelo_entidad_relacion.png}
+	\caption{Modelo entidad-relación} \label{fig:modelo-entidad-relacion}
+\end{figure}
 
 Los cambios producidos en una clase puede implicar la modificación de las clases con las que está relacionada. Por ejemplo, si se elimina un usuario, se debe eliminar sus recetas y en consecuencia los ingredientes de esa receta. El modelo propuesto se ha diseñado de tal forma que sea capaz de realizar todas las acciones del CRUD, acrónimo de \textbf{C}rear, \textbf{O}btener, \textbf{A}ctualizar y \textbf{B}orrar (Create, Read, Update and Delete) para cada clase. \\
 

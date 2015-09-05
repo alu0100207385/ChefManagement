@@ -16,8 +16,8 @@
 %\chapter{Introducción}\label{intro}
 
 \section{Objetivos}
-\label{sec:cap.1.1}
-El objetivo de este trabajo de fin de grado (en adelante, TFG) es el desarrollo de una aplicación web para la gestión del escandallo, es decir, controlar el precio de producción de una receta. Para ello usaremos Cloud Servers, concretamente Google Cloud Platform, sin embargo, por algunas de las restricciones que mostraba, las cuales se describirán más adelante, se reorientó el TFG hacia otras plataformas como servicio (SaaS). Para su desarrollo usé la metodología de software ágil basada en el desarrollo dirigido por pruebas (TDD). Como framework, Sinatra (Ruby) para desarrollar la aplicación, integrar APIs de terceros, y hacer uso de varias nubes de producción a la vez y también herramientas de soporte para el desarrollo de software como son Github y Travis, entre otras.
+\label{cap.1.1}
+El objetivo de este trabajo de fin de grado (en adelante, TFG) es el desarrollo de una aplicación web para la gestión del escandallo, es decir, controlar el precio de producción de una receta. Ésta se llamará \textbf{Chefmanagement} y para llevarlo a cabo usaremos Cloud Servers, concretamente Google Cloud Platform, sin embargo, por algunas de las restricciones que mostraba, las cuales se describirán más adelante, se reorientó el TFG hacia otras plataformas como servicio (SaaS). Para su desarrollo usé la metodología de software ágil basada en el desarrollo dirigido por pruebas (TDD). Como framework, Sinatra (Ruby) para desarrollar la aplicación, integrar APIs de terceros, y hacer uso de varias nubes de producción a la vez y también herramientas de soporte para el desarrollo de software como son Github y Travis, entre otras.
 
 \vspace*{0.2in}
 \section{Antecedentes y estado actual del tema}\label{cap.1.2}
@@ -46,14 +46,14 @@ Los antecedentes y estudio de campo no sólo se centran en el tipo de aplicació
 
 \vspace*{0.1in}
 La finalidad de esta aplicación nace de la necesidad de optimizar los gastos, tanto en negocios de restauración como en los propios hogares. Hacer la comida controlando gastos es posible. En la actualidad existen en el mercado aplicaciones con esta idea, algunas de las mas destacadas son:
-\todo{Se pueden dejar los href, pero en el texto mejor citar como bibliografía}
+%\todo{Se pueden dejar los href, pero en el texto mejor citar como bibliografía}
 \begin{itemize}
-	\item \href{https://recipecostcalculator.net/}{Recipe Cost Calculator}: Quizás sea la aplicación base como referencia, su fácil gestión y múltiples funciones la hace una herramienta útil y potente. Esta principalmente orientada a negocios.
-	\item \href{http://www.recipe-costing.com/}{Recipe Costing}: Esta aplicación va más allá de las funcinalidades básicas, presenta extras como cálculos de menús, gestión de inventario, órdenes de compra a proveedores, etc.
-	\item \href{http://developer.pearson.com/apis/pearson-kitchen-manager}{Pearson Kitchen Manager}: Se trata de una API, un banco de información que contiene más de 3000 mil recetas etiquetadas y con otra información como sus valores nutricionales.
-	\item \href{https://itunes.apple.com/es/app/recipe-costing-calculator/id646877156?mt=8}{Recipe Costing Calculator}: Es más sencilla que las anteriores pero se trata de App disponible en iTunes. Las cosas más sencillas puden ser las más útiles, hay que tener en cuenta que un cocinero/a prefiere una tablet a un ordenador en la cocina.
+	\item Recipe Cost Calculator (\cite{URL:RecipeCostCalculator}): Quizás sea la aplicación base como referencia, su fácil gestión y múltiples funciones la hace una herramienta útil y potente. Esta principalmente orientada a negocios.
+	\item Recipe Costing (\cite{URL:RecipeCosting}): Esta aplicación va más allá de las funcinalidades básicas, presenta extras como cálculos de menús, gestión de inventario, órdenes de compra a proveedores, etc.
+	\item Pearson Kitchen Manager (\cite{URL:PearsonKitchenManagerg}): Se trata de una API, un banco de información que contiene más de 3000 mil recetas etiquetadas y con otra información como sus valores nutricionales.
+	\item Recipe Costing Calculator (\cite{URL:RecipeCostingCalculator}): Es más sencilla que las anteriores pero se trata de App disponible en iTunes. Las cosas más sencillas puden ser las más útiles, hay que tener en cuenta que un cocinero/a prefiere una tablet a un ordenador en la cocina.
 \end{itemize}
-La segmentación del mercado está orientado especialmente a negocios de restauración: comedores, restaurantes, bares, pastelerías, panaderías, etc. Por otro lado, existe otro sector que no se tiene tan en cuenta debido a que no genera tantos beneficios, se trata de los hogares. Las personas también pueden hacer uso de esta herramienta pues sus necesidades son las mismas pero a menor escala. En el próximo capítulo~\ref{chapter:dos} \todo{mejor, en el capitulo \ref{chapter:dos} ...}, se describe toda la funcionalidad de la aplicación, al igual que nos enseña como usarla y veremos las diferencias en la aplicación en función de a qué mercado está dirigido.\\
+La segmentación del mercado está orientado especialmente a negocios de restauración: comedores, restaurantes, bares, pastelerías, panaderías, etc. Por otro lado, existe otro sector que no se tiene tan en cuenta debido a que no genera tantos beneficios, se trata de los hogares. Las personas también pueden hacer uso de esta herramienta pues sus necesidades son las mismas pero a menor escala. En el capítulo \ref{chapter:dos}, se describe toda la funcionalidad de la aplicación, al igual que nos enseña como usarla y veremos las diferencias en la aplicación en función de a qué mercado está dirigido.\\
 
 Por último, hay que tener en cuenta el soporte para la aplicación. Aprovechando la infraestructura y poder de Internet, la mejor opción es crear una aplicación web, que aunque en esta primera versión se diseñará de forma adaptativa, la idea es poder utilizarla en el futuro en dispositivos móviles y tablets. Además, se ha tenido en cuenta los aspectos de usabilidad durante su diseño.
 
@@ -63,14 +63,14 @@ Por último, hay que tener en cuenta el soporte para la aplicación. Aprovechand
 \end{LARGE}
 
 \vspace*{0.1in}
-Inicialmente la idea es trabajar en la \href{https://cloud.google.com/appengine/docs}{nube de Google}. Se trata de una plataforma como servicio (PaaS), la cual permite crear y mantener de forma sencilla una aplicación en la infraestructura de Google. Además permite una fácil escalabilidad de transeferencia de datos y almacenamiento gracias a sus módulos.\\
+Inicialmente la idea es trabajar en la nube de Google (\cite{URL:GAEdoc}). Se trata de una plataforma como servicio (PaaS), la cual permite crear y mantener de forma sencilla una aplicación en la infraestructura de Google. Además permite una fácil escalabilidad de transeferencia de datos y almacenamiento gracias a sus módulos.\\
 
 Empleando los conocimientos adquiridos durante los últimos cursos en Ruby y sus variedad de frameworks (Ruby on Rails, Padrino, Sinatra) lo usaré para crear la aplicación. Tras investigar y ver los servicios que ofrece Google App Engine (GAE) parece viable la puesta en marcha de la aplicación. GAE soporta cuatro lenguajes y sus correspondientes frameworks:
 \begin{itemize}
-	\item \href{https://cloud.google.com/appengine/docs/python/gettingstartedpython27/introduction}{Python} con webapp2 y Jinja2.
-	\item \href{https://cloud.google.com/appengine/docs/java/gettingstarted/introduction}{Java} con maven.
-	\item \href{https://cloud.google.com/appengine/docs/php/gettingstarted/introduction}{PHP} con Cloud SQL.
-	\item \href{https://cloud.google.com/appengine/docs/go/gettingstarted/introduction}{Go} con el paquete html/plantilla. 
+	\item Python (\cite{URL:GAE_Python}) con webapp2 y Jinja2.
+	\item Java (\cite{URL:GAE_Java}) con maven.
+	\item PHP (\cite{URL:GAE_PHP}) con Cloud SQL.
+	\item Go (\cite{URL:GAE_Go}) con el paquete html/plantilla. 
 \end{itemize}
 
 \begin{figure}[H]
@@ -79,15 +79,13 @@ Empleando los conocimientos adquiridos durante los últimos cursos en Ruby y sus
 		\caption{Lenguajes soportados en GAE} \label{fig:lenguajes-GAE}
 \end{figure}
 
-Sin embargo, también es posible hacerlo funcionar en Ruby con la ayuda de java, juntos forman \href{http://jruby.org/}{JRuby}, el cual es una implementación 100\% del lenguaje Ruby. Además funciona como lenguaje embebido dentro de la máquina virtual de Java. Gracias a esta capa, podré programar en Ruby y Jruby establecerá una capa intermedia entre el código fuente en Ruby y el servidor en java. Para interactuar con la aplicación en la nube provee de una herramienta o kit, en este caso se trata de una gema llamada \href{https://rubygems.org/gems/google-appengine}{google-appengine}, sin embargo, la gema
-dedicada a tal fin esta desfasada y el proyecto ha sido \href{https://code.google.com/p/appengine-jruby/}{archivado}.\\
-\todo{Enlaces como citas en la bibliografía}
+Sin embargo, también es posible hacerlo funcionar en Ruby con la ayuda de java, juntos forman JRuby (\cite{URL:JRuby}), el cual es una implementación 100\% del lenguaje Ruby. Además funciona como lenguaje embebido dentro de la máquina virtual de Java. Gracias a esta capa, podré programar en Ruby y Jruby establecerá una capa intermedia entre el código fuente en Ruby y el servidor en java. Para interactuar con la aplicación en la nube provee de una herramienta o kit, en este caso se trata de una gema llamada google-appengine (\cite{URL:GAE_gem}), sin embargo, la gema
+dedicada a tal fin esta desfasada y el proyecto ha sido archivado (\cite{URL:GAE_JRuby}).\\
+%\todo{Enlaces como citas en la bibliografía}
 
-Tras la incompatibilidad del proyecto de JRuby en GAE busco la opción más parecida posible que me ofrezca soporte, en este caso Google Cloud Platform. Tras investigar encuentro multitud de \href{https://cloud.google.com/launcher/explore}{lenguajes compatibles}, entre ellos Ruby, sin embargo, los servicios de esta nube son de pago y aunque existe una versión demo durante 60 días. Debido al tiempo que emplearía en el estudio, desarrollo y pruebas, este período puede resultar corto. Me pongo en contacto con el servicio de clientes y soporte de Google para bajar otras opciones, pero no ofrecen nada que me sea viable para desarrollar mi proyecto.\\
+Tras la incompatibilidad del proyecto de JRuby en GAE busco la opción más parecida posible que me ofrezca soporte, en este caso Google Cloud Platform. Tras investigar encuentro multitud de lenguajes compatibles (\cite{URL:Lenguajes_GoogleCloud}), entre ellos Ruby, sin embargo, los servicios de esta nube son de pago y aunque existe una versión demo durante 60 días. Debido al tiempo que emplearía en el estudio, desarrollo y pruebas, este período puede resultar corto. Me pongo en contacto con el servicio de clientes y soporte de Google para bajar otras opciones, pero no ofrecen nada que me sea viable para desarrollar mi proyecto.\\
 
 De esta forma se modifica el requisito inicial del TFG de usar los servicios de la nube de Google para encontrar y usar otros entornos de producción. La idea es intentar usar más de uno, demostrando la modularidad de la aplicación, esto significa que el código fuente de la aplicación debe ser único para las distintas nubes de producción. El siguiente paso es investigar las nubes que se ofertan. La siguiente tabla muestra un resumen:
-
-\todo{los enlaces de lenguajes en la tabla, mejor específica que lenguajes son. Si te sale una tabla muy grande, resumelos}
 
 \begin{table}[H]
 	\centering
@@ -95,29 +93,29 @@ De esta forma se modifica el requisito inicial del TFG de usar los servicios de 
 	\hline
 	\textbf{Nube} & \textbf{Comentario} \\
 	\hline \hline
-	\href{https://cloud.google.com/free-trial/?hl=es&_ga=1.261030148.846668794.1427305506}{Google} & De pago. Prueba gratuita de 60 días. Multitud de servicios, distintos tipos de bbdd y soporta muchos \href{https://cloud.google.com/launcher/?hl=es}{lenguajes} y frameworks. \\
+	Google Cloud (\cite{URL:GoogleCloudPlatform}) & De pago. Prueba gratuita de 60 días. Multitud de servicios, distintos tipos de bbdd y soporta muchos lenguajes (Ruby, NodeJs o JRuby), frameworks (Django o ASP.NET) y CMS (WordPress o Drupal). \\
 	\hline
-	\cite{URL:Azure} & De pago. Prueba de 30 días. Soporta varios \href{https://tryappservice.azure.com/}{lenguajes}. \\
+	Azure (\cite{URL:Azure}) & De pago. Prueba de 30 días. Soporta varios lenguajes: C\#, Go, Java, NodeJs, PHP y Python. \\
 	\hline
-	\href{https://c9.io/}{cloud9} & Se trata de un entorno de trabajo, una nube orientada al desarrollo, no es lo que buscamos. \\
+	Cloud9 (\cite{URL:Cloud9}) & Se trata de un entorno de trabajo, una nube orientada al desarrollo, no es lo que buscamos. \\
 	\hline
-	\href{https://www.nitrous.io/}{nitrous} & Es similar a la anterior. Orientada al trabajo colaborativo en entornos de desarrollo. \\
+	Nitrous (\cite{URL:Nitrous}) & Es similar a la anterior. Orientada al trabajo colaborativo en entornos de desarrollo. \\
 	\hline
-	\href{https://www.dotcloud.com/}{dotCloud} & Esta es una propuesta válida. Se trata de una nube de producción con servicios de pago y versión básica gratuita. Soporta varios \href{https://www.dotcloud.com/dev-center/guides}{lenguajes}. El uso de módulos como bbdd o rendimiento del servidor son de pago. \\
+	DotCloud (\cite{URL:DotCloud}) & Esta es una propuesta válida. Se trata de una nube de producción con servicios de pago y versión básica gratuita. Soporta varios lenguajes (Java, NodeJs, PHP, Ruby y Python). El uso de módulos como bbdd o rendimiento del servidor son de pago. \\
 	\hline
-	\href{https://www.heroku.com/}{Heroku} & Ideal para experimentar con aplicaciones en la nube en un módulo limitada. Su uso es ilimitado, pero tiene algunas \href{https://www.heroku.com/pricing}{condiciones}. Soporta varios \href{https://devcenter.heroku.com/categories/language-support}{lenguajes} y frameworks. \\
+	Heroku (\cite{URL:Heroku}) & Ideal para experimentar con aplicaciones en la nube en un módulo limitada. Su uso es ilimitado, pero tiene algunas \href{https://www.heroku.com/pricing}{condiciones}. Soporta varios lenguajes (Ruby, Java, NodeJs, Python, Clojure, Scala y Go) y frameworks (Ruby on Rails, Django). \\
 	\hline
-	\href{https://www.openshift.com/}{OpenShift} & Es una alternativa muy interesante. Existe la opción de uso gratuito de hasta 3 aplicaciones. Soporta varios \href{https://www.openshift.com/promotions/try-openshift?sc_cid=70160000000UJArAAO&gclid=CMqo54DUy8cCFSMcwwodxLoGGQ}{lenguajes} y distintas versiones del mismo, así como 3 tipos de bbdd (PostgreSQL, MySQL y MongoDB) y los cartuchos (módulos) que añadamos son de pago. Podemos crear y subir nuestros propios cartuchos. \\
+	OpenShift (\cite{URL:OpenShift}) & Es una alternativa muy interesante. Existe la opción de uso gratuito de hasta 3 aplicaciones. Soporta varios lenguajes (Java, PHP, NodeJs, Python, Ruby, Perl, Ceylon) y distintas versiones del mismo, así como 3 tipos de bbdd (PostgreSQL, MySQL y MongoDB) y los cartuchos (módulos) que añadamos son de pago. Podemos crear y subir nuestros propios cartuchos. \\
 	\hline
-	\href{https://www.appfog.com/}{appfog} & De pago con versión de prueba de 30 días. Soporta varios \href{https://www.ctl.io/appfog/}{lenguajes}. El enfoque de esta PaaS es facilitar el trabajo al equipo de desarrollo y que solo se centre en la aplicación y en los datos, mientras la nube gestionaría el resto. \\
+	Appfog (\cite{URL:Appfog}) & De pago con versión de prueba de 30 días. Soporta varios lenguajes: Go, Java, NodeJs, PHP, Python y Ruby. El enfoque de esta PaaS es facilitar el trabajo al equipo de desarrollo y que solo se centre en la aplicación y en los datos, mientras la nube gestionaría el resto. \\
 	\hline
-	\href{https://aws.amazon.com/es/?nc2=h_lg}{Amazon} & Presenta una gran infraestructura de servicios y recursos. Es de pago pero tiene una versión de prueba de 12 meses. Soporta varios lenguajes y dispone de multitud de productos orientados a distintos tipos de mercado. \\
+	Amazon (\cite{URL:Amazon}) & Presenta una gran infraestructura de servicios y recursos. Es de pago pero tiene una versión de prueba de 12 meses. Soporta varios lenguajes y dispone de multitud de productos orientados a distintos tipos de mercado. \\
 	\hline
-	\href{https://www.digitalocean.com/}{DigitalOcean} & Es de pago. Provee de infraestructura remota para que el desarrollador pueda lenvantor el tipo de servidor que desee. Soporta varios \href{https://www.digitalocean.com/community/}{lenguajes} y frameworks. \\
+	DigitalOcean (\cite{URL:DigitalOcean}) & Es de pago. Provee de infraestructura remota para que el desarrollador pueda lenvantor el tipo de servidor que desee. Soporta varios lenguajes (Java, Perl, PHP, Python y Ruby) y frameworks. \\
 	\hline
-	\href{http://www.cloud66.com/}{Cloud66} & Es de pago pero tiene un perídodo de 14 días de prueba. Esta orientada a mejora las aplicaciones que ya tenemos en otras nubes, en cuanto aspectos de crecimiento y seguridad. \\
+	Cloud66 (\cite{URL:Cloud66}) & Es de pago pero tiene un perídodo de 14 días de prueba. Esta orientada a mejora las aplicaciones que ya tenemos en otras nubes, en cuanto aspectos de crecimiento y seguridad. \\
 	\hline
-	\href{http://www.1and1.es/}{1 and 1} & Es de pago. Soporta diferentes lenguajes, frameworks y CMS. \\
+	1 and 1 (\cite{URL:1_and_1}) & Es de pago. Soporta diferentes lenguajes, frameworks y CMS. \\
 	\hline
 	\end{tabular}
 	\caption{Production Clouds}
@@ -131,9 +129,7 @@ Una vez analizadas se propone como entornos de producción las nubes Heroku y Op
 \vspace*{0.2in}
 \section{Metodología de trabajo}\label{cap.1.3}
 
-Durante la investigación y desarrollo de este proyecto se ha apostado por las metodologías ágiles, si bien no ha sido en un grupo de trabajo, se puede aplicar en lo que se refiere al análisis, al desarrollo y diseño de la aplicación y a las reuniones con el \emph{cliente}, cuyo rol lo asume el tutor junto con el de \emph{jefe de proyecto}. \\
-\todo{puedes comentar aquí las dos entrevistas que tuvistes y ponerlos con el rol cliente}
-
+Durante la investigación y desarrollo de este proyecto se ha apostado por las metodologías ágiles, si bien no ha sido en un grupo de trabajo, se puede aplicar en lo que se refiere al análisis, al desarrollo y diseño de la aplicación y a las reuniones con el \emph{cliente}, cuyo rol lo asume el tutor junto con el de \emph{jefe de proyecto}. Además me entrevisté con dos negocios de restauración y un proveedor con el fin de establecer requisitos, los cuales pueden ser considerados también \emph{clientes}. \\
 
 Estos métodos están basados en el desarrollo iterativo e incremental, donde los requisitos y soluciones evolucionan mediante la colaboración de grupos. La idea es minimizar riesgos desarrollando software en períodos cortos. Este período se llama \textbf{iteración} cuya duración se define en función de los requisitos del proyecto, especialmente recursos de tiempo y humano. \\
 
@@ -157,8 +153,6 @@ Cada iteración del ciclo de vida incluye:
 Durante este proyecto se ha seguido dicho ciclo de vida con especial importacia. He intentado adaptar la metodología Scrum a este trabajo, aunque no se ha tenido en cuenta  el aspecto de los roles. En Scrum se realizan entregas parciales y regulares del producto final. Scrum está especialmente indicado para proyectos en entornos complejos, donde se necesita obtener resultados pronto, donde los requisitos son cambiantes o poco definidos, donde la innovación, la competitividad, la flexibilidad y la productividad son fundamentales. \\
 
 Cabe destacar dada la utilización del framework de Sintra, el uso inherente del modelo-vista-controlador (MVC) durante la etapa de diseño, desarrollo y pruebas. Se describirá detalladamente en el capítulo~\ref{chapter:cuatro} así como su uso para crear Chefmanagement.
-
-\todo{Es la primera vez que leo el nombre de la aplicación en el texto de la intruducción. Deberías nombrarlo antes, en el primer parrafo de la intro por ejemplo}
 
 %\end{document}
 

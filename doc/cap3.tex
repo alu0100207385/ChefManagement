@@ -24,7 +24,7 @@ Para esta aplicación, trabajaremos con el modelo PaaS. Normalmente, para intera
 \vspace*{0.2in}
 \section{Heroku}\label{cap.3.2}
 
-Se trata de una plataforma de aplicaciones cloud que permite construir y desplegar aplicaciones web. Soporta distintos lenguajes y frameworks. Para poder usar esta plataforma lo primero es registrarse y acceder a la misma. Desde la pantallas de \emph{dashboard} podremos gestionar las aplicaciones o bien mediante los comandos de su herramienta (\href{https://devcenter.heroku.com/start}{\emph{Heroku Toolbelt}}). Existen tres formas de configurar nuestra aplicación en Heroku.
+Se trata de una plataforma de aplicaciones cloud que permite construir y desplegar aplicaciones web. Soporta distintos lenguajes y frameworks. Para poder usar esta plataforma lo primero es registrarse y acceder a la misma. Desde la pantallas de \emph{dashboard} podremos gestionar las aplicaciones o bien mediante los comandos de su herramienta \emph{Heroku Toolbelt} (\cite{URL:HerokuToolbelt}). Existen tres formas de configurar nuestra aplicación en Heroku.
 \begin{itemize}
 	\item El \textbf{dashboard}: Desde esta pantalla seleccionamos la app deseada y encontramos un menu con una serie de opciones que nos permiten gestionar la aplicación en la nube: añadir add-ons, activar \emph{dynos}, seleccionar repositorio, información como métricas y actividad del servidor, permiso de acceso a la app y la configuración propia de la app (variables, dominio, etc.).
 	\item Mediante \textbf{Heroku Toolbelt}: Este comando (\$ heroku COMMAND) tiene múltiples opciones que permiten interactuar con la consola desde consola. Subir app, configurar la bbdd y variables, comprobar logs del servidor, etc. En resumen, las opciones que nos proporciona el \emph{dashboard} en el navegador, pero desde consola. Ejecute \$ heroku -h para acceder a la ayuda y opciones.
@@ -37,7 +37,7 @@ Para integrar la base de datos en producción podemos hacerlo de dos formas:
 	\item O bien, desde el \emph{Dashboard} $\rightarrow$ Settings $\rightarrow$ Config Variables.
 \end{itemize}
 
-Para visualizar la configuración general usaremos el comando \$ heroku config. Con esta varible ya podemos crear el adaptador para la aplicación. En este proyecto se trabaja con \href{http://datamapper.org/}{DataMapper} para el manejo y creación de la bbdd. De forma general, su configuración es: \\
+Para visualizar la configuración general usaremos el comando \$ heroku config. Con esta varible ya podemos crear el adaptador para la aplicación. En este proyecto se trabaja con DataMapper (\cite{URL:DataMapper}) para el manejo y creación de la bbdd. De forma general, su configuración es: \\
 
 \begin{figure}[H]
 	\centering
@@ -67,13 +67,13 @@ Debido a que en OpenShift no puede modificarse el nombre de las variables, la re
 \section{OpenShift}\label{cap.3.3}
 Es otra PaaS similar a la anterior montada en Linux Red Hat. Permite desarrollar rápidamente, hosting y la escalabilidad de aplicaciones en entornos de la nube. Al contrario que Heroku, en la versión \emph{free} permite crear hasta tres aplicaciones (y la primera cinco), sin embargo, aunque Heroku solo permite postgresql en esta versión, OpenShift permite escoger entre MongoDB, MySQL y PostgreSQL. Para \textbf{ChefManagement}, hemos tenido que adaptarnos al cuello de botella de Heroku en cuanto bbdd y trabajaremos con postgres en ambas plataformas. \\
 
-Aunque OpenShift no dispone de tantas opciones de configuración en su \emph{dashboard} si que permite añadir \emph{cartridges} inclusos creados por nosotros mismos. Por ejemplo, un \href{https://github.com/openshift-cartridges/jruby-cartridge}{cartucho} para hacer funcionar Jruby en OpenShift. \\
+Aunque OpenShift no dispone de tantas opciones de configuración en su \emph{dashboard} si que permite añadir \emph{cartridges} inclusos creados por nosotros mismos. Por ejemplo, un cartucho (\cite{URL:Cartucho_JRuby}) para hacer funcionar Jruby en OpenShift. \\
 
-En cuanto a la \href{https://developers.openshift.com/en/managing-client-tools.html}{herramienta del cliente} permite la gestión con la nube de igual forma que con la herramienta de Heroku. Sin embargo, en esta nube, no se puede añadir ni modificar variables. La nube almacena la configuración por defecto en caso de que la proporcionada no sea válida. En todo caso habría que usar su herramienta o archivos de configuración. \\
+En cuanto a la herramienta del cliente (\cite{URL:OpenshiftTool}) permite la gestión con la nube de igual forma que con la herramienta de Heroku. Sin embargo, en esta nube, no se puede añadir ni modificar variables. La nube almacena la configuración por defecto en caso de que la proporcionada no sea válida. En todo caso habría que usar su herramienta o archivos de configuración. \\
 
-Los archivos de configuración son muy útles si no queremos usar las variables por defecto que proporciona la nube. Hay dos formas de editar estos archivos, mediante la herramienta cliente o bien editando manualmente estos \href{https://blog.openshift.com/netsource-partners-shows-the-benefits-of-custom-environment-variables-on-openshift/}{archivos de configuración}. \\
+Los archivos de configuración son muy útles si no queremos usar las variables por defecto que proporciona la nube. Hay dos formas de editar estos archivos, mediante la herramienta cliente o bien editando manualmente estos archivos de configuración (\cite{URL:Openshift_configuracion_archivos}). \\
 
-Para configurar el adaptador de la base de datos en OpenShift podemos \href{https://developers.openshift.com/en/managing-environment-variables.html}{crear la variable} de la siguiente forma:
+Para configurar el adaptador de la base de datos en OpenShift podemos crear la variable (\cite{URL:Openshift_vars}) de la siguiente forma:
 \begin{center}
 	\$ rhc env set VARIABLE=VALUE --a App\_Name
 \end{center}

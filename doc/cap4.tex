@@ -22,10 +22,10 @@ Hay que tener en cuenta, que debido a las circunstancias de este proyecto (no ha
 
 Una de las ventajas más importantes del uso de esta metodología es que volver atrás o realizar cambios en la aplicación, conlleva consecuencias gracias a las iteraciones cortas. \\
 
-\todo{Titulo: "Estructura de la applicación", no uses diminutivos ni anglicismos en titulos}
+
 \vspace*{0.2in}
-\section{Estructura de la app}\label{cap.4.2}
-La aplicación ha sido diseñada y desarrollada de acuerdo con el framework de \href{http://www.sinatrarb.com/}{Sinatra} cuya arquitectura software se base en el MVC. Por un lado define componentes para la representación de la información, y por otro la interacción del usuario. La filosofía de este modelo es la reutilización de código y la separación de conceptos, características que buscan facilitar la tarea de desarrollo de aplicaciones y su posterior mantenimiento. \\
+\section{Estructura de la aplicación}\label{cap.4.2}
+La aplicación ha sido diseñada y desarrollada de acuerdo con el framework de Sinatra (\cite{URL:Sinatra}) cuya arquitectura software se base en el MVC. Por un lado define componentes para la representación de la información, y por otro la interacción del usuario. La filosofía de este modelo es la reutilización de código y la separación de conceptos, características que buscan facilitar la tarea de desarrollo de aplicaciones y su posterior mantenimiento. \\
 
 \begin{figure}[H]
 	\centering
@@ -41,7 +41,7 @@ Durante la etapa de análisis y estudio de campo se empezó diseñando en Ruby o
 	\caption{ActiveRecord 4.2 no está soportado completamente por JRuby} \label{fig:AvtiveRecord-no-supported}
 \end{figure}
 
-La idea de la compatibilidad con JRuby se considera importante para este proyecto no solo para ampliar el soporte de la aplicación, también en futuros módulos como el desarrollo en plataformas móviles o tablets con \href{http://ruboto.org/}{Ruboto}, cuyas apps pueden ser desarrolladas usando JRuby, MRI o Rubinius. \\
+La idea de la compatibilidad con JRuby se considera importante para este proyecto no solo para ampliar el soporte de la aplicación, también en futuros módulos como el desarrollo en plataformas móviles o tablets con Ruboto (\cite{URL:Ruboto}), cuyas apps pueden ser desarrolladas usando JRuby, MRI o Rubinius. \\
 
 Por esta razón, y la libertad en diseño de la aplicación que proporciona Sinatra frente a Rails, así como su sencilla puesta en marcha, se optó finalmente por este framwork para el desarrollo de Chefmanagament. La estructura que se diseñó es la siguiente (también puede verse en \cite{URL:GitHub}):
 
@@ -50,9 +50,9 @@ Por esta razón, y la libertad en diseño de la aplicación que proporciona Sina
 		\begin{itemize}
 			\item config.yml: contiene los tokens e identificadores para las distintas APIs y correo usado por la aplicación.
 			\item controllers: gestiona la aplicación en función de las peticiones del usuario e interactúa con el modelo y las vistas (salida al usuario).
-			\item helpers: son funciones auxiliares definidas específicamente para esta aplicación. Cabe destacar el uso de la gema \href{https://github.com/mikel/mail}{Mail} para la gestión de acceso, registro y notificaciones de la aplicación.
+			\item helpers: son funciones auxiliares definidas específicamente para esta aplicación. Cabe destacar el uso de la gema Mail (\cite{URL:Gema_mail}) para la gestión de acceso, registro y notificaciones de la aplicación.
 			\item models: diseño de la base de datos. Más información en la sección~\ref{cap.2.6}
-			\item tests: la definición y declaración de las pruebas. Además de comprobar las funciones y métodos creados, se ha utilizado la herramienta \href{http://www.seleniumhq.org/}{Selenium} para interactuar con la propia aplicación y pornerla a prueba. Puede ver los resultados en \href{https://travis-ci.org/alu0100207385/ChefManagement?branch=testing}{Travis}.
+			\item tests: la definición y declaración de las pruebas. Además de comprobar las funciones y métodos creados, se ha utilizado la herramienta Selenium (\cite{URL:Selenium}) para interactuar con la propia aplicación y pornerla a prueba. Puede ver los resultados en \href{https://travis-ci.org/alu0100207385/ChefManagement?branch=testing}{Travis}.
 			\item views: su función es interactuar con el usuario, es el resultado de las acciones del usuario con la aplicación, en un formato que éste pueda entener, como páginas webs.
 		\end{itemize}
 	\item \textbf{public}:
