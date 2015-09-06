@@ -9,6 +9,7 @@ Make your own recipes. Manage your recipe list and you can calculate production 
 # Link to app
 
 [Heroku](http://chefmanagement.herokuapp.com/)
+[OpenShift](http://chefmanagement-esit.rhcloud.com/)
 
 # Tests
 
@@ -28,6 +29,7 @@ rake r        		# Run the server via rackup
 rake repo			# Open repository
 rake s        		# Run the server via Sinatra
 rake sinatra  		# Run the server via Sinatra
+rake spec         	# Run tests with rspec
 rake tests[nav]    	# Run tests: rake test[navigator] || navigator is an optional argument = [firefox(default)|chrome]
 ```
 

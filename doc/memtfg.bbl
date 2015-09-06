@@ -1,0 +1,112 @@
+\begin{thebibliography}{10}
+
+\bibitem{URL:1_and_1}
+{1 and 1 (cloud)}.
+\newblock \url{http://www.1and1.es/}.
+
+\bibitem{URL:Amazon}
+{Amazon (cloud)}.
+\newblock \url{https://aws.amazon.com/es/?nc2=h_lg}.
+
+\bibitem{URL:Appfog}
+{Appfog (cloud)}.
+\newblock \url{https://www.appfog.com/}.
+
+\bibitem{URL:Azure}
+{Azure (cloud)}.
+\newblock \url{http://azure.microsoft.com/en-us/}.
+
+\bibitem{URL:Cloud66}
+{Cloud66 (cloud)}.
+\newblock \url{http://www.cloud66.com/}.
+
+\bibitem{URL:Cloud9}
+{Cloud9 (cloud)}.
+\newblock \url{https://c9.io/}.
+
+\bibitem{URL:DigitalOcean}
+{DigitalOcean}.
+\newblock \url{https://www.digitalocean.com/community/}.
+
+\bibitem{URL:GAEdoc}
+{Documentación GAE}.
+\newblock \url{https://cloud.google.com/appengine/docs}.
+
+\bibitem{URL:DotCloud}
+{dotCloud (cloud)}.
+\newblock \url{https://www.dotcloud.com/}.
+
+\bibitem{URL:GAE_gem}
+{Gema GAE}.
+\newblock \url{https://rubygems.org/gems/google-appengine}.
+
+\bibitem{URL:GitHub}
+{GitHub (Repositorio)}.
+\newblock \url{https://github.com/alu0100207385/ChefManagement}.
+
+\bibitem{URL:GAE_Go}
+{Go en GAE}.
+\newblock
+  \url{https://cloud.google.com/appengine/docs/go/gettingstarted/introduction}.
+
+\bibitem{URL:Heroku}
+{Heroku (cloud)}.
+\newblock \url{https://www.heroku.com/}.
+
+\bibitem{URL:GAE_Java}
+{Java en GAE}.
+\newblock
+  \url{https://cloud.google.com/appengine/docs/java/gettingstarted/introduction}.
+
+\bibitem{URL:JRuby}
+{JRuby}.
+\newblock \url{http://jruby.org/}.
+
+\bibitem{URL:GAE_JRuby}
+{JRuby GAE}.
+\newblock \url{https://code.google.com/p/appengine-jruby/}.
+
+\bibitem{URL:Lenguajes_GoogleCloud}
+{Lenguajes Google Cloud}.
+\newblock \url{https://cloud.google.com/launcher/explore}.
+
+\bibitem{URL:Nitrous}
+{Nitrous (cloud)}.
+\newblock \url{https://www.nitrous.io/}.
+
+\bibitem{URL:OpenShift}
+{OpenShift (cloud)}.
+\newblock \url{https://www.openshift.com/‎}.
+
+\bibitem{URL:PearsonKitchenManagerg}
+{Pearson Kitchen Manager}.
+\newblock \url{http://developer.pearson.com/apis/pearson-kitchen-manager}.
+
+\bibitem{URL:GAE_PHP}
+{PHP en GAE}.
+\newblock
+  \url{https://cloud.google.com/appengine/docs/php/gettingstarted/introduction}.
+
+\bibitem{URL:GAE_Python}
+{Python en GAE}.
+\newblock
+  \url{https://cloud.google.com/appengine/docs/python/gettingstartedpython27/introduction}.
+
+\bibitem{URL:RecipeCostCalculator}
+{Recipe Cost Calculator}.
+\newblock \url{https://recipecostcalculator.net/}.
+
+\bibitem{URL:RecipeCosting}
+{Recipe Costing}.
+\newblock \url{http://www.recipe-costing.com/}.
+
+\bibitem{URL:RecipeCostingCalculator}
+{Recipe Costing Calculator}.
+\newblock
+  \url{https://itunes.apple.com/es/app/recipe-costing-calculator/id646877156?mt=8}.
+
+\bibitem{URL:Rails}
+{Ruby on Rails framework (Ruby)}.
+\newblock \url{http://rubyonrails.org/}.
+
+\end{thebibliography}

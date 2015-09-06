@@ -1,0 +1,21 @@
+\select@language {spanish}
+\select@language {spanish}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Lenguajes soportados en GAE}}{9}{figure.1.1}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Esquema de metodolog\IeC {\'\i }a \IeC {\'a}gil}}{11}{figure.1.2}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Acceso a la aplicaci\IeC {\'o}n}}{14}{figure.2.1}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Recuperar contrase\IeC {\~n}a}}{15}{figure.2.2}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Registro}}{15}{figure.2.3}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Modelo entidad-relaci\IeC {\'o}n}}{19}{figure.2.4}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Modelos de nubes}}{22}{figure.3.1}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Configuraci\IeC {\'o}n de la BBDD con DataMapper}}{23}{figure.3.2}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Configuraci\IeC {\'o}n de la BBDD para Chefmanagement}}{23}{figure.3.3}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Modelo-Vista-Controlador}}{26}{figure.4.1}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces ActiveRecord 4.2 no est\IeC {\'a} soportado completamente por JRuby}}{27}{figure.4.2}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

@@ -1,0 +1,74 @@
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: memtfg.aux
+The style file: plain.bst
+Database file #1: memtfg.bib
+Warning--I didn't find a database entry for "URL:GoogleCloud_FreeTrial"
+Warning--to sort, need author or key in URL:RecipeCostCalculator
+Warning--to sort, need author or key in URL:RecipeCosting
+Warning--to sort, need author or key in URL:PearsonKitchenManagerg
+Warning--to sort, need author or key in URL:RecipeCostingCalculator
+Warning--to sort, need author or key in URL:GAEdoc
+Warning--to sort, need author or key in URL:GAE_Python
+Warning--to sort, need author or key in URL:GAE_Java
+Warning--to sort, need author or key in URL:GAE_PHP
+Warning--to sort, need author or key in URL:GAE_Go
+Warning--to sort, need author or key in URL:JRuby
+Warning--to sort, need author or key in URL:GAE_gem
+Warning--to sort, need author or key in URL:GAE_JRuby
+Warning--to sort, need author or key in URL:Lenguajes_GoogleCloud
+Warning--to sort, need author or key in URL:Azure
+Warning--to sort, need author or key in URL:Cloud9
+Warning--to sort, need author or key in URL:Nitrous
+Warning--to sort, need author or key in URL:DotCloud
+Warning--to sort, need author or key in URL:Heroku
+Warning--to sort, need author or key in URL:OpenShift
+Warning--to sort, need author or key in URL:Appfog
+Warning--to sort, need author or key in URL:Amazon
+Warning--to sort, need author or key in URL:DigitalOcean
+Warning--to sort, need author or key in URL:Cloud66
+Warning--to sort, need author or key in URL:1_and_1
+Warning--to sort, need author or key in URL:Rails
+Warning--to sort, need author or key in URL:GitHub
+You've used 26 entries,
+            2118 wiz_defined-function locations,
+            602 strings with 6370 characters,
+and the built_in function-call counts, 4104 in all, are:
+= -- 364
+> -- 26
+< -- 0
++ -- 26
+- -- 0
+* -- 132
+:= -- 427
+add.period$ -- 52
+call.type$ -- 26
+change.case$ -- 78
+chr.to.int$ -- 0
+cite$ -- 52
+duplicate$ -- 182
+empty$ -- 599
+format.name$ -- 0
+if$ -- 1015
+int.to.chr$ -- 0
+int.to.str$ -- 26
+missing$ -- 0
+newline$ -- 107
+num.names$ -- 0
+pop$ -- 286
+preamble$ -- 1
+purify$ -- 52
+quote$ -- 0
+skip$ -- 155
+stack$ -- 0
+substring$ -- 130
+swap$ -- 26
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 104
+warning$ -- 26
+while$ -- 0
+width$ -- 28
+write$ -- 184
+(There were 27 warnings)

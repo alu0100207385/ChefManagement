@@ -43,4 +43,7 @@ group :test do
   gem 'test-unit'
   gem 'selenium-webdriver', '~> 2.46.2'
   gem 'chromedriver-helper'
+  gem 'rspec'
+  gem 'rspec-expectations'
+  gem 'coveralls', require: false
 end
