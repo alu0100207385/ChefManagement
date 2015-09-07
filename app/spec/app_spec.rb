@@ -34,12 +34,21 @@ describe "Test App: Check routes" do
 		assert last_response.body.include? 'Create a new account'
 	end
 
-	it "Acces to home" do
+	it "Check login" do
 		user = User.first_or_create(:username => "test", :email => "email@mail.com", :password => "1234")
 		post '/login',:name => user.username, :password => user.password
 		assert last_response.ok?
 		assert_equal "{\"control\":1}", last_response.body
 		user.destroy
+	end
+
+	it "Check Log out" do
+		user = User.first_or_create(:username => "test", :email => "email@mail.com", :password => "1234")
+		post 'http://localhost:4567/login',:name => user.username, :password => user.password
+		assert last_response.ok?
+		get 'http://localhost:4567/logout'
+		user.destroy
+		assert_equal "http://localhost:4567/logout", last_request.url.to_s
 	end
 
 end
