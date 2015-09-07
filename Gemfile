@@ -33,8 +33,9 @@ group :production do
     gem 'do_jdbc'
     gem 'jruby-pgp'
   end
-=end
 end
+=end
+
 
 group :test do
   gem 'rack-test'
