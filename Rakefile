@@ -32,6 +32,6 @@ end
 
 desc "Run tests with rspec"
 task :spec do
-  sh "rspec -I. spec/app_spec.rb"
-  sh "rspec -I. spec/helper_spec.rb"
+  sh "rspec -I. app/spec/app_spec.rb"
+  sh "rspec -I. app/spec/helper_spec.rb"
 end

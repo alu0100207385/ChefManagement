@@ -9,7 +9,7 @@ require 'rack/test'
 require 'rubygems'
 require 'rspec'
 require 'test/unit'
-require_relative "./../app/helpers/helpers.rb"
+require_relative "./../helpers/helpers.rb"
 
 include Rack::Test::Methods
 include Test::Unit::Assertions

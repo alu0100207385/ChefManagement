@@ -10,7 +10,7 @@ gem 'omniauth-facebook'
 gem 'json'
 gem 'thin', :platforms => :ruby
 
-group :development do
+group :development, :test do
   gem 'dm-sqlite-adapter'
   gem 'sinatra-contrib'
   gem 'sqlite3', :platforms => :ruby
@@ -22,12 +22,12 @@ group :development do
   end
 =end
 end
-
+=begin
 group :production do
   gem 'pg'
   gem 'do_postgres'
   gem 'dm-postgres-adapter'
-=begin
+
   platform :jruby do
     gem 'activerecord-jdbcpostgresql-adapter'
     gem 'do_jdbc'
@@ -44,6 +44,6 @@ group :test do
   gem 'selenium-webdriver', '~> 2.46.2'
   gem 'chromedriver-helper'
   gem 'rspec'
-  gem 'rspec-expectations'
+  #gem 'rspec-expectations'
   gem 'coveralls', require: false
 end

@@ -207,7 +207,6 @@ DEPENDENCIES
   rack-test
   rake
   rspec
-  rspec-expectations
   selenium-webdriver (~> 2.46.2)
   sinatra
   sinatra-base

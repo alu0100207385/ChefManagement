@@ -9,6 +9,7 @@ Make your own recipes. Manage your recipe list and you can calculate production 
 # Link to app
 
 [Heroku](http://chefmanagement.herokuapp.com/)
+
 [OpenShift](http://chefmanagement-esit.rhcloud.com/)
 
 # Tests
@@ -17,8 +18,6 @@ Make your own recipes. Manage your recipe list and you can calculate production 
 
 # Install
 Before all, you must install gems: $ bundle install (or $ bundle update) when you want to run the app in **local machine**. Run browser and go to http://localhost/4567. [More options](#user-content-run). You can edit the port server in the Rakefile or controller file.
-
-If you prefer use the app immediately, go [here](#user-content-link-to-app).
 
 # Run
 To see all option tasks: $ rake -T
@@ -41,3 +40,7 @@ rake tests[nav]    	# Run tests: rake test[navigator] || navigator is an optiona
 * [Bootstrap](http://getbootstrap.com/)
 
 # Credits
+
+#License
+
+![License](https://github.com/alu0100207385/ChefManagement/blob/documentation/doc/images/logotipo-licencia.png)
