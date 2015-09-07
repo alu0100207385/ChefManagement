@@ -16,6 +16,8 @@ Make your own recipes. Manage your recipe list and you can calculate production 
 
 [![Build Status](https://travis-ci.org/alu0100207385/ChefManagement.svg?branch=testing)](https://travis-ci.org/alu0100207385/ChefManagement)
 
+[![Coverage Status](https://coveralls.io/repos/alu0100207385/ChefManagement/badge.svg?branch=testing&service=github)](https://coveralls.io/github/alu0100207385/ChefManagement?branch=testing)
+
 # Install
 Before all, you must install gems: $ bundle install (or $ bundle update) when you want to run the app in **local machine**. Run browser and go to http://localhost/4567. [More options](#user-content-run). You can edit the port server in the Rakefile or controller file.
 

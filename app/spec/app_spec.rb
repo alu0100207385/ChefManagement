@@ -3,6 +3,7 @@ require 'coveralls'
 Coveralls.wear!
 
 require_relative './../controllers/app.rb'
+require_relative "./../helpers/helpers.rb"
 ENV['RACK_ENV'] = 'test'
 
 require 'minitest/autorun'
@@ -49,6 +50,49 @@ describe "Test App: Check routes" do
 		get 'http://localhost:4567/logout'
 		user.destroy
 		assert_equal "http://localhost:4567/logout", last_request.url.to_s
+	end
+
+end
+
+
+describe "Test Heleper functions" do
+
+	def app
+    	MyApp
+	end
+
+
+	it "Funtion: account_information" do
+	   assert_equal(Mail::Message,account_information("Username","1234","mail@email.com","Tests for coverlls").class)
+	end
+
+	it "Funtion: merma" do
+	   assert_equal merma(10, 50), 5
+	end
+
+	it "Funtion: GetIds" do
+	   assert_equal GetIds("Username_Recipe"), ["Username", "Recipe"]
+	end
+
+	it "Funtion: calculator1" do
+	   assert_equal calculator(25, 4, 2), 12
+	end
+
+	it "Funtion: calculator2" do
+	   assert_equal calculator(25, 2, 2), 25
+	end
+
+	it "Function: GenerateNewRecipeName" do
+		resul = false
+		cad = GenerateNewRecipeName("rice")
+		if (cad.include? "rice") and (cad.size == 8)
+			resul = true
+		end
+		assert(resul)
+	end
+
+	it "Funtion: to_bool" do
+		assert(to_bool("true")&&!to_bool("false"))
 	end
 
 end

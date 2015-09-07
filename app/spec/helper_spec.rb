@@ -54,4 +54,5 @@ describe "Test Heleper functions" do
 	it "Funtion: to_bool" do
 		assert(to_bool("true")&&!to_bool("false"))
 	end
+
 end
