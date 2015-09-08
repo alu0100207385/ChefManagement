@@ -24,7 +24,7 @@ Para esta aplicación, trabajaremos con el modelo PaaS. Normalmente, para intera
 \vspace*{0.2in}
 \section{Heroku}\label{cap.3.2}
 
-Se trata de una plataforma de aplicaciones cloud que permite construir y desplegar aplicaciones web. Soporta distintos lenguajes y frameworks. Para poder usar esta plataforma lo primero es registrarse y acceder a la misma. Desde la pantallas de \emph{dashboard} podremos gestionar las aplicaciones o bien mediante los comandos de su herramienta \emph{Heroku Toolbelt} (\cite{URL:HerokuToolbelt}). Existen tres formas de configurar nuestra aplicación en Heroku.
+Se trata de una plataforma de aplicaciones cloud que permite construir y desplegar aplicaciones web. Soporta distintos lenguajes y frameworks. Para poder usar esta plataforma lo primero es acceder a la misma y registrarse. Desde la pantalla de \emph{dashboard} podremos gestionar las aplicaciones o bien mediante los comandos de su herramienta \emph{Heroku Toolbelt} (\cite{URL:HerokuToolbelt}). Existen tres formas de configurar nuestra aplicación en Heroku.
 \begin{itemize}
 	\item El \textbf{dashboard}: Desde esta pantalla seleccionamos la app deseada y encontramos un menu con una serie de opciones que nos permiten gestionar la aplicación en la nube: añadir add-ons, activar \emph{dynos}, seleccionar repositorio, información como métricas y actividad del servidor, permiso de acceso a la app y la configuración propia de la app (variables, dominio, etc.).
 	\item Mediante \textbf{Heroku Toolbelt}: Este comando (\$ heroku COMMAND) tiene múltiples opciones que permiten interactuar con la consola desde consola. Subir app, configurar la bbdd y variables, comprobar logs del servidor, etc. En resumen, las opciones que nos proporciona el \emph{dashboard} en el navegador, pero desde consola. Ejecute \$ heroku -h para acceder a la ayuda y opciones.
@@ -48,7 +48,7 @@ Para visualizar la configuración general usaremos el comando \$ heroku config. 
  donde:
  \begin{itemize}
 	 \item \emph{ENTORNO}: es el entorno para el que se está configurando: desarrollo, test o producción.
-	\item default: la configuración por defecto. Podemos establecer un archivo de configuración por defecto. Las nubes de producción tienen el suyo, aunque a veces hay que adaptarlo a nuestras necesidades o crear nuestra propia configuración.
+	\item default: la configuración por defecto. Podemos establecer un archivo de configuración por defecto. Las nubes de producción tienen el suyo, aunque a veces hay que adaptarlo a nuestras necesidades y crear nuestra propia configuración.
 	\item ENV['VARIABLE']: corresponde a una variable que guarda la ruta a la base de datos. También puede ponerse la ruta directamente pero no es recomendable.
 \end{itemize}
 
@@ -67,7 +67,7 @@ Debido a que en OpenShift no puede modificarse el nombre de las variables, la re
 \section{OpenShift}\label{cap.3.3}
 Es otra PaaS similar a la anterior montada en Linux Red Hat. Permite desarrollar rápidamente, hosting y la escalabilidad de aplicaciones en entornos de la nube. Al contrario que Heroku, en la versión \emph{free} permite crear hasta tres aplicaciones (y la primera cinco), sin embargo, aunque Heroku solo permite postgresql en esta versión, OpenShift permite escoger entre MongoDB, MySQL y PostgreSQL. Para \textbf{ChefManagement}, hemos tenido que adaptarnos al cuello de botella de Heroku en cuanto bbdd y trabajaremos con postgres en ambas plataformas. \\
 
-Aunque OpenShift no dispone de tantas opciones de configuración en su \emph{dashboard} si que permite añadir \emph{cartridges} inclusos creados por nosotros mismos. Por ejemplo, un cartucho (\cite{URL:Cartucho_JRuby}) para hacer funcionar Jruby en OpenShift. \\
+Aunque OpenShift no dispone de tantas opciones de configuración en su \emph{dashboard} si que permite añadir \emph{cartridges} incluso creados por nosotros mismos. Por ejemplo, un cartucho (\cite{URL:Cartucho_JRuby}) para hacer funcionar Jruby en OpenShift. \\
 
 En cuanto a la herramienta del cliente (\cite{URL:OpenshiftTool}) permite la gestión con la nube de igual forma que con la herramienta de Heroku. Sin embargo, en esta nube, no se puede añadir ni modificar variables. La nube almacena la configuración por defecto en caso de que la proporcionada no sea válida. En todo caso habría que usar su herramienta o archivos de configuración. \\
 

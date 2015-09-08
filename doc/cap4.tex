@@ -28,7 +28,7 @@ Cabe destacar el uso del repositorio y la aplicación de métodos de desarrollo 
 	\item \textbf{development:} Rama destinada al desarrollo de la aplicación. Tanto el \emph{front} como el \emph{back} fue diseñado y codificado aquí, así como los javascripts y el uso de APIs.
 	\item \textbf{heroku:} Se trata de la rama de producción, como en este caso tenemos dos entornos con este fin ponemos un nombre para identificar a cada nube de trabajo.
 	\item \textbf{openshift:} Es el otro entorno de producción. Toda la configuración y cambios orientados a producción de esta nube se definen aquí.
-	\item \textbf{testing:} Codificación de pruebas en local y remoto (Travis), así como su configuración.
+	\item \textbf{testing:} Codificación de pruebas en local y remoto (Travis, Coveralls), así como su configuración.
 	\item \textbf{documentation:} Documentación de la aplicación, se trata de la memoria del trabajo.
 	\item \textbf{correccion-4sep:} Correcciones de la documentación.
 \end{itemize}
@@ -54,7 +54,7 @@ Durante la etapa de análisis y estudio de campo se empezó diseñando en Ruby o
 	\caption{ActiveRecord 4.2 no está soportado completamente por JRuby} \label{fig:AvtiveRecord-no-supported}
 \end{figure}
 
-La idea de la compatibilidad con JRuby se considera importante para este proyecto no solo para ampliar el soporte de la aplicación, también en futuros módulos como el desarrollo en plataformas móviles o tablets con Ruboto (\cite{URL:Ruboto}), cuyas apps pueden ser desarrolladas usando JRuby, MRI o Rubinius. \\
+La idea de la compatibilidad con JRuby se considera importante para este proyecto no solo para ampliar el soporte de la aplicación, sino también para futuros módulos como el desarrollo en plataformas móviles o tablets con Ruboto (\cite{URL:Ruboto}), cuyas apps pueden ser desarrolladas usando JRuby, MRI o Rubinius. \\
 
 Por esta razón, y la libertad en diseño de la aplicación que proporciona Sinatra frente a Rails, así como su sencilla puesta en marcha, se optó finalmente por este framwork para el desarrollo de Chefmanagament. La estructura que se diseñó es la siguiente (también puede verse en \cite{URL:GitHub}):
 
@@ -65,7 +65,8 @@ Por esta razón, y la libertad en diseño de la aplicación que proporciona Sina
 			\item controllers: gestiona la aplicación en función de las peticiones del usuario e interactúa con el modelo y las vistas (salida al usuario).
 			\item helpers: son funciones auxiliares definidas específicamente para esta aplicación. Cabe destacar el uso de la gema Mail (\cite{URL:Gema_mail}) para la gestión de acceso, registro y notificaciones de la aplicación.
 			\item models: diseño de la base de datos. Más información en la sección~\ref{cap.2.6}
-			\item tests: la definición y declaración de las pruebas. Además de comprobar las funciones y métodos creados, se ha utilizado la herramienta Selenium (\cite{URL:Selenium}) para interactuar con la propia aplicación y pornerla a prueba. Puede ver los resultados de Travis en la información del repositorio: \href{https://github.com/alu0100207385/ChefManagement/blob/master/README.md}{https://github.com/alu0100207385/ChefManagement/blob/master/README.md}.
+			\item tests: la definición y declaración de las pruebas. Además de comprobar las funciones y métodos creados, se ha utilizado la herramienta Selenium (\cite{URL:Selenium}) para interactuar con la propia aplicación y pornerla a prueba. Puede ver los resultados de Travis en la información del repositorio:
+			\\ \href{https://github.com/alu0100207385/ChefManagement/blob/master/README.md#tests}{https://github.com/alu0100207385/ChefManagement/blob/master/README.md\#tests}.
 			\item views: su función es interactuar con el usuario, es el resultado de las acciones del usuario con la aplicación, en un formato que éste pueda entener, como páginas webs.
 		\end{itemize}
 	\item \textbf{public}:

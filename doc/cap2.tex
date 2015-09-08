@@ -62,11 +62,11 @@ Para registarse accedemos a través del enlace \emph{New account}. En caso de cu
 Una vez dentro de la aplicación accederemos al \emph{home} del usuario. Existe una barra superior donde podemos acceder a la configuración y salir de la aplicación (Log out). También encontramos un menú lateral el cual facilita la interacción del usuario con la aplicación y ayudar a moverse y gestionar las distintas tareas. Por defecto, cuando accedemos a la aplicación, en \emph{home} se nos despliega la lista de recetas creadas por ese usuario. Las opciones del menú son las siguientes:
 
 \begin{itemize}
-	\item Recipe list: muestra el listado de recetas del usuario. Podemos acceder, editar y borrar recetas a través de esta lista.
+	\item Recipe list: muestra el listado de recetas del usuario. Podemos acceder, editar y borrar recetas a través de esta lista. Para crear esta tabla se ha usado la herramienta DataTables \cite{URL:Datatable}.
 	\item Recipe calculator: calcula el costo de producción de una receta y sus ingredientes para una determinada receta y raciones.
 	\item New recipe: crea una nueva receta.
 	\item Import: carga una copia de seguridad de las recetas del usuario.
-	\item Export: almacena en el equipo local una copa de seguridad de las recetas del usuario.
+	\item Export: almacena en el equipo local una copia de seguridad de las recetas del usuario.
 \end{itemize}
 
 
@@ -78,7 +78,7 @@ Para acceder a crear receta, nos situamos en el menú lateral y pinchamos en \te
 \begin{itemize}
 	\item Name: es un campo obligatorio y clave primaria en la bbdd. Nombre de la receta.
 	\item Portions: Numero de raciones para crear esa receta. Este campo es muy importante ya que se tomará como referencia para el cálculo de recetas dado un determinado número de platos. %\todo{Mejor servings o portions para traducir ración}
-	\item Cost: es un campo de lectura, se calcula acutomáticamente con cada ingrediente.
+	\item Cost: es un campo de lectura, se calcula automáticamente con cada ingrediente.
 	\item Ration cost: relación entre el coste de la receta y el número de raciones.
 	\item Order: campo que sirve como etiqueta. Indica si se trata de un primer o segundo plato, un postre, etc.
 	\item Type: segundo campo de etiqueta. Nos da información sobre el tipo de comida: snack, comida casera y otros.
@@ -149,7 +149,7 @@ El modelo propuesto para esta primera versión atendiendo a los requisitos de la
 
 	\item \textbf{Recetas (Recipe):} Este modelo contiene información sobre la receta creada por un determinado usuario. Establece la relación con la clase Usuario, del que depende de uno a muchos (1:M) y con las clases ingredientes y recetas base, cuya relación es en ambos casos de 1:M. Tiene muchos campos, de los que cabe destacar: \emph{name}, nombre de la receta y clave primaria; \emph{nration}, campo requerido y que indica el número de platos, y \emph{username} que es el autor de la receta. 	Sus relaciones son: una receta puede tener varios ingredientes (clase Ingredients) o varias recetas base (clase Recipe2).
 
-	\item \textbf{Ingredientes (Ingredient):} Se trata de los ingredientes para cada receta. Por lo tanto depende de la clase receta con una relación de 1:M. Sus campos más importantes son su \emph{id} (clave primaria), \emph{name} que es el nombre del ingrediente y \emph{cost} que corresponde a su coste, siendo estos dos último campos requeridos.
+	\item \textbf{Ingredientes (Ingredient):} Se trata de los ingredientes para cada receta. Por lo tanto depende de la clase receta con una relación de 1:M. Sus campos más importantes son su \emph{id} (clave primaria), \emph{name} que es el nombre del ingrediente y \emph{cost} que corresponde a su coste, siendo estos dos últimos campos requeridos.
 
 	\item \textbf{Recetas base (Recipe2):} Esta clase es una extensión de recipe, que sirve para identificar las recetas usadas como ingredientes en otras, esto es una receta base. Su relación con la clase receta se presenta de 1:M.
 

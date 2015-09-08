@@ -17,7 +17,7 @@
 
 \section{Objetivos}
 \label{cap.1.1}
-El objetivo de este trabajo de fin de grado (en adelante, TFG) es el desarrollo de una aplicación web para la gestión del escandallo, es decir, controlar el precio de producción de una receta. Ésta se llamará \textbf{Chefmanagement} y para llevarlo a cabo usaremos Cloud Servers, concretamente Google Cloud Platform, sin embargo, por algunas de las restricciones que mostraba, las cuales se describirán más adelante, se reorientó el TFG hacia otras plataformas como servicio (SaaS). Para su desarrollo usé la metodología de software ágil basada en el desarrollo dirigido por pruebas (TDD). Como framework, Sinatra (Ruby) para desarrollar la aplicación, integrar APIs de terceros, y hacer uso de varias nubes de producción a la vez y también herramientas de soporte para el desarrollo de software como son Github y Travis, entre otras.
+El objetivo de este trabajo de fin de grado (en adelante, TFG) es el desarrollo de una aplicación web para la gestión del escandallo, es decir, controlar el precio de producción de una receta. Ésta se llamará \textbf{Chefmanagement} y para llevarlo a cabo usaremos Cloud Servers, concretamente Google Cloud Platform, sin embargo, por algunas de las restricciones que mostraba, las cuales se describirán más adelante, se reorientó el TFG hacia otras plataformas como servicio (PaaS). Para su desarrollo usé la metodología de software ágil basada en el desarrollo dirigido por pruebas (TDD). Como framework, Sinatra (Ruby) para desarrollar la aplicación, integrar APIs de terceros, y hacer uso de varias nubes de producción a la vez y también herramientas de soporte para el desarrollo de software como son Github y Travis, entre otras.
 
 \vspace*{0.2in}
 \section{Antecedentes y estado actual del tema}\label{cap.1.2}
@@ -79,11 +79,11 @@ Empleando los conocimientos adquiridos durante los últimos cursos en Ruby y sus
 		\caption{Lenguajes soportados en GAE} \label{fig:lenguajes-GAE}
 \end{figure}
 
-Sin embargo, también es posible hacerlo funcionar en Ruby con la ayuda de java, juntos forman JRuby (\cite{URL:JRuby}), el cual es una implementación 100\% del lenguaje Ruby. Además funciona como lenguaje embebido dentro de la máquina virtual de Java. Gracias a esta capa, podré programar en Ruby y Jruby establecerá una capa intermedia entre el código fuente en Ruby y el servidor en java. Para interactuar con la aplicación en la nube provee de una herramienta o kit, en este caso se trata de una gema llamada google-appengine (\cite{URL:GAE_gem}), sin embargo, la gema
+Sin embargo, también es posible hacerlo funcionar en Ruby con la ayuda de Java, juntos forman JRuby (\cite{URL:JRuby}), el cual es una implementación 100\% Java del lenguaje Ruby. Además funciona como lenguaje embebido dentro de la máquina virtual de Java. Gracias a esta capa, podré programar en Ruby ya que JRuby establecerá una capa intermedia entre el código fuente en Ruby y el servidor en Java. Para interactuar con la aplicación en la nube provee de una herramienta o kit, en este caso se trata de una gema llamada google-appengine (\cite{URL:GAE_gem}), sin embargo, la gema
 dedicada a tal fin esta desfasada y el proyecto ha sido archivado (\cite{URL:GAE_JRuby}).\\
 %\todo{Enlaces como citas en la bibliografía}
 
-Tras la incompatibilidad del proyecto de JRuby en GAE busco la opción más parecida posible que me ofrezca soporte, en este caso Google Cloud Platform. Tras investigar encuentro multitud de lenguajes compatibles (\cite{URL:Lenguajes_GoogleCloud}), entre ellos Ruby, sin embargo, los servicios de esta nube son de pago y aunque existe una versión demo durante 60 días. Debido al tiempo que emplearía en el estudio, desarrollo y pruebas, este período puede resultar corto. Me pongo en contacto con el servicio de clientes y soporte de Google para bajar otras opciones, pero no ofrecen nada que me sea viable para desarrollar mi proyecto.\\
+Tras la incompatibilidad del proyecto de JRuby en GAE busco la opción más parecida posible que me ofrezca soporte, en este caso Google Cloud Platform. Tras investigar encuentro multitud de lenguajes compatibles (\cite{URL:Lenguajes_GoogleCloud}), entre ellos Ruby, sin embargo, los servicios de esta nube son de pago, aunque existe una versión demo durante 60 días. Debido al tiempo que emplearía en el estudio, desarrollo y pruebas, este período puede resultar corto. Me pongo en contacto con el servicio de clientes y soporte de Google para barajar otras opciones, pero no ofrecen nada que me sea viable para desarrollar mi proyecto.\\
 
 De esta forma se modifica el requisito inicial del TFG de usar los servicios de la nube de Google para encontrar y usar otros entornos de producción. La idea es intentar usar más de uno, demostrando la modularidad de la aplicación, esto significa que el código fuente de la aplicación debe ser único para las distintas nubes de producción. El siguiente paso es investigar las nubes que se ofertan. La siguiente tabla muestra un resumen:
 
@@ -131,7 +131,7 @@ Una vez analizadas se propone como entornos de producción las nubes Heroku y Op
 
 Durante la investigación y desarrollo de este proyecto se ha apostado por las metodologías ágiles, si bien no ha sido en un grupo de trabajo, se puede aplicar en lo que se refiere al análisis, al desarrollo y diseño de la aplicación y a las reuniones con el \emph{cliente}, cuyo rol lo asume el tutor junto con el de \emph{jefe de proyecto}. Además me entrevisté con dos negocios de restauración y un proveedor con el fin de establecer requisitos, los cuales pueden ser considerados también \emph{clientes}. \\
 
-Estos métodos están basados en el desarrollo iterativo e incremental, donde los requisitos y soluciones evolucionan mediante la colaboración de grupos. La idea es minimizar riesgos desarrollando software en períodos cortos. Este período se llama \textbf{iteración} cuya duración se define en función de los requisitos del proyecto, especialmente recursos de tiempo y humano. \\
+Estos métodos están basados en el desarrollo iterativo e incremental, donde los requisitos y soluciones evolucionan mediante la colaboración de grupos. La idea es minimizar riesgos desarrollando software en períodos cortos. Este período se llama \textbf{iteración} cuya duración se define en función de los requisitos del proyecto y los recursos empleados, especialmente el tiempo y el factor humano. \\
 
 \begin{figure}[H]
 	\centering
@@ -145,7 +145,7 @@ Cada iteración del ciclo de vida incluye:
 	\item Planificación: organización del trabajo durante una iteración. En este caso, la planificación corresponde con las tutorías y seguimiento semanal con el tutor.
 	\item Análisis de requisitos: cada nueva funcionalidad o idea para la aplicación debe ser estudiada. Así, por ejemplo, si quiero integrar una API debo considerar si es útil o no, si es compatible con los entornos de producción y con el lenguaje, documentarme para su integración en la aplicación, etc.
 	\item Diseño: interfaz de la aplicación, características y aspectos de usabilidad.
-	\item Codificación: corresponde por lo general a escribir código, aunque esto no se limita solo a realizar la propia aplicación, además se incluyen los tests y todos aquellos prototipos y pruebas durante la etapa de estudio de campo.
+	\item Codificación: corresponde por lo general a escribir código, aunque esto no se limita solo a realizar la propia aplicación, además se incluyen todos aquellos prototipos durante la etapa de estudio de campo.
 	\item Revisión: incluye superar los tests con éxito y la aceptación por parte del cliente.
 	\item Documentación: para este trabajo en concreto, se realizó un diario semanal, cuya síntesis se engloba en este documento.
 \end{itemize}
