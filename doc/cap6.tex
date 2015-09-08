@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Chapter 6: Summary and Conlusions
+% Chapter 6: Summary, conlusions and future works
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -13,3 +13,29 @@ We must also take into account the investigation of production clouds, tests and
 In short, this project includes protocols and methodologies such as Scrum (Agile methodology), using frameworks based on MVC, TDD (local and on remote servers) use of repositories and cloud programming. \\
 
 It has been introduced a new PaaS (OpenShift) and a new application has been developed in order to continue evolving, trying to design a scalable and even exportable to other architectures.
+
+\newpage
+
+Next it will suggest upgrades to include in future version of this application:
+
+\begin{itemize}
+\item Integrate APIs to get prices of products from providers (Mercadona, Alcampo, etc). This allows a real price and updated of ingredients to use in recipes. It suggested to use (\cite{URL:Mercatenerife_Precio_Productos}) (json format) de \textbf{Mercatenerife's} product list.
+
+\item Update and improve application design adding customizable themes.
+\item Modify Recipe model and add nutrition information (kcal, proteins, carbohydrates, fats, etc.).
+\item Add to \emph{Calculator's} functionality that can calculate \emph{menu prices}.
+\item Development application to use in smatphones devices and tablets, take advantage of compatibility with JRuby (It is recommended \textbf{Ruboto}).
+\item The application can be diversified according to current market: \textbf{profesional} (catering business) or \textbf{social network}.
+	\item To social network market it propose:
+		\begin{itemize}
+			\item \textbf{Scoring System}: you can buy recipes or get them exchanging your points that you can get if you share your recipes.
+			\item \textbf{Other features of the social network}: you can share recipes, mark like favourite, comments, etc.
+			\item \textbf{Statistics}: dish-points, users-recipes, dish-price, etc.
+		\end{itemize}
+	\item To profesional market:
+		\begin{itemize}
+			\item \textbf{Search:} you can look for an ingredient on a certain date. You can see its current price.
+			\item \textbf{Buy:} you can get ingredients from provider across the application.
+		\end{itemize}
+
+\end{itemize}
