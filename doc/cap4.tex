@@ -20,7 +20,20 @@ Hay que tener en cuenta, que debido a las circunstancias de este proyecto (no ha
 	\item \textbf{Documentación:} Durante el tiempo de vida del proyecto se ha ido elaborando un diario, en él se guarda la información de los resultados obtenidos semanalmente y expuestos durante las reuniones: lo qué se ha averiguado, lo qué se ha conseguido, los problemas encontrados y las soluciones propuestas.
 \end{itemize}
 
-Una de las ventajas más importantes del uso de esta metodología es que volver atrás o realizar cambios en la aplicación, conlleva consecuencias gracias a las iteraciones cortas. \\
+Una de las ventajas más importantes del uso de esta metodología es que volver atrás o realizar cambios en la aplicación, no conlleva grandes consecuencias gracias a las iteraciones cortas. \\
+
+Cabe destacar el uso del repositorio y la aplicación de métodos de desarrollo de software en el mismo, como \emph{refactorizar}, TDD o el uso de ramas. Éstas nos ayudan a organizar el trabajo y definir cada tarea. Éstan pueden tener cualquier nombre y cambian según la planificación del proyecto. Para este en concreto se ha creado las siguientes ramas:
+\begin{itemize}
+	\item \textbf{master:} Es la rama por defecto. Es la primera rama que se crea y normalmente lleva el peso de todas las demás ramas siempre y cuando estén funcionando correctamente.
+	\item \textbf{development:} Rama destinada al desarrollo de la aplicación. Tanto el \emph{front} como el \emph{back} fue diseñado y codificado aquí, así como los javascripts y el uso de APIs.
+	\item \textbf{heroku:} Se trata de la rama de producción, como en este caso tenemos dos entornos con este fin ponemos un nombre para identificar a cada nube de trabajo.
+	\item \textbf{openshift:} Es el otro entorno de producción. Toda la configuración y cambios orientados a producción de esta nube se definen aquí.
+	\item \textbf{testing:} Codificación de pruebas en local y remoto (Travis), así como su configuración.
+	\item \textbf{documentation:} Documentación de la aplicación, se trata de la memoria del trabajo.
+	\item \textbf{correccion-4sep:} Correcciones de la documentación.
+\end{itemize}
+
+Podemos ver su diseño y evolución en \href{https://github.com/alu0100207385/ChefManagement/network}{https://github.com/alu0100207385/ChefManagement/network}.
 
 
 \vspace*{0.2in}
