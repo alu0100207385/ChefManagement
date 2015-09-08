@@ -71,7 +71,7 @@ describe "#1. Test Chat App: Check pages and links" do
 end
 
 ##################################################################################################
-
+=begin
 describe "#2. Test Chat App: User create and login" do
 	
 	before :all do
@@ -269,3 +269,4 @@ describe "#5. Test Chat App: Recipes" do
 		assert(a)
 	end
 end
+=end

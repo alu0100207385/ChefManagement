@@ -27,9 +27,11 @@ module AppHelpers
 	 	end
 	end
 
+
 	def merma (n, lost) #lost = porcentaje de perdida
 		return n - (n * lost)/100
 	end
+
 
 	#Esta funcion recibe una cadena y devuelve un array [name,username]
 	#Usada para obtener id fila de la tabla lista de recetas.
@@ -56,18 +58,13 @@ module AppHelpers
 		return name+n
 	end
 
+
 	#Al leer de fichero, los campos tipo string como vegan lo convertimos en tipo bool
 	def to_bool(cad)
 		return true if cad == true || cad =~ (/^(true|t|yes|y|1)$/i)
 		return false if cad == false || cad =~ (/^(false|f|no|n|0)$/i)
 	end
 
-=begin
-	def LoadConfigFile(url="https://www.dropbox.com/s/ui3ygp02jumpb9w/config.json?dl=1")
-		file = open(url).read
-		JSON.parse(file)
-	end
-=end
 
 	#Si existe alguna copia de backup en el servidor la borramos
 	def ClearUpdates
