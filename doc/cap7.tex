@@ -1,0 +1,71 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter 7: Presupuesto
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+En este capítulo abordaremos el caso comercial de puesta en marcha de la aplicación propuesta creando un presupuesto para su desarrollo. Vamos a partir del supuesto siguiendo los datos de la asignatura de TFG de un trabajo realizado de 300 h. y por otro lado, un precio base de 12 \euro/h trabajada. \\
+
+Como gastos en producción se propone dos entornos, a elegir una de las siguientes opciones:
+
+\begin{itemize}
+
+\item \textbf{Opción 1: Heroku}
+\begin{center}
+    \begin{large}
+           Desglose de presupuesto: Desarrollo \\
+    \end{large}
+    \begin{tabular}{| l | c | r | r | p{5cm} |}
+        \hline
+        Tarea & Porcentaje & Horas & Subtotal & Comentario \\ \hline
+        Planificación & 16\% & 48 h & 576 \euro & Reuniones con el departamento (tutor). \\ \hline
+        Análisis & 28\% & 84 h & 1008 \euro & Entrevistas con clientes, requisitos y estudio de campo. \\ \hline
+        Diseño & 14\% & 42 h & 504 \euro & Estudio y planteamiento de la bbdd y del software. \\ \hline
+        Codificación & 18\% & 54 h & 648 \euro & Tiempo empleado en escribir el código fuente de la aplicación. \\ \hline
+        Pruebas & 12\% & 36 h & 432 \euro & Desarrollo de tests, cubrimiento y pruebas de usabilidad para asegurar la integridad de la aplicación. \\ \hline
+        Documentación & 12\% & 36 h & 432 \euro & Diario, memoria e informes del desarrollo de la aplicación. \\ \hline
+        \textbf{Total} & 100\% & 300 h & 3600 \euro & \\ \hline
+        \hline
+    \end{tabular}
+\end{center}
+
+\newpage
+
+\begin{center}
+    \begin{large}
+        Coste de implementación \\
+    \end{large}
+    \begin{tabular}{| l | l | r | p{5cm} |}
+        \hline
+        Servicio & Base & Subtotal & Comentario \\ \hline
+        Tiempo de desarrollo & 300 & 3600 & 300 h x 12 \euro/h \\ \hline
+        Heroku & 67.34 (\euro/mes) & 808.08 & Se calcula el precio para un año. Se ha elegido la opción estándar.\\ \hline
+        Configuración & 60 & 60 & Gastos para preparar y configurar el entorno de producción. \\ \hline 
+        Otros gastos & 60 & 180 & Gastos destinados a entrevistas, desplazamientos, etc. En este caso 3. \\ \hline 
+        Mantenimiento & 300 (\euro/año) & 0 & Este servicio es gratis el primer año. \\ \hline
+        \textbf{TOTAL} &  & 4648.08 \euro &  \\ \hline
+    \end{tabular}
+\end{center}
+
+Estos precios son variables en función del tiempo y las prestaciones contratadas, puede calcularse de forma online los precios de Heroku (\cite{URL:Heroku_Pircing}), aunque el precio se calcula en dólares americanos. 
+
+\item \textbf{Opción 2: OpenShift.} Tomando la tabla anterior de \emph{Desglose de presupuesto: Desarrollo} como base.
+\begin{center}
+    \begin{large}
+        Coste de implementación \\
+    \end{large}
+    \begin{tabular}{| l | l | r | p{5cm} |}
+    \hline
+    Servicio & Base & Subtotal & Comentario \\ \hline
+    Horas trabajadas & 300 & 3600 & 300 h x 12 \euro/h \\ \hline
+    OpenShift & 15 (\euro/mes) & 180 & Se calcula el precio para un año. Se ha elegido la opción estándar base.\\ \hline
+    Configuración & 60 & 60 & Gastos para preparar y configurar el entorno de producción. \\ \hline 
+    Otros gastos & 60 & 180 & Gastos destinados a entrevistas. En este caso 3. \\ \hline 
+    Mantenimiento & 300 (\euro/año) & 0 & Este servicio es gratis el primer año. \\ \hline
+    \textbf{TOTAL} &  & 4020 \euro & \\ \hline
+    \end{tabular}
+\end{center}
+
+En el caso de esta PaaS podemos consultar sus precios (\cite{URL:Openshift_Pircing}) según las necesidades. El precio está calculado para el plan \emph{Silver}.
+
+\end{itemize}

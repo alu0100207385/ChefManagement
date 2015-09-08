@@ -3,3 +3,59 @@
 bbdd.db
 app/config/config.yml
 .env
+
+
+#
+# .gitignore for LaTeX projects 
+#
+# HTML, PDF or PS output removed from Control Version
+doc/memtfg.pd
+doc/html
+doc/*.pdf
+
+# Distribution
+*_ver*.tar.gz
+# Editor backups
+*~
+.*swp
+*.backup
+*.autosave
+.~lock*
+
+# For latexdiff
+*-diff*
+
+# Latex Extensions
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz
+
+# Mk4ht extensions
+*.4ct
+*.4tc
+*.css
+*.html
+*.idv
+*.lg
+*.tmp
+*.xref

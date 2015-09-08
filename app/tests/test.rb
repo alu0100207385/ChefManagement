@@ -118,7 +118,7 @@ end
 
 ##################################################################################################
 
-describe "#3. Test Chat App: Check felper functions" do
+describe "#3. Test Chat App: Check helper functions" do
 
 	it "#3.1. Function: GetIds" do
 		assert_equal(GetIds("recipe-name_username"),["recipe-name","username"])

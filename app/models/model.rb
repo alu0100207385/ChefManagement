@@ -2,7 +2,7 @@ class User
 	include DataMapper::Resource
 
 	property :username, String, :key => true
-	property :email, String, :key => true
+	property :email, String, 	:key => true
 	property :password, BCryptHash
 	property :network, String						#Red social que uso para el registro si procede
 	#property :avatar
@@ -12,23 +12,20 @@ end
 class Recipe 
 	include DataMapper::Resource
 
-	property :name, String, :key => true			#Nombre de la receta
-	property :cost, Float, :default => 0.0			#Costo del plato (venta). El coste de producción se puede sacar por cáculo.
-	property :ration_cost, Float, :default => 0.0	#Costo por ración
-	property :nration, Integer, :required => true	#Numero de raciones
-	property :instructions, Text					#Preparación
-	property :username, String, :key => true		#Autor de la receta
+	property :name, String, :key => true												#Nombre de la receta
+	property :cost, Float, :default => 0.0												#Costo del plato (venta). El coste de producción se puede sacar por cáculo.
+	property :ration_cost, Float, :default => 0.0										#Costo por ración
+	property :nration, Integer, :required => true										#Numero de raciones
+	property :instructions, Text														#Preparación
+	property :username, String, :key => true											#Autor de la receta
 	#property :avatar
 	property :pos, Flag[:incoming, :first, :second, :third, :single, :afters, :other]	#entrante, primer plato, segundo plato, plato único, postre
 	property :type, Enum[:snack, :homemade_food, :tapas, :fast_food, :tasting, :other]	#snack, comida casera, tapas, comida rapida, degustación
 	property :nivel, Enum[:very_easy, :easy, :medium, :hard, :very_hard]
-	property :production_time, String				#Tiempo de producción de la receta
-	property :vegan, Boolean, :default => false		#Indica si es un plato apto para vegetarianos
-	property :warning, String						#Aviso alérgicos
-	property :origin, String						#País originario de la receta
-
-	#property :create_at, DateTime
-	#property :edit_date, DateTime
+	property :production_time, String													#Tiempo de producción de la receta
+	property :vegan, Boolean, :default => false											#Indica si es un plato apto para vegetarianos
+	property :warning, String															#Aviso alérgicos
+	property :origin, String															#País originario de la receta
 
 	has n, :ingredients 
 	has n, :recipe2
@@ -77,5 +74,4 @@ class Comment
 
 	belongs_to :recipe
 end
-#more info : http://datamapper.org/docs/associations.html
 =end

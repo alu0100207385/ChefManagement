@@ -10,6 +10,8 @@ Make your own recipes. Manage your recipe list and you can calculate production 
 
 [Heroku](http://chefmanagement.herokuapp.com/)
 
+[OpenShift](http://chefmanagement-esit.rhcloud.com/)
+
 # Tests
 
 [![Build Status](https://travis-ci.org/alu0100207385/ChefManagement.svg?branch=testing)](https://travis-ci.org/alu0100207385/ChefManagement)
@@ -34,8 +36,9 @@ rake tests[nav]    	# Run tests: rake test[navigator] || navigator is an optiona
 # Resources
 
 * [Sinatra](http://www.sinatrarb.com/)
-* [Sinatra Gem](http://www.rubydoc.info/gems/sinatra)
 * [Ruby Gems](https://rubygems.org/)
 * [Bootstrap](http://getbootstrap.com/)
+* [OpenShift](https://www.openshift.com/)
+* [Heroku](https://www.heroku.com/)
 
 # Credits
