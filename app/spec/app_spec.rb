@@ -3,6 +3,7 @@ require 'coveralls'
 Coveralls.wear!
 
 require_relative './../controllers/app.rb'
+require_relative "./../helpers/helpers.rb"
 ENV['RACK_ENV'] = 'test'
 
 require 'minitest/autorun'
@@ -23,6 +24,16 @@ describe "Test App: Check routes" do
 	def app
     	MyApp
 	end
+
+=begin
+	it "Acces to home OK" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		get '/home'
+		assert last_response.ok?
+		assert last_response.body.include? 'Menu'
+		user.destroy
+	end
+=end
 
 	it "Access to root app (session out)" do
 		get '/' 
@@ -93,25 +104,95 @@ describe "Test App: Check routes" do
 	end
 
 	it "Check Log out" do
-		user = User.first_or_create(:username => "test", :email => "email@mail.com", :password => "1234")
-		post 'http://localhost:4567/login',:name => user.username, :password => user.password
-		assert last_response.ok?
-		get 'http://localhost:4567/logout'
-		user.destroy
-		assert_equal "http://localhost:4567/logout", last_request.url.to_s
+		current_session.rack_session[:username] = "foo"
+    	get '/logout' 
+    	current_session.rack_session[:username].clear #Ejecutamos el clear para la sesion en rack
+    	assert (current_session.rack_session[:username].empty?)
+		expect(last_response).to be_redirect
 	end
 
-	it "Check recovery" do
-		user = User.first_or_create(:username => "test", :email => "email@mail.com", :password => "1234")
-		post '/recovery-account', :recovery_account => user.username
+	it "Check callback FAIL for Google" do
+		get '/auth/google_oauth2/callback'
+		expect(last_response).to be_redirect
+	end
+
+	it "Check callback FAIL for Facebook" do
+		get '/auth/facebook/callback'
+		expect(last_response).to be_redirect
+	end
+
+	it "Check recovery when user exists" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		post '/recovery-account', :recoveryusername => user.username
+		assert last_response.ok?
+		assert_equal "{\"control\":0}", last_response.body
+		user.destroy
+	end
+
+	it "Check recovery when user not exists" do
+		post '/recovery-account', :recoveryusername => "foo"
 		assert last_response.ok?
 		assert_equal "{\"control\":1}", last_response.body
-		user.destroy
 	end
 
-	it "Check failiure route" do
+	it "Acces to home FAIL" do
+		get '/home'
+		expect(last_response).to be_redirect
+	end
+
+	it "Check failure route" do
 		get '/auth/failure'
 		expect(last_response).to be_ok
+		assert last_response.body.include? 'Possible reasons'
+	end
+
+end
+
+describe "Test Heleper functions" do
+
+	def app
+    	MyApp
+	end
+
+
+	it "Funtion: account_information" do
+	   assert_equal(Mail::Message,account_information("Username","1234","mail@email.com","Tests for coverlls").class)
+	end
+
+	it "Funtion: merma" do
+	   assert_equal merma(10, 50), 5
+	end
+
+	it "Funtion: GetIds" do
+	   assert_equal GetIds("Username_Recipe"), ["Username", "Recipe"]
+	end
+
+	it "Funtion: calculator1" do
+	   assert_equal calculator(25, 4, 2), 12
+	end
+
+	it "Funtion: calculator2" do
+	   assert_equal calculator(25, 2, 2), 25
+	end
+
+	it "Function: GenerateNewRecipeName" do
+		resul = false
+		cad = GenerateNewRecipeName("rice")
+		if (cad.include? "rice") and (cad.size == 8)
+			resul = true
+		end
+		assert(resul)
+	end
+
+	it "Funtion: to_bool" do
+		assert(to_bool("true")&&!to_bool("false"))
+	end
+
+	it "Function: ClearUpdates" do
+		File.new("public/uploads/test.json", "w")
+		ClearUpdates()
+		assert_equal Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json").size, 0
+		File.new("public/uploads/recipe.json", "w+") # Para mantener el archivo por defecto en el repositorio
 	end
 
 end
