@@ -23,9 +23,9 @@ class MyApp < Sinatra::Base
    		DataMapper.setup(:default, ENV['OPENSHIFT_POSTGRESQL_DB_URL'] || "sqlite3://#{Dir.pwd}/bbdd.db" )
    	end
 
-   	configure :production do
-   		DataMapper.setup(:default, ENV['OPENSHIFT_POSTGRESQL_DB_URL'])
-   	end
+   	#configure :production do
+   	#	DataMapper.setup(:default, ENV['OPENSHIFT_POSTGRESQL_DB_URL'])
+   	#end
 
 	DataMapper::Logger.new($stdout, :debug)
 	DataMapper::Model.raise_on_save_failure = true
@@ -36,8 +36,8 @@ class MyApp < Sinatra::Base
 	# DataMapper.auto_migrate!
 	DataMapper.auto_upgrade!
 
-	enable :sessions unless test?
-
+	enable :sessions
+	
 	configure do
 		set :root, File.dirname(__FILE__)
 		set :views, Proc.new { File.join(root, "../views") }

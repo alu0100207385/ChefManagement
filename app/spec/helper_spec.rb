@@ -55,4 +55,11 @@ describe "Test Heleper functions" do
 		assert(to_bool("true")&&!to_bool("false"))
 	end
 
+	it "Function: ClearUpdates" do
+		File.new("public/uploads/test.json", "w")
+		ClearUpdates()
+		assert_equal Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json").size, 0
+		File.new("public/uploads/recipe.json", "w+") # Para mantener el archivo por defecto en el repositorio
+	end
+
 end

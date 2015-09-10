@@ -33,9 +33,12 @@ describe "Test App: Check routes" do
 	it "Access to root app (session in)" do
 		current_session.rack_session[:username] = "foo"
     	get '/'
-		expect(last_response).to be_redirect   # This works, but I want it to be more specific
-  		#follow_redirect!
-  		#expect(last_request.url).to eql '/home'
+		expect(last_response).to be_redirect
+	end
+
+	it "Post redirect to root" do
+		post '/'
+		expect(last_response).to be_redirect
 	end
 
 	it "Access to register page" do
