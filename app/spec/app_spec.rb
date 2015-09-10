@@ -12,12 +12,54 @@ require 'rspec'
 require 'test/unit'
 require 'data_mapper'
 
+require 'selenium-webdriver'
+
 include Rack::Test::Methods
 include Test::Unit::Assertions
 include AppHelpers
 
 describe "Test App: Check routes" do
 
+	before :all do
+		@browser = Selenium::WebDriver.for :firefox
+		@site = 'http://localhost:9292/'
+	end
+
+	after :all do
+		@browser.quit
+	end
+
+	it "#1.1. I can access welcome page" do
+		@browser.get(@site)
+		assert_equal((@browser.find_element(:id,"facebook-btn").text == "Sign In Facebook"), true)
+	end
+
+
+	it "#1.2. I can access register page" do
+		@browser.get(@site+'register')
+		@browser.manage.timeouts.implicit_wait = 3
+		assert_equal(@browser.find_element(:id,"reg").enabled?, false)
+	end
+
+	it "#1.3. I can access home page" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		@browser.get(@site)
+		@browser.find_element(:id,"username").send_keys(user.username)
+		@browser.find_element(:id,"pass").send_keys("1234")
+		@browser.manage.timeouts.implicit_wait = 3
+		@browser.find_element(:id,"enter").click
+		sleep(1)
+		( "http://localhost:9292/home" == @browser.current_url)? (a = true) : (a = false)
+		@browser.manage.timeouts.implicit_wait = 3
+		@browser.find_element(:id,"logout").click
+		( "http://localhost:9292/" == @browser.current_url)? (b = true) : (b = false)
+		user.destroy
+		assert(a&&b)
+	end
+
+
+
+=begin
 	def app
     	MyApp
 	end
@@ -70,5 +112,5 @@ describe "Test App: Check routes" do
 		get '/auth/failure'
 		expect(last_response).to be_ok
 	end
-
+=end
 end
