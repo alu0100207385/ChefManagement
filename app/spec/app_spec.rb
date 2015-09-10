@@ -12,62 +12,30 @@ require 'rspec'
 require 'test/unit'
 require 'data_mapper'
 
-require 'selenium-webdriver'
-
 include Rack::Test::Methods
 include Test::Unit::Assertions
 include AppHelpers
 
+require File.join(File.dirname(__FILE__), 'app_spec_helper.rb')
+
 describe "Test App: Check routes" do
 
-	before :all do
-		@browser = Selenium::WebDriver.for :firefox
-		@site = 'http://localhost:9292/'
-	end
-
-	after :all do
-		@browser.quit
-	end
-
-	it "#1.1. I can access welcome page" do
-		@browser.get(@site)
-		assert_equal((@browser.find_element(:id,"facebook-btn").text == "Sign In Facebook"), true)
-	end
-
-
-	it "#1.2. I can access register page" do
-		@browser.get(@site+'register')
-		@browser.manage.timeouts.implicit_wait = 3
-		assert_equal(@browser.find_element(:id,"reg").enabled?, false)
-	end
-
-	it "#1.3. I can access home page" do
-		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
-		@browser.get(@site)
-		@browser.find_element(:id,"username").send_keys(user.username)
-		@browser.find_element(:id,"pass").send_keys("1234")
-		@browser.manage.timeouts.implicit_wait = 3
-		@browser.find_element(:id,"enter").click
-		sleep(1)
-		( "http://localhost:9292/home" == @browser.current_url)? (a = true) : (a = false)
-		@browser.manage.timeouts.implicit_wait = 3
-		@browser.find_element(:id,"logout").click
-		( "http://localhost:9292/" == @browser.current_url)? (b = true) : (b = false)
-		user.destroy
-		assert(a&&b)
-	end
-
-
-
-=begin
 	def app
     	MyApp
 	end
 
-	it "Access to welcome page" do
+	it "Access to root app (session out)" do
 		get '/' 
 		assert last_response.ok?
 		assert last_response.body.include? 'Welcome to ChefManagement'
+	end
+
+	it "Access to root app (session in)" do
+		current_session.rack_session[:username] = "foo"
+    	get '/'
+		expect(last_response).to be_redirect   # This works, but I want it to be more specific
+  		#follow_redirect!
+  		#expect(last_request.url).to eql '/home'
 	end
 
 	it "Access to register page" do
@@ -76,18 +44,48 @@ describe "Test App: Check routes" do
 		assert last_response.body.include? 'Create a new account'
 	end
 
-	it "Check register" do
+	it "Check register OK" do
 		post '/register', :username => "test", :password => '1234', :email => "email@mail.com"
 		assert last_response.ok?
 		assert_equal "{\"control\":0}", last_response.body
 		User.first(:username => "test", :email => "email@mail.com").destroy
 	end
 
-	it "Check login" do
-		user = User.first_or_create(:username => "test", :email => "email@mail.com", :password => "1234")
-		post '/login',:name => user.username, :password => user.password
+	it "Check register FAIL: username exists" do
+		user = User.create(:username => "test", :email => "foo@mail.com", :password => "1234")
+		post '/register', :username => "test", :password => '1234', :email => "email@mail.com"
 		assert last_response.ok?
 		assert_equal "{\"control\":1}", last_response.body
+		user.destroy
+	end
+
+	it "Check register FAIL: email exists" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		post '/register', :username => "foo", :password => '1234', :email => "email@mail.com"
+		assert last_response.ok?
+		assert_equal "{\"control\":2}", last_response.body
+		user.destroy
+	end
+
+	it "Check login OK" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		post '/login',:username => user.username, :password => "1234"
+		assert last_response.ok?
+		assert_equal "{\"control\":0}", last_response.body
+		user.destroy
+	end
+
+	it "Check login FAIL: user no exists" do
+		post '/login',:username => "foo", :password => "1234"
+		assert last_response.ok?
+		assert_equal "{\"control\":1}", last_response.body
+	end
+
+	it "Check login FAIL: error password" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		post '/login',:username => user.username, :password => "123"
+		assert last_response.ok?
+		assert_equal "{\"control\":2}", last_response.body
 		user.destroy
 	end
 
@@ -112,5 +110,5 @@ describe "Test App: Check routes" do
 		get '/auth/failure'
 		expect(last_response).to be_ok
 	end
-=end
+
 end

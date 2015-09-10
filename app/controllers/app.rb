@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+ENV['RACK_ENV'] = 'test'
 require 'rubygems'
 require 'sinatra/base'
 require 'data_mapper'
@@ -34,7 +36,7 @@ class MyApp < Sinatra::Base
 	# DataMapper.auto_migrate!
 	DataMapper.auto_upgrade!
 
-	enable :sessions
+	enable :sessions unless test?
 
 	configure do
 		set :root, File.dirname(__FILE__)
