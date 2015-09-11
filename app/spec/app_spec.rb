@@ -24,14 +24,6 @@ describe "Test App: Check routes" do
 	def app
     	MyApp
 	end
-		#user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
-		#recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
-		#assert_equal "{\"control\":1}", last_response.body
-		#assert last_response.ok?
-		#assert last_response.body.include? 'New recipe'
-		#recipe.destroy
-		#user.destroy
-		#current_session.rack_session[:username] = "test"
 
 
 =begin
@@ -39,14 +31,13 @@ describe "Test App: Check routes" do
 		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
 		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
 		current_session.rack_session[:username] = "test"
-		params[:recipe_name] = recipe.name
-		post '/home/new-recipe'
+		post '/home/new-recipe',:recipe_name => "recipe"
 		assert_equal "{\"control\":1}", last_response.body
 		recipe.destroy
 		user.destroy
 	end
-
 =end
+
 
 	it "Access to root app (session out)" do
 		get '/' 
@@ -205,7 +196,7 @@ describe "Test App: Check routes" do
 end
 
 #########################################################################################
-=begin
+
 describe "Test Heleper functions" do
 
 	def app
@@ -254,4 +245,3 @@ describe "Test Heleper functions" do
 	end
 
 end
-=end
