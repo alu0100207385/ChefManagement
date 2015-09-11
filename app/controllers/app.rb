@@ -296,6 +296,7 @@ class MyApp < Sinatra::Base
 				@info << [n.name, n.nration, calculator(r.cost, r.nration, n.nration), url]
 			end
 		end
+
 		erb :recipe, :layout => :'layouts/default3'
 	end
 
