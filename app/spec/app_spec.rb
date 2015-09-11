@@ -24,20 +24,14 @@ describe "Test App: Check routes" do
 	def app
     	MyApp
 	end
-
-
-=begin
-	it "Check /home/new-recipe when recipe exists" do
-		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
-		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
-		current_session.rack_session[:username] = "test"
-		post '/home/new-recipe',:recipe_name => "recipe"
-		assert_equal "{\"control\":1}", last_response.body
-		recipe.destroy
-		user.destroy
-	end
-=end
-
+		#user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		#recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+		#assert_equal "{\"control\":1}", last_response.body
+		#assert last_response.ok?
+		#assert last_response.body.include? 'New recipe'
+		#recipe.destroy
+		#user.destroy
+		#current_session.rack_session[:username] = "test"
 
 	it "Access to root app (session out)" do
 		get '/' 
@@ -60,6 +54,16 @@ describe "Test App: Check routes" do
 		get '/register' 
 		assert last_response.ok?
 		assert last_response.body.include? 'Create a new account'
+	end
+
+	it "Access to register page when session in" do
+		user = User.create(:username => "test", :email => "foo@mail.com", :password => "1234")
+		current_session.rack_session[:username] = "test"
+		get '/register' 
+		expect(last_response).to be_redirect
+		follow_redirect!
+  		expect(last_request.path).to eq('/')
+  		user.destroy
 	end
 
 	it "Check register OK" do
@@ -139,12 +143,12 @@ describe "Test App: Check routes" do
 		assert_equal "{\"control\":1}", last_response.body
 	end
 
-	it "Acces to home FAIL" do
+	it "Access to home FAIL" do
 		get '/home'
 		expect(last_response).to be_redirect
 	end
 
-	it "Acces to home SUCCESSFUL" do
+	it "Access to home SUCCESSFUL" do
 		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
 		current_session.rack_session[:username] = "test"
 		get '/home'
@@ -186,6 +190,73 @@ describe "Test App: Check routes" do
   		expect(last_request.path).to eq('/')
 	end
 
+	it "Access to user settings: check redirect" do
+		get '/home/settings'
+		expect(last_response).to be_redirect
+		follow_redirect!
+  		expect(last_request.path).to eq('/')
+	end
+
+	it "Access to user settings: check redirect" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		current_session.rack_session[:username] = "test"
+		get '/home/settings'
+		assert last_response.ok?
+		assert last_response.body.include? 'Profile'
+  		user.destroy
+	end
+
+	it "Check edit user settings: without changes" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		current_session.rack_session[:username] = "test"
+		post '/home/settings/edit-user', :new_email => "", :new_password => ""
+		assert last_response.ok?
+		assert_equal "{\"control\":1}", last_response.body
+		user.destroy
+	end
+
+	it "Check edit user settings: profile has changed (new password)" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		current_session.rack_session[:username] = "test"
+		post '/home/settings/edit-user', :new_email => "", :new_password => "12345"
+		assert last_response.ok?
+		assert_equal "{\"control\":0}", last_response.body
+		user.destroy
+	end
+
+	it "Check edit user settings: profile has changed (new email)" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		current_session.rack_session[:username] = "test"
+		post '/home/settings/edit-user', :new_email => "test@mail.com", :new_password => ""
+		assert last_response.ok?
+		assert_equal "{\"control\":0}", last_response.body
+		User.first(:username => "test").destroy
+	end
+
+	it "Check edit user settings: profile has not changed because email already exists" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		foo = User.create(:username => "foo", :email => "foo@mail.com", :password => "1234")
+		current_session.rack_session[:username] = "test"
+		post '/home/settings/edit-user', :new_email => "foo@mail.com", :new_password => ""
+		assert last_response.ok?
+		assert_equal "{\"control\":2}", last_response.body
+		foo.destroy
+		user.destroy
+	end
+
+	it "Check delete user: SUCCESS" do
+		User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+		Recipe2.create(:id => 10, :name => "recipe2", :nration => 1, :username => "test", :recipe => recipe)
+		current_session.rack_session[:username] = "test"
+		post '/home/settings/delete-user'
+		assert User.first(:username => "test").is_a? NilClass
+		assert Recipe.first(:name => "test", :username => "test").is_a? NilClass
+		assert Recipe2.first(:id => 10).is_a? NilClass
+		expect(last_response).to be_redirect
+		follow_redirect!
+  		expect(last_request.path).to eq('/')
+	end
 
 	it "Check failure route" do
 		get '/auth/failure'
