@@ -24,14 +24,7 @@ describe "Test App: Check routes" do
 	def app
     	MyApp
 	end
-		#user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
-		#recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
-		#assert_equal "{\"control\":1}", last_response.body
-		#assert last_response.ok?
-		#assert last_response.body.include? 'New recipe'
-		#recipe.destroy
-		#user.destroy
-		#current_session.rack_session[:username] = "test"
+
 
 	it "Access to root app (session out)" do
 		get '/' 
@@ -120,13 +113,17 @@ describe "Test App: Check routes" do
 	end
 
 	it "Check callback FAIL for Google" do
-		get '/auth/google_oauth2/callback'
+		get '/auth/:name/callback', :name => "google_oauth2"
 		expect(last_response).to be_redirect
+		follow_redirect!
+  		expect(last_request.path).to eq('/auth/failure')
 	end
 
 	it "Check callback FAIL for Facebook" do
-		get '/auth/facebook/callback'
+		get '/auth/:name/callback', :name => "facebook"
 		expect(last_response).to be_redirect
+		follow_redirect!
+  		expect(last_request.path).to eq('/auth/failure')
 	end
 
 	it "Check recovery when user exists" do
@@ -150,9 +147,11 @@ describe "Test App: Check routes" do
 
 	it "Access to home SUCCESSFUL" do
 		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
 		current_session.rack_session[:username] = "test"
 		get '/home'
 		assert last_response.body.include? 'Menu'
+		recipe.destroy
 		user.destroy
 	end
 
@@ -188,6 +187,28 @@ describe "Test App: Check routes" do
 		expect(last_response).to be_redirect
 		follow_redirect!
   		expect(last_request.path).to eq('/')
+	end
+
+	it "Check /home/new-ingredient: FAIL (session out)" do
+		post '/home/new-ingredient'
+		assert last_response.ok?
+		assert_equal "{\"control\":-1}", last_response.body
+	end
+
+	it "Check /home/edit-recipe: FAIL (session out)" do
+		post '/home/edit-recipe/:name'
+		assert last_response.ok?
+		assert_equal "{\"control\":-1}", last_response.body
+	end
+
+	it "Check calculator" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		recipe = Recipe.create(:name => "recipe", :nration => 2, :username => "test", :cost => 10, :ration_cost => 5)
+		current_session.rack_session[:username] = "test"
+		get '/home/calculate', :recipe_name => "recipe", :recipe_username => "test", :nrations => "4"
+		assert_equal "{\"control\":0,\"recipe_name\":\"recipe\",\"ing\":[],\"rec2\":[],\"instructions\":null}", last_response.body
+		recipe.destroy
+		user.destroy
 	end
 
 	it "Access to user settings: check redirect" do
@@ -267,7 +288,7 @@ describe "Test App: Check routes" do
 end
 
 #########################################################################################
-
+=begin
 describe "Test Heleper functions" do
 
 	def app
@@ -316,3 +337,4 @@ describe "Test Heleper functions" do
 	end
 
 end
+=end
