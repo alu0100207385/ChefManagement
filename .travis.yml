@@ -11,8 +11,8 @@ matrix:
     #- rvm: jruby-19mode
 
 script:
-   - "bundle exec rake tests"
-   - "bundle exec rake tests[chrome]"
+   #- "bundle exec rake tests"
+   #- "bundle exec rake tests[chrome]"
    - "bundle exec rake spec"
 
 sudo: required

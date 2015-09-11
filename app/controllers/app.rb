@@ -276,7 +276,7 @@ class MyApp < Sinatra::Base
 				{:control => 1}.to_json
 			end
 		else
-			{:control => 1}.to_json
+			{:control => 2}.to_json
 		end
 	end
 

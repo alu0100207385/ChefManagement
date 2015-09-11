@@ -24,15 +24,28 @@ describe "Test App: Check routes" do
 	def app
     	MyApp
 	end
+		#user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		#recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+		#assert_equal "{\"control\":1}", last_response.body
+		#assert last_response.ok?
+		#assert last_response.body.include? 'New recipe'
+		#recipe.destroy
+		#user.destroy
+		#current_session.rack_session[:username] = "test"
+
 
 =begin
-	it "Acces to home OK" do
+	it "Check /home/new-recipe when recipe exists" do
 		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
-		get '/home'
-		assert last_response.ok?
-		assert last_response.body.include? 'Menu'
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+		current_session.rack_session[:username] = "test"
+		params[:recipe_name] = recipe.name
+		post '/home/new-recipe'
+		assert_equal "{\"control\":1}", last_response.body
+		recipe.destroy
 		user.destroy
 	end
+
 =end
 
 	it "Access to root app (session out)" do
@@ -140,6 +153,49 @@ describe "Test App: Check routes" do
 		expect(last_response).to be_redirect
 	end
 
+	it "Acces to home SUCCESSFUL" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		current_session.rack_session[:username] = "test"
+		get '/home'
+		assert last_response.body.include? 'Menu'
+		user.destroy
+	end
+
+	it "Check /home/recipe when user not exists" do
+		current_session.rack_session[:username] = "foo"
+		get '/home/recipe'
+		assert last_response.ok?
+		assert_equal "{\"control\":2}", last_response.body
+	end
+
+	it "Check /home/recipe when recipe exists" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		current_session.rack_session[:username] = "test"
+		get '/home/recipe'
+		assert last_response.ok?
+		assert_equal "{\"control\":1}", last_response.body
+		user.destroy
+	end
+
+	it "Check /home/recipe when recipe not exists" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		recipe = Recipe.create(:name => "test_recipe", :nration => 1, :username => "test")
+		current_session.rack_session[:username] = "test"
+		get '/home/recipe', :recipe => "test_recipe", :user => "test"
+		assert last_response.ok?
+		assert_equal "{\"control\":0,\"username\":\"test\"}", last_response.body
+		user.destroy
+		recipe.destroy
+	end
+
+	it "Check /home/new-recipe redirect OK" do
+		post '/home/new-recipe'
+		expect(last_response).to be_redirect
+		follow_redirect!
+  		expect(last_request.path).to eq('/')
+	end
+
+
 	it "Check failure route" do
 		get '/auth/failure'
 		expect(last_response).to be_ok
@@ -148,6 +204,8 @@ describe "Test App: Check routes" do
 
 end
 
+#########################################################################################
+=begin
 describe "Test Heleper functions" do
 
 	def app
@@ -196,3 +254,4 @@ describe "Test Heleper functions" do
 	end
 
 end
+=end
