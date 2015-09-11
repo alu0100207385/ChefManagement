@@ -21,7 +21,6 @@ describe "Test Heleper functions" do
     	MyApp
 	end
 
-
 	it "Funtion: account_information" do
 	   assert_equal(Mail::Message,account_information("Username","1234","mail@email.com","Tests for coverlls").class)
 	end
