@@ -288,7 +288,7 @@ describe "Test App: Check routes" do
 end
 
 #########################################################################################
-=begin
+
 describe "Test Heleper functions" do
 
 	def app
@@ -337,4 +337,3 @@ describe "Test Heleper functions" do
 	end
 
 end
-=end
