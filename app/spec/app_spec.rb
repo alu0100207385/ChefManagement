@@ -283,7 +283,7 @@ describe "Test App: Check routes" do
 	it "Check add ingredient: OK (volume)" do
 		current_session.rack_session[:username] = "test"
 		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
-		post '/home/recipe/add-ingredient', :ing_name => "ing" ,:quantity_op => 'Weight', :ing_name => "ing", :ing_cost => 2, :volume_un => 1, :ing_unity_cost => "€/l", :n_quantity => 1, :ing_decrease => 0
+		post '/home/recipe/add-ingredient', :ing_name => "ing" ,:quantity_op => 'Volume', :ing_name => "ing", :ing_cost => 2, :volume_un => 1, :ing_unity_cost => "€/l", :n_quantity => 1, :ing_decrease => 0
 		assert last_response.ok?
 		assert_equal "{\"control\":0,\"cost\":2.0,\"ration_cost\":2.0}", last_response.body
 		Ingredient.first(:name => "ing", :recipe => recipe).destroy
@@ -306,9 +306,31 @@ describe "Test App: Check routes" do
 		recipe.destroy
 	end
 
-	it "Check delete ingredient: OK" do
+	it "Check delete ingredient: OK (quantity)" do
 		recipe = Recipe.create(:name => "recipe", :nration => 1, :cost => 2, :ration_cost => 2,:username => "test")
 		ingredient = Ingredient.create(:name => "ing", :cost => 2, :quantity => 1, :weight=> 0, :volume => 0, :recipe => recipe)
+		current_session.rack_session[:username] = "test"
+		post '/home/delete-ingredient/ing', :recipe_name => "recipe"
+		assert last_response.ok?
+		assert_equal "{\"control\":0,\"cost\":0.0,\"ration_cost\":0.0}", last_response.body
+		assert Ingredient.first(:name => "ing", :recipe => recipe).is_a? NilClass
+		recipe.destroy
+	end
+
+	it "Check delete ingredient: OK (weight)" do
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :cost => 2, :ration_cost => 2,:username => "test")
+		ingredient = Ingredient.create(:name => "ing", :cost => 2, :quantity => 0, :weight=> 1, :volume => 0, :recipe => recipe)
+		current_session.rack_session[:username] = "test"
+		post '/home/delete-ingredient/ing', :recipe_name => "recipe"
+		assert last_response.ok?
+		assert_equal "{\"control\":0,\"cost\":0.0,\"ration_cost\":0.0}", last_response.body
+		assert Ingredient.first(:name => "ing", :recipe => recipe).is_a? NilClass
+		recipe.destroy
+	end
+
+	it "Check delete ingredient: OK (volume)" do
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :cost => 2, :ration_cost => 2,:username => "test")
+		ingredient = Ingredient.create(:name => "ing", :cost => 2, :quantity => 0, :weight=> 0, :volume => 1, :recipe => recipe)
 		current_session.rack_session[:username] = "test"
 		post '/home/delete-ingredient/ing', :recipe_name => "recipe"
 		assert last_response.ok?
@@ -393,12 +415,38 @@ describe "Test App: Check routes" do
 		user.destroy
 	end
 
-	it "Check calculator" do
+	it "Check calculator (quantity)" do
 		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
 		recipe = Recipe.create(:name => "recipe", :nration => 2, :username => "test", :cost => 10, :ration_cost => 5)
+		ingredient = Ingredient.create(:name => "ing", :cost => 2, :quantity => 1, :weight => 0, :volume => 0, :recipe => recipe)
 		current_session.rack_session[:username] = "test"
 		get '/home/calculate', :recipe_name => "recipe", :recipe_username => "test", :nrations => "4"
-		assert_equal "{\"control\":0,\"recipe_name\":\"recipe\",\"ing\":[],\"rec2\":[],\"instructions\":null}", last_response.body
+		assert_equal "{\"control\":0,\"recipe_name\":\"recipe\",\"ing\":[[\"ing\",2,\"un\",2.0]],\"rec2\":[],\"instructions\":null}", last_response.body
+		ingredient.destroy
+		recipe.destroy
+		user.destroy
+	end
+
+	it "Check calculator (weight)" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		recipe = Recipe.create(:name => "recipe", :nration => 2, :username => "test", :cost => 10, :ration_cost => 5)
+		ingredient = Ingredient.create(:name => "ing", :cost => 2, :quantity => 0, :weight => 1, :volume => 0, :recipe => recipe)
+		current_session.rack_session[:username] = "test"
+		get '/home/calculate', :recipe_name => "recipe", :recipe_username => "test", :nrations => "4"
+		assert_equal "{\"control\":0,\"recipe_name\":\"recipe\",\"ing\":[[\"ing\",2.0,null,2.0]],\"rec2\":[],\"instructions\":null}", last_response.body
+		ingredient.destroy
+		recipe.destroy
+		user.destroy
+	end
+
+	it "Check calculator (volume)" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		recipe = Recipe.create(:name => "recipe", :nration => 2, :username => "test", :cost => 10, :ration_cost => 5)
+		ingredient = Ingredient.create(:name => "ing", :cost => 2, :quantity => 0, :weight => 0, :volume => 1, :recipe => recipe)
+		current_session.rack_session[:username] = "test"
+		get '/home/calculate', :recipe_name => "recipe", :recipe_username => "test", :nrations => "4"
+		assert_equal "{\"control\":0,\"recipe_name\":\"recipe\",\"ing\":[[\"ing\",2.0,null,2.0]],\"rec2\":[],\"instructions\":null}", last_response.body
+		ingredient.destroy
 		recipe.destroy
 		user.destroy
 	end
