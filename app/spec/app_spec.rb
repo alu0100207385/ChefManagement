@@ -25,18 +25,12 @@ describe "Test App: Check routes" do
     	MyApp
 	end
 
-	it "Check bla" do
-		#user = User.create(:username => "test", :email => "foo@mail.com", :password => "1234")
-		#recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+	it "Check view recipe FAIL" do
 		current_session.rack_session[:username] = "test"
 		get '/home/recipe/recipe_test'
-		assert_equal "{111}", last_response.body
-		#assert last_response.ok?
-		#assert last_response.body.include? 'Production costs'
-		#recipe.destroy
-		#user.destroy
+		assert_equal 500, last_response.status
 	end
-=begin
+
 	it "Access to root app (session out)" do
 		get '/' 
 		assert last_response.ok?
@@ -295,11 +289,11 @@ describe "Test App: Check routes" do
 		expect(last_response).to be_ok
 		assert last_response.body.include? 'Possible reasons'
 	end
-=end
+
 end
 
 #########################################################################################
-=begin
+
 describe "Test Heleper functions" do
 
 	def app
@@ -347,4 +341,3 @@ describe "Test Heleper functions" do
 	end
 
 end
-=end
