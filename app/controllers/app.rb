@@ -517,6 +517,7 @@ class MyApp < Sinatra::Base
 		if (!rec.is_a? NilClass)
 			params[:name].gsub!('-',' ')
 			ing = Ingredient.first(:name => params[:name], :recipe => rec)
+			
 			if (!ing.is_a? NilClass)
 				if (ing.weight != 0)
 					n = ing.weight * ing.cost
@@ -525,6 +526,7 @@ class MyApp < Sinatra::Base
 				else
 					n = ing.quantity * ing.cost
 				end
+
 				nuevo_costo = (rec.cost - n).round(2)
 				rec.update(:cost => nuevo_costo)
 				rec.update(:ration_cost => (nuevo_costo/rec.ration_cost).round(2))
