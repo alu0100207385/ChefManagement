@@ -24,6 +24,20 @@ describe "Test App: Check routes" do
 	def app
     	MyApp
 	end
+=begin
+	it "Check /home/new-recipe" do ##Comprobar undefined method `join' for #<String -> Sinatra&Rack
+		user = User.create(:username => "test", :email => "foo@mail.com", :password => "1234")
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+		current_session.rack_session[:username] = "test"
+		get '/home/edit-recipe/recipe'
+		assert last_response.ok?
+		assert last_response.body.include? 'recipe'
+		recipe.destroy
+		user.destroy
+	end
+=end
+
+
 
 	it "Access to root app (session out)" do
 		get '/' 
@@ -194,6 +208,49 @@ describe "Test App: Check routes" do
 		assert_equal "{\"control\":-1}", last_response.body
 	end
 
+	it "Check add ingredient: FAIL (session out or recipe does not exist)" do
+		post '/home/:recipe-name/add-ingredient'
+		assert last_response.ok?
+		assert_equal "{\"control\":1}", last_response.body
+	end
+
+	it "Check add ingredient: FAIL (ingredient already exists)" do
+		current_session.rack_session[:username] = "test"
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+		ingredient = Ingredient.create(:name => "ing", :cost => 2, :quantity => 1, :recipe => recipe)
+		post '/home/recipe/add-ingredient', :ing_name => "ing"
+		assert last_response.ok?
+		assert_equal "{\"control\":2}", last_response.body
+		ingredient.destroy
+		recipe.destroy
+	end
+
+	it "Check add ingredient: OK" do
+		current_session.rack_session[:username] = "test"
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+		post '/home/recipe/add-ingredient', :ing_name => "ing", :quantity_op => 'Quantity', :ing_name => "ing", :ing_cost => 2, :ing_unity_cost => "€/u", :n_quantity => 1, :ing_decrease => 0
+		assert last_response.ok?
+		assert_equal "{\"control\":0,\"cost\":2.0,\"ration_cost\":2.0}", last_response.body
+		Ingredient.first(:name => "ing", :recipe => recipe).destroy
+		recipe.destroy
+	end
+
+	it "Check delete ingredient: FAIL (recipe not exists)" do
+		current_session.rack_session[:username] = "test"
+		post '/home/delete-ingredient/ing', :recipe_name => "recipe"
+		assert last_response.ok?
+		assert_equal "{\"control\":1}", last_response.body
+	end
+	
+	it "Check delete ingredient: FAIL (ingredient not exists)" do
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+		current_session.rack_session[:username] = "test"
+		post '/home/delete-ingredient/ing', :recipe_name => "recipe"
+		assert last_response.ok?
+		assert_equal "{\"control\":2}", last_response.body
+		recipe.destroy
+	end
+
 	it "Check /home/edit-recipe: FAIL (session out)" do
 		post '/home/edit-recipe/:name'
 		assert last_response.ok?
@@ -235,7 +292,7 @@ describe "Test App: Check routes" do
 		user.destroy
 	end
 
-	it "Check delete ingredient" do
+	it "Check ingredient" do
 		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
 		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test", :cost => 6, :nration => 2, :ration_cost => 3)
 		recipe2 = Recipe2.create(:id => 10, :name => "recipe2", :nration => 1, :username => "test", :recipe => recipe)
