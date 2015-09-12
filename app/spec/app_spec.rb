@@ -25,12 +25,6 @@ describe "Test App: Check routes" do
     	MyApp
 	end
 
-	it "Check view recipe FAIL" do
-		current_session.rack_session[:username] = "test"
-		get '/home/recipe/recipe_test'
-		assert_equal 500, last_response.status
-	end
-
 	it "Access to root app (session out)" do
 		get '/' 
 		assert last_response.ok?
@@ -204,6 +198,54 @@ describe "Test App: Check routes" do
 		post '/home/edit-recipe/:name'
 		assert last_response.ok?
 		assert_equal "{\"control\":-1}", last_response.body
+	end
+
+	it "Check access home/edit-ingredient FAIL: (session out) or recipe does not exist" do
+		get '/home/edit-ingredient/:name'
+		assert last_response.ok?
+		assert_equal "{\"control\":1}", last_response.body
+	end
+
+	it "Check access home/edit-ingredient FAIL: ingredient does not exist" do
+		current_session.rack_session[:username] = "test"
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+		get '/home/edit-ingredient/ing', :recipe_name => "recipe"
+		assert last_response.ok?
+		assert_equal "{\"control\":2}", last_response.body
+		recipe.destroy
+	end
+	
+	it "Check access home/edit-ingredient OK" do
+		current_session.rack_session[:username] = "test"
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+		ingredient = Ingredient.create(:name => "ing", :cost => 2, :quantity => 1, :recipe => recipe)
+		get '/home/edit-ingredient/ing', :recipe_name => "recipe"
+		assert last_response.ok?
+		assert_equal "{\"control\":\"weight\",\"cost\":2.0,\"weight\":null,\"weight_un\":null,\"decrease\":0.0}", last_response.body
+		ingredient.destroy
+		recipe.destroy
+	end
+
+	it "Check edit ingredient when recipe does not change/exist" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		current_session.rack_session[:username] = "test"
+		post '/home/edit-ingredient/:name', :recipe_name => "recipe"
+		assert last_response.ok?
+		assert_equal "{\"control\":2}", last_response.body
+		user.destroy
+	end
+
+	it "Check delete ingredient" do
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test", :cost => 6, :nration => 2, :ration_cost => 3)
+		recipe2 = Recipe2.create(:id => 10, :name => "recipe2", :nration => 1, :username => "test", :recipe => recipe)
+		current_session.rack_session[:username] = "test"
+		post '/home/delete-ing-rec/:name', :original_recipe => "recipe", :rec_name => "recipe2", :rec_username => "test"
+		assert last_response.ok?
+		assert_equal "{\"control\":0,\"cost\":6.0,\"ration_cost\":3.0}", last_response.body
+		recipe2.destroy
+		recipe.destroy
+		user.destroy
 	end
 
 	it "Check calculator" do

@@ -579,6 +579,7 @@ class MyApp < Sinatra::Base
 		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 		c = true
 		content_type 'application/json'
+
 		if (!rec.is_a? NilClass)
 			if (params[:new_name] != old_name) #Ha sido modificado el nombre del ingrediente
 				ing = Ingredient.first(:name => params[:new_name], :recipe => rec)
@@ -594,6 +595,7 @@ class MyApp < Sinatra::Base
 		else
 			{:control => 1}.to_json #No existe esa receta
 		end
+
 		if (c == false)
 			if (ing.weight != 0)
 				old_cost = ing.weight * ing.cost

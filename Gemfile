@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'sinatra', git: 'git@github.com:sinatra/sinatra.git'
+gem 'sinatra'
 gem 'sinatra-base'
 gem 'data_mapper'
 gem 'mail'
