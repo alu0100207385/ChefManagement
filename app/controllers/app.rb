@@ -302,9 +302,10 @@ class MyApp < Sinatra::Base
 
 
 	post '/home/new-recipe' do
+		params[:recipe_name] = params[:recipe_name].gsub('-','')
 		user = User.first(:username => session[:username])
 		if (!user.is_a? NilClass)
-			rec = Recipe.first(:name => params[:recipe_name].gsub!('=',''), :username => session[:username])
+			rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 			content_type 'application/json'
 			if (rec.is_a? NilClass) #Si no se encuentra en la bbdd la creamos
 				recipe = Recipe.new

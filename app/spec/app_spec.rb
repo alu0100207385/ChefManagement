@@ -37,8 +37,6 @@ describe "Test App: Check routes" do
 	end
 =end
 
-
-
 	it "Access to root app (session out)" do
 		get '/' 
 		assert last_response.ok?
@@ -196,10 +194,33 @@ describe "Test App: Check routes" do
 	end
 
 	it "Check /home/new-recipe redirect OK" do
-		post '/home/new-recipe'
+		current_session.rack_session[:username] = "test"
+		post '/home/new-recipe', :recipe_name => "recipe"
 		expect(last_response).to be_redirect
 		follow_redirect!
   		expect(last_request.path).to eq('/')
+	end
+
+	it "Check /home/new-recipe FAIL: recipe already exists" do
+		current_session.rack_session[:username] = "test"
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
+		post '/home/new-recipe', :recipe_name => "recipe"
+		assert last_response.ok?
+		assert_equal "{\"control\":1}", last_response.body
+		recipe.destroy
+		user.destroy
+	end
+
+	it "Check /home/new-recipe OK" do
+		current_session.rack_session[:username] = "test"
+		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
+		post '/home/new-recipe', :recipe_name => "recipe", :nration => 2
+		assert last_response.ok?
+		assert_equal "{\"control\":0,\"user\":\"test\"}", last_response.body
+		assert !(Recipe.first(:name => "recipe", :username => user.username).is_a? NilClass)
+		Recipe.first(:name => "recipe", :username => user.username).destroy
+		user.destroy
 	end
 
 	it "Check /home/new-ingredient: FAIL (session out)" do
@@ -241,7 +262,7 @@ describe "Test App: Check routes" do
 		assert last_response.ok?
 		assert_equal "{\"control\":1}", last_response.body
 	end
-	
+
 	it "Check delete ingredient: FAIL (ingredient not exists)" do
 		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
 		current_session.rack_session[:username] = "test"
