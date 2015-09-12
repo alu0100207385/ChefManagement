@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'sinatra', '=1.4.6'
+gem 'sinatra'
 gem 'sinatra-base'
 gem 'data_mapper'
 gem 'mail'

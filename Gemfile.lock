@@ -208,7 +208,7 @@ DEPENDENCIES
   rake
   rspec
   selenium-webdriver (~> 2.46.2)
-  sinatra (= 1.4.6)
+  sinatra
   sinatra-base
   sinatra-contrib
   sqlite3
