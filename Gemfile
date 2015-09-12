@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'sinatra'
+gem 'sinatra', git: 'git@github.com:alu0100207385/ChefManagement.git'
 gem 'sinatra-base'
 gem 'data_mapper'
 gem 'mail'
