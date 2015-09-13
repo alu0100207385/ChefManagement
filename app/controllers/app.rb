@@ -302,7 +302,7 @@ class MyApp < Sinatra::Base
 	post '/home/new-recipe' do
 		user = User.first(:username => session[:username])
 		if (!user.is_a? NilClass)
-			rec = Recipe.first(:name => params[:recipe_name].gsub!('=',''), :username => session[:username])
+			rec = Recipe.first(:name => params[:recipe_name].gsub!('-',''), :username => session[:username])
 			content_type 'application/json'
 			if (rec.is_a? NilClass) #Si no se encuentra en la bbdd la creamos
 				recipe = Recipe.new
@@ -581,6 +581,7 @@ class MyApp < Sinatra::Base
 			if (params[:new_name] != old_name) #Ha sido modificado el nombre del ingrediente
 				ing = Ingredient.first(:name => params[:new_name], :recipe => rec)
 				if (ing.is_a? NilClass) #El ing no esta y se puede actualizar
+					ing = Ingredient.first(:name => old_name, :recipe => rec)
 					c = false
 				else 
 					c = true
@@ -654,7 +655,7 @@ class MyApp < Sinatra::Base
 			if (ing.weight != 0)
 				{:control => 0, :control2 => 'weight', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :weight => ing.weight, :weight_un => ing.weight_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			elsif (ing.volume != 0)
-				{:control => 0, :control2 => 'volume', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :volume => ing.volume, :volume_un => ing.weight_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
+				{:control => 0, :control2 => 'volume', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :volume => ing.volume, :volume_un => ing.volume_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			else
 				{:control => 0, :control2 => 'quantity', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :quantity => ing.quantity, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			end
