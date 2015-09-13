@@ -24,18 +24,6 @@ describe "Test App: Check routes" do
 	def app
     	MyApp
 	end
-=begin
-	it "Check /home/new-recipe" do ##Comprobar undefined method `join' for #<String -> Sinatra&Rack
-		user = User.create(:username => "test", :email => "test@mail.com", :password => "1234")
-		recipe = Recipe.create(:name => "recipe", :nration => 1, :username => "test")
-		current_session.rack_session[:username] = "test"
-		get '/home/edit-recipe/recipe'
-		assert last_response.ok?
-		assert last_response.body.include? 'recipe'
-		recipe.destroy
-		user.destroy
-	end
-=end
 
 
 	it "Access to root app (session out)" do
@@ -406,16 +394,16 @@ describe "Test App: Check routes" do
 		user.destroy
 	end
 
-	it "Check edit ingredient OK (quantity)" do
+	it "Check edit ingredient OK (quantity & change ing name)" do
 		recipe = Recipe.create(:name => "recipe", :cost => 10, :ration_cost => 5, :nration => 2, :username => "test")
 		rec_compuesta = Recipe.create(:name => "recipeX", :cost => 10, :ration_cost => 10, :nration => 1, :username => "test")
 		rec2 = Recipe2.create(:name => "recipe", :nration => 5, :username => "test", :recipe => rec_compuesta)
 		ingredient = Ingredient.create(:name => "ing", :cost => 10, :unity_cost => 10, :quantity => 1, :weight => 0, :volume => 0, :recipe => recipe)
 		current_session.rack_session[:username] = "test"
-		post '/home/edit-ingredient/ing', :recipe_name => "recipe", :new_name => "ing", :cost => 6, :unity_cost => "euro/u", :quantity_op => 'Quantity', :n_quantity => 1, :decrease => 0
+		post '/home/edit-ingredient/ing', :recipe_name => "recipe", :new_name => "ingX", :cost => 6, :unity_cost => "euro/u", :quantity_op => 'Quantity', :n_quantity => 1, :decrease => 0
 		assert last_response.ok?
-		assert_equal "{\"control\":0,\"control2\":\"quantity\",\"name\":\"ing\",\"cost\":6.0,\"unity_cost\":\"euro/u\",\"quantity\":1,\"decrease\":0.0,\"rec_cost\":6.0,\"rec_ration_cost\":3.0}", last_response.body
-		ingredient.destroy
+		assert_equal "{\"control\":0,\"control2\":\"quantity\",\"name\":\"ingX\",\"cost\":6.0,\"unity_cost\":\"euro/u\",\"quantity\":1,\"decrease\":0.0,\"rec_cost\":6.0,\"rec_ration_cost\":3.0}", last_response.body
+		Ingredient.first(:name => "ingX", :recipe => recipe).destroy
 		rec2.destroy
 		recipe.destroy
 		rec_compuesta.destroy
@@ -459,11 +447,17 @@ describe "Test App: Check routes" do
 	it "Check calculator (quantity)" do
 		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
 		recipe = Recipe.create(:name => "recipe", :nration => 2, :username => "test", :cost => 10, :ration_cost => 5)
+		recipe2 = Recipe.create(:name => "recipe2", :nration => 2, :username => "test", :cost => 4, :ration_cost => 2)		
+		rec2 = Recipe2.create(:name => "recipe2", :nration => 2, :username => "test", :recipe => recipe)
 		ingredient = Ingredient.create(:name => "ing", :cost => 2, :quantity => 1, :weight => 0, :volume => 0, :recipe => recipe)
+		ingredient2 = Ingredient.create(:name => "ingX", :cost => 4, :quantity => 1, :weight => 0, :volume => 0, :recipe => recipe2)
 		current_session.rack_session[:username] = "test"
 		get '/home/calculate', :recipe_name => "recipe", :recipe_username => "test", :nrations => "4"
-		assert_equal "{\"control\":0,\"recipe_name\":\"recipe\",\"ing\":[[\"ing\",2,\"un\",2.0]],\"rec2\":[],\"instructions\":null}", last_response.body
+		assert_equal "{\"control\":0,\"recipe_name\":\"recipe\",\"ing\":[[\"ing\",2,\"un\",2.0]],\"rec2\":[[\"recipe2\",\"test\",8.0]],\"instructions\":null}", last_response.body
 		ingredient.destroy
+		ingredient2.destroy
+		rec2.destroy
+		recipe2.destroy
 		recipe.destroy
 		user.destroy
 	end
@@ -471,23 +465,36 @@ describe "Test App: Check routes" do
 	it "Check calculator (weight)" do
 		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
 		recipe = Recipe.create(:name => "recipe", :nration => 2, :username => "test", :cost => 10, :ration_cost => 5)
+		recipe2 = Recipe.create(:name => "recipe2", :nration => 2, :username => "test", :cost => 4, :ration_cost => 2)		
+		rec2 = Recipe2.create(:name => "recipe2", :nration => 2, :username => "test", :recipe => recipe)
 		ingredient = Ingredient.create(:name => "ing", :cost => 2, :quantity => 0, :weight => 1, :volume => 0, :recipe => recipe)
+		ingredient2 = Ingredient.create(:name => "ingX", :cost => 4, :quantity => 0, :weight => 1, :volume => 0, :recipe => recipe2)
 		current_session.rack_session[:username] = "test"
 		get '/home/calculate', :recipe_name => "recipe", :recipe_username => "test", :nrations => "4"
-		assert_equal "{\"control\":0,\"recipe_name\":\"recipe\",\"ing\":[[\"ing\",2.0,null,2.0]],\"rec2\":[],\"instructions\":null}", last_response.body
+		assert_equal "{\"control\":0,\"recipe_name\":\"recipe\",\"ing\":[[\"ing\",2.0,null,2.0]],\"rec2\":[[\"recipe2\",\"test\",8.0]],\"instructions\":null}", last_response.body
 		ingredient.destroy
+		ingredient2.destroy
+		rec2.destroy
+		recipe2.destroy
 		recipe.destroy
 		user.destroy
 	end
 
+
 	it "Check calculator (volume)" do
 		user = User.create(:username => "test", :email => "email@mail.com", :password => "1234")
 		recipe = Recipe.create(:name => "recipe", :nration => 2, :username => "test", :cost => 10, :ration_cost => 5)
+		recipe2 = Recipe.create(:name => "recipe2", :nration => 2, :username => "test", :cost => 4, :ration_cost => 2)		
+		rec2 = Recipe2.create(:name => "recipe2", :nration => 2, :username => "test", :recipe => recipe)
 		ingredient = Ingredient.create(:name => "ing", :cost => 2, :quantity => 0, :weight => 0, :volume => 1, :recipe => recipe)
+		ingredient2 = Ingredient.create(:name => "ingX", :cost => 4, :quantity => 0, :weight => 0, :volume => 1, :recipe => recipe2)
 		current_session.rack_session[:username] = "test"
 		get '/home/calculate', :recipe_name => "recipe", :recipe_username => "test", :nrations => "4"
-		assert_equal "{\"control\":0,\"recipe_name\":\"recipe\",\"ing\":[[\"ing\",2.0,null,2.0]],\"rec2\":[],\"instructions\":null}", last_response.body
+		assert_equal "{\"control\":0,\"recipe_name\":\"recipe\",\"ing\":[[\"ing\",2.0,null,2.0]],\"rec2\":[[\"recipe2\",\"test\",8.0]],\"instructions\":null}", last_response.body
 		ingredient.destroy
+		ingredient2.destroy
+		rec2.destroy
+		recipe2.destroy
 		recipe.destroy
 		user.destroy
 	end

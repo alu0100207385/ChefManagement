@@ -585,15 +585,14 @@ class MyApp < Sinatra::Base
 
 		if (!rec.is_a? NilClass)
 			if (params[:new_name] != old_name) #Ha sido modificado el nombre del ingrediente
-				#puts "se ha modificado el nombre del ing"
 				ing = Ingredient.first(:name => params[:new_name], :recipe => rec)
 				if (ing.is_a? NilClass) #El ing no esta y se puede actualizar
+					ing = Ingredient.first(:name => old_name, :recipe => rec)
 					c = false
 				else 
 					c = true
 				end
 			else
-				#puts "NO se ha modificado el nombre del ing"
 				ing = Ingredient.first(:name => old_name, :recipe => rec)
 				c = false #No se cambio el nombre, actualizar campos
 			end
@@ -636,6 +635,7 @@ class MyApp < Sinatra::Base
 			if (params[:new_name] != old_name)
 				ing.update(:name => params[:new_name])
 			end
+
 			#Actualizamos los costos de la receta
 			if (ing.weight != 0)
 				new_cost = ing.weight * ing.cost
