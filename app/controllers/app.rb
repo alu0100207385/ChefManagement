@@ -585,6 +585,7 @@ class MyApp < Sinatra::Base
 
 		if (!rec.is_a? NilClass)
 			if (params[:new_name] != old_name) #Ha sido modificado el nombre del ingrediente
+				#puts "se ha modificado el nombre del ing"
 				ing = Ingredient.first(:name => params[:new_name], :recipe => rec)
 				if (ing.is_a? NilClass) #El ing no esta y se puede actualizar
 					c = false
@@ -592,6 +593,7 @@ class MyApp < Sinatra::Base
 					c = true
 				end
 			else
+				#puts "NO se ha modificado el nombre del ing"
 				ing = Ingredient.first(:name => old_name, :recipe => rec)
 				c = false #No se cambio el nombre, actualizar campos
 			end
@@ -607,6 +609,7 @@ class MyApp < Sinatra::Base
 			else
 				old_cost = ing.quantity * ing.cost
 			end
+
 			ing.update(:cost => params[:cost])
 			ing.update(:unity_cost => params[:unity_cost])
 			case params[:quantity_op]
@@ -641,6 +644,7 @@ class MyApp < Sinatra::Base
 			else
 				new_cost = ing.quantity * ing.cost
 			end
+
 			cost = (rec.cost - old_cost + new_cost).round(2)
 			rec.update(:cost => cost)
 			cost = (rec.cost/rec.nration).round(2)
@@ -661,7 +665,7 @@ class MyApp < Sinatra::Base
 			if (ing.weight != 0)
 				{:control => 0, :control2 => 'weight', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :weight => ing.weight, :weight_un => ing.weight_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			elsif (ing.volume != 0)
-				{:control => 0, :control2 => 'volume', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :volume => ing.volume, :volume_un => ing.weight_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
+				{:control => 0, :control2 => 'volume', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :volume => ing.volume, :volume_un => ing.volume_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			else
 				{:control => 0, :control2 => 'quantity', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :quantity => ing.quantity, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			end
