@@ -14,13 +14,13 @@ group :development, :test do
   gem 'dm-sqlite-adapter'
   gem 'sinatra-contrib'
   gem 'sqlite3', :platforms => :ruby
-=begin
+
   platforms :jruby do
     gem 'jdbc-sqlite3'
     gem 'activerecord-jdbcsqlite3-adapter'
     gem 'jruby-openssl'
   end
-=end
+
 end
 
 group :production do
@@ -35,7 +35,6 @@ group :production do
   end
 =end
 end
-
 
 group :test do
   gem 'rack-test'

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+ENV['RACK_ENV'] = 'test'
 require 'rubygems'
 require 'sinatra/base'
 require 'data_mapper'
@@ -21,9 +23,9 @@ class MyApp < Sinatra::Base
    		DataMapper.setup(:default, ENV['OPENSHIFT_POSTGRESQL_DB_URL'] || "sqlite3://#{Dir.pwd}/bbdd.db" )
    	end
 
-   	configure :production do
-   		DataMapper.setup(:default, ENV['OPENSHIFT_POSTGRESQL_DB_URL'])
-   	end
+   	#configure :production do
+   	#	DataMapper.setup(:default, ENV['OPENSHIFT_POSTGRESQL_DB_URL'])
+   	#end
 
 	DataMapper::Logger.new($stdout, :debug)
 	DataMapper::Model.raise_on_save_failure = true
@@ -35,7 +37,7 @@ class MyApp < Sinatra::Base
 	DataMapper.auto_upgrade!
 
 	enable :sessions
-
+	
 	configure do
 		set :root, File.dirname(__FILE__)
 		set :views, Proc.new { File.join(root, "../views") }
@@ -200,7 +202,7 @@ class MyApp < Sinatra::Base
 			user.update(:password => params[:new_password])
 			cambio = 0
 		end
-		
+
 		content_type 'application/json'
 		case cambio
 		when 0
@@ -274,7 +276,7 @@ class MyApp < Sinatra::Base
 				{:control => 1}.to_json
 			end
 		else
-			{:control => 1}.to_json
+			{:control => 2}.to_json
 		end
 	end
 
@@ -300,9 +302,10 @@ class MyApp < Sinatra::Base
 
 
 	post '/home/new-recipe' do
+		params[:recipe_name] = params[:recipe_name].gsub('-','')
 		user = User.first(:username => session[:username])
 		if (!user.is_a? NilClass)
-			rec = Recipe.first(:name => params[:recipe_name].gsub!('=',''), :username => session[:username])
+			rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 			content_type 'application/json'
 			if (rec.is_a? NilClass) #Si no se encuentra en la bbdd la creamos
 				recipe = Recipe.new
@@ -514,6 +517,7 @@ class MyApp < Sinatra::Base
 		if (!rec.is_a? NilClass)
 			params[:name].gsub!('-',' ')
 			ing = Ingredient.first(:name => params[:name], :recipe => rec)
+			
 			if (!ing.is_a? NilClass)
 				if (ing.weight != 0)
 					n = ing.weight * ing.cost
@@ -522,6 +526,7 @@ class MyApp < Sinatra::Base
 				else
 					n = ing.quantity * ing.cost
 				end
+
 				nuevo_costo = (rec.cost - n).round(2)
 				rec.update(:cost => nuevo_costo)
 				rec.update(:ration_cost => (nuevo_costo/rec.ration_cost).round(2))
@@ -577,10 +582,12 @@ class MyApp < Sinatra::Base
 		rec = Recipe.first(:name => params[:recipe_name], :username => session[:username])
 		c = true
 		content_type 'application/json'
+
 		if (!rec.is_a? NilClass)
 			if (params[:new_name] != old_name) #Ha sido modificado el nombre del ingrediente
 				ing = Ingredient.first(:name => params[:new_name], :recipe => rec)
 				if (ing.is_a? NilClass) #El ing no esta y se puede actualizar
+					ing = Ingredient.first(:name => old_name, :recipe => rec)
 					c = false
 				else 
 					c = true
@@ -592,6 +599,7 @@ class MyApp < Sinatra::Base
 		else
 			{:control => 1}.to_json #No existe esa receta
 		end
+
 		if (c == false)
 			if (ing.weight != 0)
 				old_cost = ing.weight * ing.cost
@@ -600,6 +608,7 @@ class MyApp < Sinatra::Base
 			else
 				old_cost = ing.quantity * ing.cost
 			end
+
 			ing.update(:cost => params[:cost])
 			ing.update(:unity_cost => params[:unity_cost])
 			case params[:quantity_op]
@@ -626,6 +635,7 @@ class MyApp < Sinatra::Base
 			if (params[:new_name] != old_name)
 				ing.update(:name => params[:new_name])
 			end
+
 			#Actualizamos los costos de la receta
 			if (ing.weight != 0)
 				new_cost = ing.weight * ing.cost
@@ -634,6 +644,7 @@ class MyApp < Sinatra::Base
 			else
 				new_cost = ing.quantity * ing.cost
 			end
+
 			cost = (rec.cost - old_cost + new_cost).round(2)
 			rec.update(:cost => cost)
 			cost = (rec.cost/rec.nration).round(2)
@@ -654,7 +665,7 @@ class MyApp < Sinatra::Base
 			if (ing.weight != 0)
 				{:control => 0, :control2 => 'weight', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :weight => ing.weight, :weight_un => ing.weight_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			elsif (ing.volume != 0)
-				{:control => 0, :control2 => 'volume', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :volume => ing.volume, :volume_un => ing.weight_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
+				{:control => 0, :control2 => 'volume', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :volume => ing.volume, :volume_un => ing.volume_un, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			else
 				{:control => 0, :control2 => 'quantity', :name => ing.name, :cost => ing.cost, :unity_cost => ing.unity_cost, :quantity => ing.quantity, :decrease => ing.decrease, :rec_cost => rec.cost, :rec_ration_cost => rec.ration_cost}.to_json
 			end

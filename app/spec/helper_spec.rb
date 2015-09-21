@@ -21,7 +21,6 @@ describe "Test Heleper functions" do
     	MyApp
 	end
 
-
 	it "Funtion: account_information" do
 	   assert_equal(Mail::Message,account_information("Username","1234","mail@email.com","Tests for coverlls").class)
 	end
@@ -53,6 +52,13 @@ describe "Test Heleper functions" do
 
 	it "Funtion: to_bool" do
 		assert(to_bool("true")&&!to_bool("false"))
+	end
+
+	it "Function: ClearUpdates" do
+		File.new("public/uploads/test.json", "w")
+		ClearUpdates()
+		assert_equal Dir.glob(File.dirname(__FILE__)+"/../../public/uploads/*.json").size, 0
+		File.new("public/uploads/recipe.json", "w+") # Para mantener el archivo por defecto en el repositorio
 	end
 
 end
